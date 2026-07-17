@@ -1,0 +1,1975 @@
+# Lesson 3: NumPy Foundations for AI and Machine Learning
+
+**Current phase:** Phase 1 — Python Foundations
+**Lesson:** 3 — NumPy
+**Lesson 2 status:** Quiz not yet verified
+
+NumPy is the foundation of most numerical Python libraries. Machine-learning datasets, model parameters, images, vectors, and matrices are commonly represented as NumPy arrays.
+
+---
+
+## 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain why NumPy is preferred over Python lists for numerical work.
+2. Create one-dimensional and multidimensional arrays.
+3. Understand array dimensions, shapes, sizes, and data types.
+4. Access and modify array elements.
+5. Perform vectorized mathematical operations.
+6. Use broadcasting correctly.
+7. Calculate basic statistics.
+8. Reshape, combine, and filter arrays.
+9. Understand common NumPy errors.
+10. Build a small student-performance analyzer.
+
+---
+
+# 2. Real-World Example
+
+Suppose we have five students and three features:
+
+* Study hours
+* Attendance percentage
+* Previous exam score
+
+A Python representation might look like this:
+
+```python
+students = [
+    [2.0, 60.0, 55.0],
+    [4.0, 75.0, 70.0],
+    [6.0, 90.0, 85.0],
+    [3.0, 65.0, 60.0],
+    [5.0, 80.0, 78.0],
+]
+```
+
+This works, but performing mathematical operations on nested lists becomes awkward.
+
+With NumPy:
+
+```python
+import numpy as np
+
+students = np.array(
+    [
+        [2.0, 60.0, 55.0],
+        [4.0, 75.0, 70.0],
+        [6.0, 90.0, 85.0],
+        [3.0, 65.0, 60.0],
+        [5.0, 80.0, 78.0],
+    ]
+)
+```
+
+We can calculate the average of every column with one operation:
+
+```python
+column_averages = students.mean(axis=0)
+```
+
+Result:
+
+```text
+[ 4.0  74.0  69.6 ]
+```
+
+This means:
+
+```text
+Average study hours:    4.0
+Average attendance:    74.0
+Average previous score: 69.6
+```
+
+---
+
+# 3. What Is NumPy?
+
+NumPy stands for **Numerical Python**.
+
+Its main data structure is:
+
+```text
+ndarray
+```
+
+This means:
+
+```text
+n-dimensional array
+```
+
+Examples:
+
+```text
+Scalar       → 0 dimensions
+Vector       → 1 dimension
+Matrix       → 2 dimensions
+Tensor       → 3 or more dimensions
+```
+
+Visual representation:
+
+```text
+Scalar:
+
+5
+
+
+Vector:
+
+[2, 4, 6, 8]
+
+
+Matrix:
+
+[
+  [1, 2, 3],
+  [4, 5, 6]
+]
+
+
+3D tensor:
+
+[
+  [
+    [1, 2],
+    [3, 4]
+  ],
+  [
+    [5, 6],
+    [7, 8]
+  ]
+]
+```
+
+---
+
+# 4. Why NumPy Instead of Python Lists?
+
+Python lists are general-purpose containers. They can store mixed types:
+
+```python
+values = [10, "twenty", True, None]
+```
+
+NumPy arrays are designed for numerical data and normally store one consistent data type:
+
+```python
+values = np.array([10, 20, 30, 40])
+```
+
+NumPy provides:
+
+* Fast numerical operations
+* Vectorization
+* Matrix operations
+* Statistical functions
+* Efficient memory storage
+* Broadcasting
+* Integration with machine-learning libraries
+
+---
+
+# 5. Installing and Importing NumPy
+
+Install NumPy:
+
+```bash
+pip install numpy
+```
+
+Import it:
+
+```python
+import numpy as np
+```
+
+`np` is the conventional NumPy alias.
+
+---
+
+# 6. Creating NumPy Arrays
+
+## One-Dimensional Array
+
+```python
+import numpy as np
+
+scores = np.array([70, 80, 90, 85])
+```
+
+Visual form:
+
+```text
+[70, 80, 90, 85]
+```
+
+This is a vector.
+
+---
+
+## Two-Dimensional Array
+
+```python
+student_data = np.array(
+    [
+        [2.0, 60.0],
+        [4.0, 75.0],
+        [6.0, 90.0],
+    ]
+)
+```
+
+Visual form:
+
+```text
+Rows represent students
+Columns represent features
+
+              Hours  Attendance
+Student 1       2       60
+Student 2       4       75
+Student 3       6       90
+```
+
+Shape:
+
+```text
+3 rows × 2 columns
+```
+
+---
+
+## Arrays Filled with Zeros
+
+```python
+zeros = np.zeros((2, 3))
+```
+
+Result:
+
+```text
+[
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0]
+]
+```
+
+---
+
+## Arrays Filled with Ones
+
+```python
+ones = np.ones((2, 3))
+```
+
+---
+
+## Arrays Filled with a Specific Value
+
+```python
+filled = np.full((2, 3), 7)
+```
+
+Result:
+
+```text
+[
+  [7, 7, 7],
+  [7, 7, 7]
+]
+```
+
+---
+
+## Number Sequence
+
+```python
+numbers = np.arange(0, 10, 2)
+```
+
+Result:
+
+```text
+[0, 2, 4, 6, 8]
+```
+
+The arguments are:
+
+```text
+start = 0
+stop  = 10, excluded
+step  = 2
+```
+
+---
+
+## Evenly Spaced Values
+
+```python
+values = np.linspace(0, 1, 5)
+```
+
+Result:
+
+```text
+[0.00, 0.25, 0.50, 0.75, 1.00]
+```
+
+Unlike `arange()`, `linspace()` specifies how many values should be created.
+
+---
+
+# 7. Array Properties
+
+```python
+data = np.array(
+    [
+        [10, 20, 30],
+        [40, 50, 60],
+    ]
+)
+```
+
+## Number of Dimensions
+
+```python
+print(data.ndim)
+```
+
+Output:
+
+```text
+2
+```
+
+## Shape
+
+```python
+print(data.shape)
+```
+
+Output:
+
+```text
+(2, 3)
+```
+
+This means two rows and three columns.
+
+## Number of Elements
+
+```python
+print(data.size)
+```
+
+Output:
+
+```text
+6
+```
+
+## Data Type
+
+```python
+print(data.dtype)
+```
+
+The exact output depends on the system, but it represents an integer type.
+
+---
+
+# 8. Indexing and Slicing
+
+## One-Dimensional Indexing
+
+```python
+scores = np.array([70, 80, 90, 85])
+```
+
+```python
+print(scores[0])
+```
+
+Output:
+
+```text
+70
+```
+
+```python
+print(scores[-1])
+```
+
+Output:
+
+```text
+85
+```
+
+---
+
+## One-Dimensional Slicing
+
+```python
+print(scores[1:3])
+```
+
+Output:
+
+```text
+[80, 90]
+```
+
+The start index is included. The stop index is excluded.
+
+---
+
+## Two-Dimensional Indexing
+
+```python
+data = np.array(
+    [
+        [10, 20, 30],
+        [40, 50, 60],
+    ]
+)
+```
+
+Access row 0, column 1:
+
+```python
+value = data[0, 1]
+```
+
+Result:
+
+```text
+20
+```
+
+Visual:
+
+```text
+          Column
+           0   1   2
+Row 0     10  20  30
+Row 1     40  50  60
+               ^
+```
+
+---
+
+## Selecting a Complete Row
+
+```python
+first_row = data[0, :]
+```
+
+Result:
+
+```text
+[10, 20, 30]
+```
+
+## Selecting a Complete Column
+
+```python
+second_column = data[:, 1]
+```
+
+Result:
+
+```text
+[20, 50]
+```
+
+The colon means select all values along that dimension.
+
+---
+
+# 9. Vectorized Operations
+
+Vectorization means applying an operation to an entire array without manually writing a Python loop.
+
+```python
+scores = np.array([70, 80, 90])
+```
+
+Add five marks:
+
+```python
+updated_scores = scores + 5
+```
+
+Result:
+
+```text
+[75, 85, 95]
+```
+
+Multiply every value:
+
+```python
+doubled = scores * 2
+```
+
+Result:
+
+```text
+[140, 160, 180]
+```
+
+Square every value:
+
+```python
+squared = scores**2
+```
+
+Result:
+
+```text
+[4900, 6400, 8100]
+```
+
+---
+
+## Python Loop Version
+
+```python
+updated_scores = []
+
+for score in scores:
+    updated_scores.append(score + 5)
+```
+
+## NumPy Version
+
+```python
+updated_scores = scores + 5
+```
+
+The NumPy version is shorter and delegates the computation to optimized numerical routines.
+
+---
+
+# 10. Element-Wise Operations
+
+```python
+first = np.array([1, 2, 3])
+second = np.array([4, 5, 6])
+```
+
+Addition:
+
+```python
+result = first + second
+```
+
+```text
+[5, 7, 9]
+```
+
+Subtraction:
+
+```python
+result = second - first
+```
+
+```text
+[3, 3, 3]
+```
+
+Multiplication:
+
+```python
+result = first * second
+```
+
+```text
+[4, 10, 18]
+```
+
+Division:
+
+```python
+result = second / first
+```
+
+```text
+[4.0, 2.5, 2.0]
+```
+
+This multiplication is element-wise. It is not matrix multiplication.
+
+---
+
+# 11. Mathematical Intuition
+
+Given two vectors:
+
+[
+A = [1, 2, 3]
+]
+
+[
+B = [4, 5, 6]
+]
+
+Element-wise multiplication is:
+
+[
+A \odot B = [1 \times 4,\ 2 \times 5,\ 3 \times 6]
+]
+
+[
+A \odot B = [4, 10, 18]
+]
+
+NumPy:
+
+```python
+result = first * second
+```
+
+---
+
+## Dot Product
+
+The dot product is:
+
+[
+A \cdot B
+=========
+
+1(4) + 2(5) + 3(6)
+]
+
+[
+= 4 + 10 + 18 = 32
+]
+
+NumPy:
+
+```python
+dot_product = np.dot(first, second)
+```
+
+Or:
+
+```python
+dot_product = first @ second
+```
+
+The dot product is important in:
+
+* Linear regression
+* Neural networks
+* Similarity calculations
+* Matrix multiplication
+* Attention mechanisms
+
+---
+
+# 12. Broadcasting
+
+Broadcasting allows NumPy to operate on arrays with compatible but different shapes.
+
+Example:
+
+```python
+matrix = np.array(
+    [
+        [10, 20, 30],
+        [40, 50, 60],
+    ]
+)
+
+offsets = np.array([1, 2, 3])
+
+result = matrix + offsets
+```
+
+Result:
+
+```text
+[
+  [11, 22, 33],
+  [41, 52, 63]
+]
+```
+
+Visual explanation:
+
+```text
+Matrix:                Vector:
+
+10  20  30             1  2  3
+40  50  60
+
+NumPy treats the vector as:
+
+1   2   3
+1   2   3
+
+Result:
+
+11  22  33
+41  52  63
+```
+
+Broadcasting does not work for every shape combination.
+
+These shapes are incompatible:
+
+```text
+(2, 3)
+(2,)
+```
+
+Because the final dimensions do not match:
+
+```text
+3 != 2
+```
+
+---
+
+# 13. Statistical Operations
+
+```python
+scores = np.array([70, 80, 90, 60, 100])
+```
+
+Mean:
+
+```python
+mean_score = np.mean(scores)
+```
+
+Median:
+
+```python
+median_score = np.median(scores)
+```
+
+Minimum:
+
+```python
+minimum_score = np.min(scores)
+```
+
+Maximum:
+
+```python
+maximum_score = np.max(scores)
+```
+
+Sum:
+
+```python
+total_score = np.sum(scores)
+```
+
+Standard deviation:
+
+```python
+standard_deviation = np.std(scores)
+```
+
+---
+
+## Mathematical Intuition for Mean
+
+[
+\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}
+]
+
+For:
+
+```text
+70, 80, 90
+```
+
+[
+\bar{x} = \frac{70 + 80 + 90}{3} = 80
+]
+
+---
+
+# 14. Understanding the Axis Parameter
+
+Consider:
+
+```python
+data = np.array(
+    [
+        [2, 60, 55],
+        [4, 75, 70],
+        [6, 90, 85],
+    ]
+)
+```
+
+Shape:
+
+```text
+(3, 3)
+```
+
+## Average of All Values
+
+```python
+overall_average = data.mean()
+```
+
+## Column Averages
+
+```python
+column_averages = data.mean(axis=0)
+```
+
+Result:
+
+```text
+[4, 75, 70]
+```
+
+`axis=0` reduces the rows and produces one result per column.
+
+```text
+Column 0: (2 + 4 + 6) / 3
+Column 1: (60 + 75 + 90) / 3
+Column 2: (55 + 70 + 85) / 3
+```
+
+## Row Averages
+
+```python
+row_averages = data.mean(axis=1)
+```
+
+`axis=1` reduces the columns and produces one result per row.
+
+A useful mental model:
+
+```text
+axis=0 → move vertically down rows
+axis=1 → move horizontally across columns
+```
+
+---
+
+# 15. Boolean Filtering
+
+```python
+scores = np.array([45, 72, 88, 51, 90, 67])
+```
+
+Create a Boolean mask:
+
+```python
+mask = scores >= 60
+```
+
+Result:
+
+```text
+[False, True, True, False, True, True]
+```
+
+Apply the mask:
+
+```python
+passing_scores = scores[mask]
+```
+
+Result:
+
+```text
+[72, 88, 90, 67]
+```
+
+This can be written directly:
+
+```python
+passing_scores = scores[scores >= 60]
+```
+
+---
+
+## Multiple Conditions
+
+Select values between 60 and 80:
+
+```python
+selected = scores[(scores >= 60) & (scores <= 80)]
+```
+
+Use:
+
+```text
+& for element-wise AND
+| for element-wise OR
+~ for element-wise NOT
+```
+
+Do not use normal Python `and` with NumPy arrays.
+
+---
+
+# 16. Reshaping Arrays
+
+```python
+numbers = np.array([1, 2, 3, 4, 5, 6])
+```
+
+Convert to two rows and three columns:
+
+```python
+matrix = numbers.reshape(2, 3)
+```
+
+Result:
+
+```text
+[
+  [1, 2, 3],
+  [4, 5, 6]
+]
+```
+
+The total number of elements must remain unchanged.
+
+This is invalid:
+
+```python
+numbers.reshape(4, 2)
+```
+
+Six values cannot fill eight positions.
+
+---
+
+## Automatic Dimension Calculation
+
+```python
+matrix = numbers.reshape(3, -1)
+```
+
+NumPy calculates the missing dimension.
+
+Result shape:
+
+```text
+(3, 2)
+```
+
+Only one dimension may use `-1`.
+
+---
+
+# 17. Combining Arrays
+
+## Vertical Stacking
+
+```python
+first = np.array([[1, 2]])
+second = np.array([[3, 4]])
+
+combined = np.vstack((first, second))
+```
+
+Result:
+
+```text
+[
+  [1, 2],
+  [3, 4]
+]
+```
+
+## Horizontal Stacking
+
+```python
+combined = np.hstack((first, second))
+```
+
+Result:
+
+```text
+[
+  [1, 2, 3, 4]
+]
+```
+
+---
+
+# 18. Copy vs View
+
+This is an important NumPy behavior.
+
+```python
+original = np.array([10, 20, 30])
+view = original[0:2]
+
+view[0] = 999
+```
+
+Now `original` may become:
+
+```text
+[999, 20, 30]
+```
+
+A slice often references the same underlying data.
+
+To create an independent copy:
+
+```python
+independent = original[0:2].copy()
+```
+
+Changes to `independent` will not modify `original`.
+
+---
+
+# 19. Main Python Implementation
+
+## Student Performance Analyzer
+
+```python
+import numpy as np
+
+
+PASSING_SCORE = 60.0
+
+
+def validate_student_data(data: np.ndarray) -> None:
+    """Validate the student dataset."""
+    if data.ndim != 2:
+        raise ValueError("Student data must be a two-dimensional array.")
+
+    if data.shape[1] != 3:
+        raise ValueError(
+            "Each student must have exactly three features."
+        )
+
+    if data.shape[0] == 0:
+        raise ValueError("Student data cannot be empty.")
+
+    if np.isnan(data).any():
+        raise ValueError("Student data cannot contain missing values.")
+
+    if (data[:, 0] < 0).any():
+        raise ValueError("Study hours cannot be negative.")
+
+    if ((data[:, 1:] < 0) | (data[:, 1:] > 100)).any():
+        raise ValueError(
+            "Attendance and exam scores must be between 0 and 100."
+        )
+
+
+def calculate_feature_averages(
+    data: np.ndarray,
+) -> np.ndarray:
+    """Calculate the average of each student feature."""
+    return data.mean(axis=0)
+
+
+def calculate_final_scores(data: np.ndarray) -> np.ndarray:
+    """Calculate a weighted final score for each student."""
+    study_hours = data[:, 0]
+    attendance = data[:, 1]
+    previous_scores = data[:, 2]
+
+    normalized_hours = np.minimum(study_hours / 10.0 * 100.0, 100.0)
+
+    return (
+        normalized_hours * 0.20
+        + attendance * 0.30
+        + previous_scores * 0.50
+    )
+
+
+def classify_students(
+    final_scores: np.ndarray,
+) -> np.ndarray:
+    """Classify students as passing or failing."""
+    return np.where(
+        final_scores >= PASSING_SCORE,
+        "Pass",
+        "Fail",
+    )
+
+
+def calculate_pass_rate(
+    predictions: np.ndarray,
+) -> float:
+    """Calculate the percentage of passing students."""
+    passed_count = np.sum(predictions == "Pass")
+    return float(passed_count / predictions.size * 100.0)
+
+
+def main() -> None:
+    """Run the student performance analysis."""
+    student_data = np.array(
+        [
+            [2.0, 60.0, 55.0],
+            [4.0, 75.0, 70.0],
+            [6.0, 90.0, 85.0],
+            [3.0, 65.0, 60.0],
+            [5.0, 80.0, 78.0],
+        ],
+        dtype=np.float64,
+    )
+
+    validate_student_data(student_data)
+
+    feature_averages = calculate_feature_averages(student_data)
+    final_scores = calculate_final_scores(student_data)
+    predictions = classify_students(final_scores)
+    pass_rate = calculate_pass_rate(predictions)
+
+    print("Feature averages:")
+    print(f"Study hours: {feature_averages[0]:.2f}")
+    print(f"Attendance: {feature_averages[1]:.2f}")
+    print(f"Previous score: {feature_averages[2]:.2f}")
+
+    print("\nStudent results:")
+
+    for index, (score, prediction) in enumerate(
+        zip(final_scores, predictions),
+        start=1,
+    ):
+        print(
+            f"Student {index}: "
+            f"{score:.2f} — {prediction}"
+        )
+
+    print(f"\nPass rate: {pass_rate:.2f}%")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 20. Architecture
+
+```text
+Raw NumPy matrix
+       |
+       v
+Dataset validation
+       |
+       v
+Select feature columns
+       |
+       v
+Normalize study hours
+       |
+       v
+Apply weighted formula
+       |
+       v
+Final scores
+       |
+       v
+Pass/Fail classification
+       |
+       v
+Pass-rate report
+```
+
+---
+
+# 21. Mathematical Intuition
+
+The final score is calculated as:
+
+[
+F =
+0.20H +
+0.30A +
+0.50P
+]
+
+Where:
+
+* (H) = normalized study-hours score
+* (A) = attendance percentage
+* (P) = previous exam score
+
+Study hours are normalized:
+
+[
+H = \min\left(\frac{\text{hours}}{10} \times 100,\ 100\right)
+]
+
+For a student with:
+
+```text
+Study hours:    6
+Attendance:    90
+Previous score: 85
+```
+
+Normalized hours:
+
+[
+H = \frac{6}{10} \times 100 = 60
+]
+
+Final score:
+
+[
+F = 0.20(60) + 0.30(90) + 0.50(85)
+]
+
+[
+F = 12 + 27 + 42.5
+]
+
+[
+F = 81.5
+]
+
+Prediction:
+
+```text
+Pass
+```
+
+This is still a manually designed rule, not a trained machine-learning model. NumPy is processing the numerical data efficiently.
+
+---
+
+# 22. Code Explanation
+
+```python
+import numpy as np
+```
+
+Imports NumPy using the conventional `np` alias.
+
+```python
+PASSING_SCORE = 60.0
+```
+
+Defines a constant for the minimum passing score.
+
+```python
+def validate_student_data(data: np.ndarray) -> None:
+```
+
+Defines a validation function that expects a NumPy array and returns no value.
+
+```python
+if data.ndim != 2:
+```
+
+Checks that the dataset is a matrix.
+
+```python
+if data.shape[1] != 3:
+```
+
+Checks that every row contains exactly three features.
+
+```python
+if np.isnan(data).any():
+```
+
+Checks whether at least one value is `NaN`.
+
+```python
+data[:, 0]
+```
+
+Selects all rows from the first column.
+
+```python
+data[:, 1:]
+```
+
+Selects all rows from the second column onward.
+
+```python
+return data.mean(axis=0)
+```
+
+Calculates one average for each feature column.
+
+```python
+study_hours = data[:, 0]
+```
+
+Extracts the study-hours column.
+
+```python
+normalized_hours = np.minimum(
+    study_hours / 10.0 * 100.0,
+    100.0,
+)
+```
+
+Converts study hours into a percentage and limits the maximum to 100.
+
+```python
+return normalized_hours * 0.20 + ...
+```
+
+Calculates every student’s weighted score using vectorized operations.
+
+```python
+np.where(condition, value_if_true, value_if_false)
+```
+
+Returns `"Pass"` when the condition is true and `"Fail"` otherwise.
+
+```python
+predictions == "Pass"
+```
+
+Creates a Boolean array.
+
+```python
+np.sum(predictions == "Pass")
+```
+
+Counts `True` values because `True` behaves like `1`.
+
+```python
+enumerate(..., start=1)
+```
+
+Generates student numbers beginning at one.
+
+```python
+zip(final_scores, predictions)
+```
+
+Pairs every score with its prediction.
+
+---
+
+# 23. Time Complexity
+
+Let:
+
+* (n) = number of students
+* (m) = number of features
+
+Validation scans the dataset:
+
+[
+O(nm)
+]
+
+Feature averages:
+
+[
+O(nm)
+]
+
+Final-score calculation:
+
+[
+O(n)
+]
+
+Classification:
+
+[
+O(n)
+]
+
+Pass-rate calculation:
+
+[
+O(n)
+]
+
+Because the number of features is fixed at three:
+
+[
+m = 3
+]
+
+The overall complexity simplifies to:
+
+[
+\boxed{O(n)}
+]
+
+The program stores arrays containing results for each student:
+
+[
+\boxed{O(n)}
+]
+
+additional space.
+
+Vectorization does not change the theoretical Big-O complexity, but it generally reduces Python-level overhead.
+
+---
+
+# 24. Unit Tests
+
+```python
+import numpy as np
+
+
+def run_tests() -> None:
+    data = np.array(
+        [
+            [5.0, 80.0, 70.0],
+            [8.0, 90.0, 90.0],
+        ],
+        dtype=np.float64,
+    )
+
+    validate_student_data(data)
+
+    averages = calculate_feature_averages(data)
+
+    assert np.allclose(
+        averages,
+        np.array([6.5, 85.0, 80.0]),
+    )
+
+    scores = calculate_final_scores(data)
+
+    assert scores.shape == (2,)
+    assert np.all(scores >= 0)
+    assert np.all(scores <= 100)
+
+    predictions = classify_students(
+        np.array([59.9, 60.0, 80.0])
+    )
+
+    assert predictions.tolist() == [
+        "Fail",
+        "Pass",
+        "Pass",
+    ]
+
+    pass_rate = calculate_pass_rate(predictions)
+
+    assert np.isclose(
+        pass_rate,
+        66.6666666667,
+    )
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+Use `np.allclose()` and `np.isclose()` for floating-point comparisons.
+
+---
+
+# 25. Common Errors
+
+## Incompatible Shapes
+
+```python
+first = np.array([1, 2, 3])
+second = np.array([1, 2])
+
+result = first + second
+```
+
+Error:
+
+```text
+ValueError: operands could not be broadcast together
+```
+
+The shapes `(3,)` and `(2,)` are incompatible.
+
+---
+
+## Wrong Axis
+
+```python
+data.mean(axis=1)
+```
+
+This calculates row averages, not feature averages.
+
+For feature averages, use:
+
+```python
+data.mean(axis=0)
+```
+
+---
+
+## Using `and` Instead of `&`
+
+Incorrect:
+
+```python
+selected = scores[
+    (scores >= 60) and (scores <= 80)
+]
+```
+
+Correct:
+
+```python
+selected = scores[
+    (scores >= 60) & (scores <= 80)
+]
+```
+
+Each condition must also be wrapped in parentheses.
+
+---
+
+## Unexpected Integer Data Type
+
+```python
+values = np.array([1, 2, 3])
+values[0] = 2.5
+```
+
+Because the array uses an integer type, the decimal may be converted to an integer.
+
+Create a float array:
+
+```python
+values = np.array(
+    [1, 2, 3],
+    dtype=np.float64,
+)
+```
+
+---
+
+## Modifying a View Accidentally
+
+```python
+subset = original[:2]
+subset[0] = 999
+```
+
+This may modify `original`.
+
+Use:
+
+```python
+subset = original[:2].copy()
+```
+
+---
+
+## Dividing by Zero
+
+```python
+values = np.array([1.0, 0.0])
+result = 10 / values
+```
+
+This may produce infinity and a runtime warning.
+
+Check for zero values before division.
+
+---
+
+## Comparing Arrays Directly
+
+Incorrect:
+
+```python
+if scores > 60:
+    print("Pass")
+```
+
+A NumPy comparison produces multiple Boolean values.
+
+Use:
+
+```python
+if np.all(scores > 60):
+```
+
+or:
+
+```python
+if np.any(scores > 60):
+```
+
+---
+
+# 26. Debugging Techniques
+
+Inspect array properties:
+
+```python
+print(data)
+print(data.shape)
+print(data.ndim)
+print(data.dtype)
+```
+
+Check missing values:
+
+```python
+print(np.isnan(data))
+print(np.isnan(data).any())
+```
+
+Check value ranges:
+
+```python
+print(data.min())
+print(data.max())
+```
+
+Check Boolean masks:
+
+```python
+mask = scores >= 60
+print(mask)
+print(scores[mask])
+```
+
+Check intermediate shapes:
+
+```python
+print(study_hours.shape)
+print(final_scores.shape)
+```
+
+Many NumPy bugs are shape bugs. Inspecting `shape` should be one of your first debugging steps.
+
+---
+
+# 27. Exercises
+
+## Exercise 1
+
+Create this array:
+
+```text
+10, 20, 30, 40, 50
+```
+
+Calculate:
+
+* Sum
+* Mean
+* Minimum
+* Maximum
+* Standard deviation
+
+---
+
+## Exercise 2
+
+Create:
+
+```python
+data = np.array(
+    [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+    ]
+)
+```
+
+Extract:
+
+* First row
+* Last row
+* Second column
+* Value `8`
+* Top-left `2 × 2` matrix
+
+---
+
+## Exercise 3
+
+Given:
+
+```python
+temperatures = np.array(
+    [35, 42, 38, 45, 31, 40]
+)
+```
+
+Select only temperatures greater than or equal to 40.
+
+---
+
+## Exercise 4
+
+Reshape:
+
+```python
+numbers = np.arange(1, 13)
+```
+
+Into:
+
+* `3 × 4`
+* `4 × 3`
+* `2 × 6`
+
+---
+
+## Exercise 5
+
+Given:
+
+```python
+prices = np.array([100, 200, 300])
+```
+
+Apply a 5% VAT calculation using vectorized operations.
+
+Expected final prices:
+
+```text
+105, 210, 315
+```
+
+---
+
+# 28. Mini Project: Product Price Analyzer
+
+Create a NumPy program using this dataset:
+
+```python
+products = np.array(
+    [
+        [1, 1000.0, 15],
+        [2, 1500.0, 8],
+        [3, 750.0, 25],
+        [4, 2000.0, 5],
+        [5, 500.0, 30],
+    ],
+    dtype=np.float64,
+)
+```
+
+Columns:
+
+```text
+Product ID
+Price
+Stock quantity
+```
+
+The program must:
+
+1. Validate that the array has three columns.
+2. Calculate average product price.
+3. Find the most expensive product.
+4. Find the product with the highest stock.
+5. Select products priced below AED 1,200.
+6. Add 5% VAT to all prices.
+7. Calculate total inventory value:
+
+[
+\text{Inventory value}
+======================
+
+\text{Price} \times \text{Quantity}
+]
+
+8. Calculate the combined inventory value.
+9. Use vectorized operations.
+10. Include at least five unit tests.
+
+Architecture:
+
+```text
+Product matrix
+      |
+      v
+Validate shape and values
+      |
+      +--------------------+
+      |                    |
+      v                    v
+Price analysis       Stock analysis
+      |                    |
+      +----------+---------+
+                 |
+                 v
+        Inventory valuation
+                 |
+                 v
+              Report
+```
+
+---
+
+# 29. Interview Questions
+
+1. What is NumPy?
+2. What is an `ndarray`?
+3. How is a NumPy array different from a Python list?
+4. What does `shape` represent?
+5. What does `ndim` represent?
+6. What does `dtype` represent?
+7. What is vectorization?
+8. What is broadcasting?
+9. What is the difference between `axis=0` and `axis=1`?
+10. What is the difference between `*` and `@`?
+11. What is Boolean masking?
+12. What does `reshape()` do?
+13. Why must reshaped arrays contain the same number of elements?
+14. What does `-1` mean in `reshape()`?
+15. What is the difference between a NumPy view and copy?
+16. Why is `np.isclose()` useful?
+17. What does `np.where()` do?
+18. What causes broadcasting errors?
+19. How do you detect missing numerical values?
+20. Why should you inspect array shapes while debugging?
+
+---
+
+# 30. Summary
+
+* NumPy provides efficient multidimensional numerical arrays.
+* A vector is generally a one-dimensional array.
+* A matrix is generally a two-dimensional array.
+* `shape` describes the length of each dimension.
+* `ndim` returns the number of dimensions.
+* `size` returns the total number of values.
+* `dtype` describes the stored data type.
+* Vectorization applies operations to complete arrays.
+* Broadcasting supports operations between compatible shapes.
+* `axis=0` commonly performs column-wise calculations.
+* `axis=1` commonly performs row-wise calculations.
+* Boolean masks filter arrays.
+* `reshape()` changes an array’s dimensions without changing its element count.
+* Array slices can be views of the original data.
+* NumPy is a core foundation for Pandas, scikit-learn, TensorFlow, and PyTorch.
+
+# Lesson 3 Quiz
+
+### 1. What does NumPy’s main array type represent?
+
+A. A database table
+B. An n-dimensional numerical array
+C. A Python dictionary
+D. A machine-learning model
+
+### 2. What is the shape of this array?
+
+```python
+data = np.array(
+    [
+        [1, 2, 3],
+        [4, 5, 6],
+    ]
+)
+```
+
+### 3. What does this return?
+
+```python
+data[:, 1]
+```
+
+### 4. What is the difference between:
+
+```python
+first * second
+```
+
+and:
+
+```python
+first @ second
+```
+
+### 5. What is vectorization?
+
+### 6. What is broadcasting?
+
+### 7. What is the output?
+
+```python
+values = np.array([1, 2, 3])
+print(values + 10)
+```
+
+### 8. What does `axis=0` calculate here?
+
+```python
+data.mean(axis=0)
+```
+
+### 9. What does this produce?
+
+```python
+scores = np.array([40, 70, 90, 50])
+scores[scores >= 60]
+```
+
+### 10. Why does this fail?
+
+```python
+values = np.arange(6)
+values.reshape(4, 2)
+```
+
+### 11. What does `-1` mean here?
+
+```python
+values.reshape(2, -1)
+```
+
+### 12. What is wrong with this condition?
+
+```python
+(scores >= 60) and (scores <= 90)
+```
+
+### 13. What is the difference between a view and a copy?
+
+### 14. Calculate the dot product:
+
+[
+[1, 2, 3] \cdot [4, 5, 6]
+]
+
+### 15. What does this return?
+
+```python
+np.where(
+    np.array([55, 70, 90]) >= 60,
+    "Pass",
+    "Fail",
+)
+```
+
+### 16. Why is `np.isclose()` preferred for many decimal comparisons?
+
+### 17. What is the approximate time complexity of calculating the mean of an array containing (n) values?
+
+A. (O(1))
+B. (O(\log n))
+C. (O(n))
+D. (O(n^2))
+
+### 18. How do you check whether an array contains any `NaN` values?
+
+### 19. What array property should you inspect first when two arrays cannot be combined?
+
+### 20. Does vectorization change an (O(n)) calculation into (O(1))? Explain.
