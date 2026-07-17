@@ -1,0 +1,2194 @@
+# Lesson 4: Pandas Foundations for AI and Machine Learning
+
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** Pandas
+**Lesson 3 status:** Quiz not yet verified
+
+Pandas is designed for tabular data such as CSV files, spreadsheets, database records, API responses, sales data, and machine-learning datasets.
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain what Pandas is and why it is used.
+2. Create and inspect `Series` and `DataFrame` objects.
+3. Load CSV and JSON data.
+4. Select rows and columns.
+5. Filter data using conditions.
+6. Add, update, rename, and remove columns.
+7. Detect basic missing and duplicate data.
+8. Sort, group, and aggregate data.
+9. Understand indexes and data types.
+10. Build a small customer-data analysis project.
+
+---
+
+# 2. Real-World Example
+
+Suppose a company stores customer information:
+
+| Customer | Age | City      | Purchases | Active |
+| -------- | --: | --------- | --------: | ------ |
+| Ali      |  25 | Dubai     |         5 | Yes    |
+| Sara     |  30 | Sharjah   |         8 | Yes    |
+| Ahmed    |  22 | Dubai     |         2 | No     |
+| Fatima   |  35 | Abu Dhabi |        10 | Yes    |
+
+Using normal Python, this could be represented using lists and dictionaries.
+
+```python
+customers = [
+    {
+        "name": "Ali",
+        "age": 25,
+        "city": "Dubai",
+        "purchases": 5,
+        "active": True,
+    },
+    {
+        "name": "Sara",
+        "age": 30,
+        "city": "Sharjah",
+        "purchases": 8,
+        "active": True,
+    },
+]
+```
+
+This works, but data analysis becomes harder as the dataset grows.
+
+With Pandas:
+
+```python
+import pandas as pd
+
+customers = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ahmed", "Fatima"],
+        "age": [25, 30, 22, 35],
+        "city": ["Dubai", "Sharjah", "Dubai", "Abu Dhabi"],
+        "purchases": [5, 8, 2, 10],
+        "active": [True, True, False, True],
+    }
+)
+```
+
+Now we can calculate the average age:
+
+```python
+average_age = customers["age"].mean()
+```
+
+Filter active customers:
+
+```python
+active_customers = customers[customers["active"]]
+```
+
+Group customers by city:
+
+```python
+city_summary = customers.groupby("city")["purchases"].sum()
+```
+
+Pandas turns tabular-data operations into concise, readable code.
+
+---
+
+# 3. What Is Pandas?
+
+Pandas is a Python library for working with structured and tabular data.
+
+Its two main structures are:
+
+```text
+Series
+DataFrame
+```
+
+A `Series` is one-dimensional.
+
+```text
+0    25
+1    30
+2    22
+3    35
+```
+
+A `DataFrame` is two-dimensional.
+
+```text
+       name  age       city
+0       Ali   25      Dubai
+1      Sara   30    Sharjah
+2     Ahmed   22      Dubai
+3    Fatima   35  Abu Dhabi
+```
+
+A useful mental model:
+
+```text
+Series    = one spreadsheet column
+DataFrame = complete spreadsheet table
+```
+
+---
+
+# 4. Installing and Importing Pandas
+
+Install Pandas:
+
+```bash
+pip install pandas
+```
+
+Import it:
+
+```python
+import pandas as pd
+```
+
+`pd` is the conventional Pandas alias.
+
+---
+
+# 5. Creating a Series
+
+```python
+import pandas as pd
+
+scores = pd.Series([75, 82, 91, 68])
+```
+
+Output:
+
+```text
+0    75
+1    82
+2    91
+3    68
+dtype: int64
+```
+
+A Series contains:
+
+```text
+Index + values + data type
+```
+
+Custom index:
+
+```python
+scores = pd.Series(
+    [75, 82, 91, 68],
+    index=["Ali", "Sara", "Ahmed", "Fatima"],
+)
+```
+
+Output:
+
+```text
+Ali       75
+Sara      82
+Ahmed     91
+Fatima    68
+dtype: int64
+```
+
+Access a value:
+
+```python
+ali_score = scores["Ali"]
+```
+
+---
+
+# 6. Creating a DataFrame
+
+## From a Dictionary
+
+```python
+students = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ahmed"],
+        "score": [75, 82, 91],
+        "passed": [True, True, True],
+    }
+)
+```
+
+Each dictionary key becomes a column.
+
+Each list becomes the column values.
+
+---
+
+## From a List of Dictionaries
+
+```python
+students = pd.DataFrame(
+    [
+        {
+            "name": "Ali",
+            "score": 75,
+            "passed": True,
+        },
+        {
+            "name": "Sara",
+            "score": 82,
+            "passed": True,
+        },
+        {
+            "name": "Ahmed",
+            "score": 55,
+            "passed": False,
+        },
+    ]
+)
+```
+
+This structure is similar to JSON or API data.
+
+---
+
+## From NumPy
+
+```python
+import numpy as np
+import pandas as pd
+
+values = np.array(
+    [
+        [2.0, 60.0, 55.0],
+        [4.0, 75.0, 70.0],
+        [6.0, 90.0, 85.0],
+    ]
+)
+
+students = pd.DataFrame(
+    values,
+    columns=[
+        "study_hours",
+        "attendance",
+        "previous_score",
+    ],
+)
+```
+
+---
+
+# 7. Understanding Rows, Columns, and Indexes
+
+Consider:
+
+```python
+students = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ahmed"],
+        "score": [75, 82, 55],
+    }
+)
+```
+
+Visual form:
+
+```text
+Index   name    score
+0       Ali       75
+1       Sara      82
+2       Ahmed     55
+```
+
+The index identifies rows.
+
+Column names identify features.
+
+In machine learning:
+
+```text
+Rows    → observations or samples
+Columns → features
+```
+
+---
+
+# 8. Inspecting a DataFrame
+
+A dataset should always be inspected before analysis.
+
+## First Rows
+
+```python
+students.head()
+```
+
+By default, `head()` displays five rows.
+
+```python
+students.head(2)
+```
+
+Displays the first two rows.
+
+---
+
+## Last Rows
+
+```python
+students.tail()
+```
+
+---
+
+## Shape
+
+```python
+students.shape
+```
+
+Example output:
+
+```text
+(3, 2)
+```
+
+This means:
+
+```text
+3 rows
+2 columns
+```
+
+---
+
+## Column Names
+
+```python
+students.columns
+```
+
+---
+
+## Index
+
+```python
+students.index
+```
+
+---
+
+## Data Types
+
+```python
+students.dtypes
+```
+
+Possible output:
+
+```text
+name     object
+score     int64
+dtype: object
+```
+
+---
+
+## General Information
+
+```python
+students.info()
+```
+
+This shows:
+
+* Row count
+* Column names
+* Non-null counts
+* Data types
+* Memory usage
+
+---
+
+## Statistical Summary
+
+```python
+students.describe()
+```
+
+For numerical columns, it provides:
+
+* Count
+* Mean
+* Standard deviation
+* Minimum
+* Quartiles
+* Maximum
+
+---
+
+# 9. Selecting Columns
+
+## One Column
+
+```python
+scores = students["score"]
+```
+
+This returns a Series.
+
+```python
+print(type(scores))
+```
+
+Output:
+
+```text
+pandas.core.series.Series
+```
+
+---
+
+## Multiple Columns
+
+```python
+selected = students[["name", "score"]]
+```
+
+This returns a DataFrame.
+
+Double brackets are required because you are passing a list of column names.
+
+---
+
+## Attribute Syntax
+
+```python
+students.score
+```
+
+This can work, but bracket syntax is safer:
+
+```python
+students["score"]
+```
+
+Attribute syntax fails when:
+
+* Column names contain spaces
+* Column names conflict with DataFrame methods
+* Column names are not valid Python identifiers
+
+---
+
+# 10. Selecting Rows with `loc`
+
+`loc` selects data using labels.
+
+```python
+first_student = students.loc[0]
+```
+
+Select rows 0 and 1:
+
+```python
+selected = students.loc[0:1]
+```
+
+With `loc`, the ending label is included.
+
+Select specific rows and columns:
+
+```python
+selected = students.loc[
+    [0, 2],
+    ["name", "score"],
+]
+```
+
+Visual interpretation:
+
+```text
+DataFrame.loc[row selection, column selection]
+```
+
+---
+
+# 11. Selecting Rows with `iloc`
+
+`iloc` selects data using integer positions.
+
+```python
+first_student = students.iloc[0]
+```
+
+Select first two rows:
+
+```python
+selected = students.iloc[0:2]
+```
+
+With `iloc`, the stop position is excluded.
+
+Select row 1, column 0:
+
+```python
+value = students.iloc[1, 0]
+```
+
+Difference:
+
+```text
+loc  → labels
+iloc → integer positions
+```
+
+---
+
+# 12. Filtering Rows
+
+```python
+students = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ahmed", "Fatima"],
+        "score": [75, 82, 55, 91],
+        "city": ["Dubai", "Sharjah", "Dubai", "Dubai"],
+    }
+)
+```
+
+Students with scores of at least 60:
+
+```python
+passing_students = students[
+    students["score"] >= 60
+]
+```
+
+The condition creates a Boolean Series:
+
+```text
+0     True
+1     True
+2    False
+3     True
+```
+
+Pandas keeps rows where the condition is `True`.
+
+---
+
+## Multiple Conditions
+
+Students from Dubai with scores of at least 60:
+
+```python
+selected = students[
+    (students["city"] == "Dubai")
+    & (students["score"] >= 60)
+]
+```
+
+Use:
+
+```text
+& → AND
+| → OR
+~ → NOT
+```
+
+Each condition must be wrapped in parentheses.
+
+---
+
+## Using `isin`
+
+```python
+selected = students[
+    students["city"].isin(["Dubai", "Sharjah"])
+]
+```
+
+---
+
+## Using `between`
+
+```python
+selected = students[
+    students["score"].between(60, 80)
+]
+```
+
+Both boundaries are included by default.
+
+---
+
+# 13. Sorting Data
+
+Sort by one column:
+
+```python
+sorted_students = students.sort_values(
+    by="score"
+)
+```
+
+Descending order:
+
+```python
+sorted_students = students.sort_values(
+    by="score",
+    ascending=False,
+)
+```
+
+Sort by multiple columns:
+
+```python
+sorted_students = students.sort_values(
+    by=["city", "score"],
+    ascending=[True, False],
+)
+```
+
+This sorts:
+
+1. City alphabetically
+2. Score from highest to lowest within each city
+
+---
+
+# 14. Adding and Updating Columns
+
+## Add a Constant Column
+
+```python
+students["country"] = "UAE"
+```
+
+Every row receives `"UAE"`.
+
+---
+
+## Add a Calculated Column
+
+```python
+students["passed"] = students["score"] >= 60
+```
+
+---
+
+## Add a Percentage Adjustment
+
+```python
+students["adjusted_score"] = students["score"] + 5
+```
+
+---
+
+## Update Values with `loc`
+
+```python
+students.loc[
+    students["score"] > 100,
+    "score",
+] = 100
+```
+
+This caps scores at 100.
+
+---
+
+# 15. Renaming Columns
+
+```python
+students = students.rename(
+    columns={
+        "name": "student_name",
+        "score": "exam_score",
+    }
+)
+```
+
+Using `inplace=True` changes the original object:
+
+```python
+students.rename(
+    columns={"score": "exam_score"},
+    inplace=True,
+)
+```
+
+Returning a new DataFrame is often easier to reason about than relying heavily on `inplace=True`.
+
+---
+
+# 16. Removing Columns and Rows
+
+Remove a column:
+
+```python
+students = students.drop(
+    columns=["city"]
+)
+```
+
+Remove a row by index:
+
+```python
+students = students.drop(
+    index=[2]
+)
+```
+
+Remove multiple columns:
+
+```python
+students = students.drop(
+    columns=["city", "passed"]
+)
+```
+
+---
+
+# 17. Missing Values
+
+Missing data is common in real datasets.
+
+Pandas usually represents missing numerical values using:
+
+```text
+NaN
+```
+
+Create example data:
+
+```python
+students = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ahmed"],
+        "score": [75, None, 55],
+        "city": ["Dubai", "Sharjah", None],
+    }
+)
+```
+
+---
+
+## Detect Missing Values
+
+```python
+students.isna()
+```
+
+Count missing values per column:
+
+```python
+missing_counts = students.isna().sum()
+```
+
+Check whether any missing values exist:
+
+```python
+has_missing = students.isna().any().any()
+```
+
+---
+
+## Remove Missing Rows
+
+```python
+cleaned = students.dropna()
+```
+
+Remove rows only when `score` is missing:
+
+```python
+cleaned = students.dropna(
+    subset=["score"]
+)
+```
+
+---
+
+## Fill Missing Values
+
+Fill numerical values:
+
+```python
+students["score"] = students["score"].fillna(
+    students["score"].mean()
+)
+```
+
+Fill categorical values:
+
+```python
+students["city"] = students["city"].fillna(
+    "Unknown"
+)
+```
+
+The correct strategy depends on the meaning of the data. Filling everything automatically can introduce bias.
+
+---
+
+# 18. Duplicate Data
+
+Create duplicate rows:
+
+```python
+students = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ali"],
+        "score": [75, 82, 75],
+    }
+)
+```
+
+Detect duplicates:
+
+```python
+duplicate_mask = students.duplicated()
+```
+
+Count duplicates:
+
+```python
+duplicate_count = students.duplicated().sum()
+```
+
+Remove duplicates:
+
+```python
+students = students.drop_duplicates()
+```
+
+Check duplicates using selected columns:
+
+```python
+students = students.drop_duplicates(
+    subset=["name"]
+)
+```
+
+This may remove legitimate people who share a name, so duplicate rules must match the business context.
+
+---
+
+# 19. Unique Values and Value Counts
+
+Unique cities:
+
+```python
+unique_cities = students["city"].unique()
+```
+
+Number of unique cities:
+
+```python
+city_count = students["city"].nunique()
+```
+
+Count rows for each city:
+
+```python
+city_counts = students["city"].value_counts()
+```
+
+Possible output:
+
+```text
+Dubai      3
+Sharjah    1
+```
+
+---
+
+# 20. Applying Functions
+
+Create a grading function:
+
+```python
+def assign_grade(score: float) -> str:
+    if score >= 90:
+        return "A"
+
+    if score >= 80:
+        return "B"
+
+    if score >= 70:
+        return "C"
+
+    if score >= 60:
+        return "D"
+
+    return "F"
+```
+
+Apply it:
+
+```python
+students["grade"] = students["score"].apply(
+    assign_grade
+)
+```
+
+`apply()` is convenient but may be slower than vectorized operations for large datasets.
+
+Vectorized alternatives should be preferred when practical.
+
+---
+
+# 21. Grouping and Aggregation
+
+Suppose we have:
+
+```python
+sales = pd.DataFrame(
+    {
+        "city": [
+            "Dubai",
+            "Dubai",
+            "Sharjah",
+            "Sharjah",
+        ],
+        "revenue": [1000, 1500, 800, 1200],
+        "orders": [5, 7, 4, 6],
+    }
+)
+```
+
+Total revenue per city:
+
+```python
+city_revenue = sales.groupby(
+    "city"
+)["revenue"].sum()
+```
+
+Average revenue per city:
+
+```python
+city_average = sales.groupby(
+    "city"
+)["revenue"].mean()
+```
+
+Multiple aggregations:
+
+```python
+summary = sales.groupby("city").agg(
+    total_revenue=("revenue", "sum"),
+    average_revenue=("revenue", "mean"),
+    total_orders=("orders", "sum"),
+)
+```
+
+Output:
+
+```text
+         total_revenue  average_revenue  total_orders
+city
+Dubai             2500           1250.0            12
+Sharjah           2000           1000.0            10
+```
+
+---
+
+# 22. Mathematical Intuition
+
+Suppose Dubai has two revenue values:
+
+[
+1000,\ 1500
+]
+
+Total revenue:
+
+[
+1000 + 1500 = 2500
+]
+
+Average revenue:
+
+[
+\frac{1000 + 1500}{2} = 1250
+]
+
+Grouping performs the following process:
+
+```text
+Split data into groups
+        |
+        v
+Apply calculation to each group
+        |
+        v
+Combine the results
+```
+
+This is often described as:
+
+```text
+Split → Apply → Combine
+```
+
+---
+
+# 23. Loading Files
+
+## Load CSV
+
+```python
+students = pd.read_csv(
+    "students.csv"
+)
+```
+
+---
+
+## Load JSON
+
+```python
+students = pd.read_json(
+    "students.json"
+)
+```
+
+---
+
+## Save CSV
+
+```python
+students.to_csv(
+    "cleaned_students.csv",
+    index=False,
+)
+```
+
+`index=False` prevents Pandas from writing the DataFrame index as an extra CSV column.
+
+---
+
+## Save JSON
+
+```python
+students.to_json(
+    "students.json",
+    orient="records",
+    indent=2,
+)
+```
+
+---
+
+# 24. Main Python Implementation
+
+## Customer Purchase Analyzer
+
+```python
+from pathlib import Path
+
+import pandas as pd
+
+
+REQUIRED_COLUMNS = {
+    "customer_id",
+    "name",
+    "city",
+    "age",
+    "purchases",
+    "total_spent",
+}
+
+
+def validate_customer_data(data: pd.DataFrame) -> None:
+    """Validate the structure and values of customer data."""
+    if data.empty:
+        raise ValueError("Customer dataset cannot be empty.")
+
+    missing_columns = REQUIRED_COLUMNS - set(data.columns)
+
+    if missing_columns:
+        raise ValueError(
+            "Missing required columns: "
+            f"{sorted(missing_columns)}"
+        )
+
+    if data["customer_id"].isna().any():
+        raise ValueError("Customer IDs cannot be missing.")
+
+    if data["customer_id"].duplicated().any():
+        raise ValueError("Customer IDs must be unique.")
+
+    if (data["age"].dropna() < 0).any():
+        raise ValueError("Customer age cannot be negative.")
+
+    if (data["purchases"].dropna() < 0).any():
+        raise ValueError("Purchase count cannot be negative.")
+
+    if (data["total_spent"].dropna() < 0).any():
+        raise ValueError("Total spending cannot be negative.")
+
+
+def clean_customer_data(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Return a cleaned copy of customer data."""
+    cleaned = data.copy()
+
+    cleaned["name"] = cleaned["name"].str.strip()
+
+    cleaned["city"] = (
+        cleaned["city"]
+        .str.strip()
+        .str.title()
+        .fillna("Unknown")
+    )
+
+    cleaned["age"] = cleaned["age"].fillna(
+        cleaned["age"].median()
+    )
+
+    cleaned["purchases"] = cleaned["purchases"].fillna(0)
+
+    cleaned["total_spent"] = cleaned["total_spent"].fillna(
+        0.0
+    )
+
+    cleaned = cleaned.drop_duplicates(
+        subset=["customer_id"]
+    )
+
+    return cleaned
+
+
+def add_customer_metrics(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Add calculated customer metrics."""
+    enriched = data.copy()
+
+    enriched["average_order_value"] = (
+        enriched["total_spent"]
+        / enriched["purchases"].replace(0, pd.NA)
+    )
+
+    enriched["average_order_value"] = (
+        enriched["average_order_value"].fillna(0.0)
+    )
+
+    enriched["high_value_customer"] = (
+        enriched["total_spent"] >= 3000.0
+    )
+
+    return enriched
+
+
+def create_city_summary(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Create aggregated customer statistics by city."""
+    return (
+        data.groupby(
+            "city",
+            as_index=False,
+        )
+        .agg(
+            customer_count=("customer_id", "count"),
+            total_purchases=("purchases", "sum"),
+            total_revenue=("total_spent", "sum"),
+            average_spending=("total_spent", "mean"),
+        )
+        .sort_values(
+            by="total_revenue",
+            ascending=False,
+        )
+        .reset_index(drop=True)
+    )
+
+
+def save_report(
+    report: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Save the report as a CSV file."""
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    report.to_csv(
+        output_path,
+        index=False,
+    )
+
+
+def main() -> None:
+    """Run customer data analysis."""
+    customers = pd.DataFrame(
+        {
+            "customer_id": [101, 102, 103, 104, 105],
+            "name": [
+                " Ali ",
+                "Sara",
+                "Ahmed",
+                "Fatima",
+                "Omar",
+            ],
+            "city": [
+                "dubai",
+                "Sharjah",
+                "Dubai",
+                None,
+                "abu dhabi",
+            ],
+            "age": [25, 30, None, 35, 28],
+            "purchases": [5, 8, 2, None, 10],
+            "total_spent": [
+                2500.0,
+                4200.0,
+                700.0,
+                None,
+                5100.0,
+            ],
+        }
+    )
+
+    validate_customer_data(customers)
+
+    cleaned_customers = clean_customer_data(customers)
+    enriched_customers = add_customer_metrics(
+        cleaned_customers
+    )
+
+    city_summary = create_city_summary(
+        enriched_customers
+    )
+
+    print("Cleaned customer data:")
+    print(enriched_customers)
+
+    print("\nCity summary:")
+    print(city_summary)
+
+    output_path = Path(
+        "reports/customer_city_summary.csv"
+    )
+
+    save_report(
+        city_summary,
+        output_path,
+    )
+
+    print(f"\nReport saved to: {output_path}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 25. Architecture
+
+```text
+Raw customer data
+        |
+        v
+Schema validation
+        |
+        v
+Missing-value handling
+        |
+        v
+Text normalization
+        |
+        v
+Feature creation
+        |
+        v
+Group by city
+        |
+        v
+Aggregate statistics
+        |
+        v
+CSV report
+```
+
+---
+
+# 26. Code Explanation
+
+```python
+from pathlib import Path
+```
+
+Imports `Path`, which provides an object-oriented way to work with file paths.
+
+```python
+import pandas as pd
+```
+
+Imports Pandas using its standard alias.
+
+```python
+REQUIRED_COLUMNS = {...}
+```
+
+Defines the columns that must exist.
+
+A set is used because set subtraction can identify missing columns.
+
+```python
+missing_columns = REQUIRED_COLUMNS - set(data.columns)
+```
+
+Subtracts existing columns from required columns.
+
+```python
+if data.empty:
+```
+
+Checks whether the DataFrame contains no rows.
+
+```python
+data["customer_id"].isna().any()
+```
+
+Checks whether any customer ID is missing.
+
+```python
+data["customer_id"].duplicated().any()
+```
+
+Checks whether any customer ID appears more than once.
+
+```python
+data["age"].dropna()
+```
+
+Removes missing values temporarily before validating the remaining ages.
+
+```python
+cleaned = data.copy()
+```
+
+Creates an independent copy so the original DataFrame is not modified.
+
+```python
+cleaned["name"].str.strip()
+```
+
+Removes spaces from the beginning and end of each name.
+
+```python
+.str.title()
+```
+
+Converts text to title case.
+
+Example:
+
+```text
+abu dhabi → Abu Dhabi
+```
+
+```python
+cleaned["age"].median()
+```
+
+Calculates the middle age value.
+
+The median is often less sensitive to extreme values than the mean.
+
+```python
+fillna(...)
+```
+
+Replaces missing values.
+
+```python
+drop_duplicates(subset=["customer_id"])
+```
+
+Removes duplicate rows based on customer ID.
+
+```python
+enriched["purchases"].replace(0, pd.NA)
+```
+
+Temporarily replaces zero purchases with missing values to avoid division by zero.
+
+```python
+enriched["total_spent"] / enriched["purchases"]
+```
+
+Calculates average order value using vectorized division.
+
+```python
+enriched["total_spent"] >= 3000.0
+```
+
+Creates a Boolean high-value-customer feature.
+
+```python
+data.groupby("city", as_index=False)
+```
+
+Groups customers by city while keeping the city as a normal column.
+
+```python
+.agg(...)
+```
+
+Applies multiple named aggregation operations.
+
+```python
+.sort_values(...)
+```
+
+Sorts cities by total revenue.
+
+```python
+.reset_index(drop=True)
+```
+
+Creates a clean sequential index and discards the old one.
+
+```python
+output_path.parent.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+```
+
+Creates the output directory if it does not exist.
+
+```python
+report.to_csv(
+    output_path,
+    index=False,
+)
+```
+
+Saves the report without exporting the DataFrame index.
+
+---
+
+# 27. Expected Calculations
+
+For Ali:
+
+```text
+Purchases:   5
+Total spent: 2500
+```
+
+Average order value:
+
+[
+\frac{2500}{5} = 500
+]
+
+High-value customer:
+
+```text
+2500 >= 3000 → False
+```
+
+For Sara:
+
+[
+\frac{4200}{8} = 525
+]
+
+High-value customer:
+
+```text
+4200 >= 3000 → True
+```
+
+---
+
+# 28. Time Complexity
+
+Let:
+
+* (n) = number of rows
+* (m) = number of columns
+
+Checking required columns:
+
+[
+O(m)
+]
+
+Checking missing and duplicate IDs:
+
+[
+O(n)
+]
+
+Cleaning text columns:
+
+[
+O(n)
+]
+
+Filling missing values:
+
+[
+O(n)
+]
+
+Creating calculated columns:
+
+[
+O(n)
+]
+
+Grouping rows:
+
+[
+O(n)
+]
+
+Sorting (k) city groups:
+
+[
+O(k \log k)
+]
+
+Since (k) is normally much smaller than (n), the dominant dataset-processing complexity is approximately:
+
+[
+\boxed{O(n)}
+]
+
+Sorting can make the full operation:
+
+[
+\boxed{O(n + k \log k)}
+]
+
+Additional memory is approximately:
+
+[
+\boxed{O(n)}
+]
+
+because cleaned and enriched DataFrame copies are created.
+
+---
+
+# 29. Unit Tests
+
+```python
+import pandas as pd
+
+
+def run_tests() -> None:
+    customers = pd.DataFrame(
+        {
+            "customer_id": [1, 2],
+            "name": [" Ali ", "Sara"],
+            "city": ["dubai", None],
+            "age": [20.0, 30.0],
+            "purchases": [2.0, 0.0],
+            "total_spent": [1000.0, 0.0],
+        }
+    )
+
+    validate_customer_data(customers)
+
+    cleaned = clean_customer_data(customers)
+
+    assert cleaned.loc[0, "name"] == "Ali"
+    assert cleaned.loc[0, "city"] == "Dubai"
+    assert cleaned.loc[1, "city"] == "Unknown"
+
+    enriched = add_customer_metrics(cleaned)
+
+    assert enriched.loc[0, "average_order_value"] == 500.0
+    assert enriched.loc[1, "average_order_value"] == 0.0
+    assert not bool(
+        enriched.loc[0, "high_value_customer"]
+    )
+
+    summary = create_city_summary(enriched)
+
+    assert summary["customer_count"].sum() == 2
+    assert summary["total_revenue"].sum() == 1000.0
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+---
+
+# 30. Common Errors
+
+## Selecting a Missing Column
+
+```python
+students["marks"]
+```
+
+When only `"score"` exists:
+
+```text
+KeyError: 'marks'
+```
+
+Inspect columns:
+
+```python
+print(students.columns.tolist())
+```
+
+---
+
+## Using `and` Instead of `&`
+
+Incorrect:
+
+```python
+students[
+    (students["score"] >= 60)
+    and (students["city"] == "Dubai")
+]
+```
+
+Correct:
+
+```python
+students[
+    (students["score"] >= 60)
+    & (students["city"] == "Dubai")
+]
+```
+
+---
+
+## Missing Parentheses
+
+Incorrect:
+
+```python
+students[
+    students["score"] >= 60
+    & students["score"] <= 90
+]
+```
+
+Correct:
+
+```python
+students[
+    (students["score"] >= 60)
+    & (students["score"] <= 90)
+]
+```
+
+---
+
+## Modifying a Filtered Slice
+
+Problematic:
+
+```python
+passing = students[
+    students["score"] >= 60
+]
+
+passing["status"] = "Passed"
+```
+
+This may produce a `SettingWithCopyWarning`.
+
+Safer:
+
+```python
+passing = students[
+    students["score"] >= 60
+].copy()
+
+passing["status"] = "Passed"
+```
+
+---
+
+## Wrong Data Type
+
+A numeric column may be loaded as text:
+
+```text
+"1000"
+"2000"
+"invalid"
+```
+
+Convert it:
+
+```python
+students["score"] = pd.to_numeric(
+    students["score"],
+    errors="coerce",
+)
+```
+
+Invalid values become `NaN`.
+
+---
+
+## Dividing by Zero
+
+```python
+data["total_spent"] / data["purchases"]
+```
+
+Rows with zero purchases can produce infinite or invalid values.
+
+Handle zero before division:
+
+```python
+safe_purchases = data["purchases"].replace(
+    0,
+    pd.NA,
+)
+```
+
+---
+
+## Accidentally Exporting the Index
+
+```python
+data.to_csv("report.csv")
+```
+
+This writes the index.
+
+Use:
+
+```python
+data.to_csv(
+    "report.csv",
+    index=False,
+)
+```
+
+---
+
+# 31. Debugging Techniques
+
+Inspect the first rows:
+
+```python
+print(data.head())
+```
+
+Inspect the shape:
+
+```python
+print(data.shape)
+```
+
+Inspect column names:
+
+```python
+print(data.columns.tolist())
+```
+
+Inspect data types:
+
+```python
+print(data.dtypes)
+```
+
+Inspect missing values:
+
+```python
+print(data.isna().sum())
+```
+
+Inspect duplicate count:
+
+```python
+print(data.duplicated().sum())
+```
+
+Inspect unique categorical values:
+
+```python
+print(data["city"].unique())
+```
+
+Inspect numerical statistics:
+
+```python
+print(data.describe())
+```
+
+Check one filtering condition separately:
+
+```python
+mask = data["total_spent"] >= 3000
+print(mask)
+```
+
+Many Pandas bugs come from incorrect:
+
+* Column names
+* Data types
+* Missing values
+* Index assumptions
+* Boolean conditions
+
+---
+
+# 32. Exercises
+
+## Exercise 1: Create a DataFrame
+
+Create this dataset:
+
+| Product | Price | Stock |
+| ------- | ----: | ----: |
+| Phone   |  1500 |    10 |
+| Laptop  |  3000 |     5 |
+| Tablet  |  1200 |     8 |
+
+Then display:
+
+* Shape
+* Column names
+* Data types
+* Statistical summary
+
+---
+
+## Exercise 2: Filtering
+
+Select products that:
+
+* Cost less than AED 2,000
+* Have stock greater than 5
+
+---
+
+## Exercise 3: Add Columns
+
+Add:
+
+```text
+inventory_value = price × stock
+```
+
+Also add:
+
+```text
+in_stock = stock > 0
+```
+
+---
+
+## Exercise 4: Missing Values
+
+Given:
+
+```python
+products = pd.DataFrame(
+    {
+        "name": ["Phone", "Laptop", "Tablet"],
+        "price": [1500, None, 1200],
+        "stock": [10, 5, None],
+    }
+)
+```
+
+Fill:
+
+* Missing price with the median price
+* Missing stock with zero
+
+---
+
+## Exercise 5: Grouping
+
+Create sales data with:
+
+* Product category
+* Revenue
+* Quantity
+
+Calculate per category:
+
+* Total revenue
+* Average revenue
+* Total quantity
+
+---
+
+# 33. Mini Project: Employee Performance Report
+
+Create a Pandas project using:
+
+```python
+employees = pd.DataFrame(
+    {
+        "employee_id": [1, 2, 3, 4, 5, 6],
+        "name": [
+            "Ali",
+            "Sara",
+            "Ahmed",
+            "Fatima",
+            "Omar",
+            "Ayesha",
+        ],
+        "department": [
+            "Engineering",
+            "Sales",
+            "Engineering",
+            "HR",
+            "Sales",
+            "Engineering",
+        ],
+        "salary": [
+            12000,
+            10000,
+            14000,
+            9000,
+            11000,
+            13000,
+        ],
+        "performance_score": [
+            85,
+            78,
+            92,
+            88,
+            72,
+            95,
+        ],
+        "projects_completed": [
+            5,
+            8,
+            6,
+            4,
+            7,
+            9,
+        ],
+    }
+)
+```
+
+Requirements:
+
+1. Validate required columns.
+2. Check duplicate employee IDs.
+3. Calculate average salary.
+4. Calculate average performance score.
+5. Find the highest-performing employee.
+6. Select employees scoring at least 85.
+7. Create a `performance_level` column:
+
+   * `Excellent`: 90 or above
+   * `Good`: 80–89
+   * `Average`: 70–79
+   * `Needs Improvement`: below 70
+8. Group results by department.
+9. Calculate:
+
+   * Employee count
+   * Average salary
+   * Average performance
+   * Total completed projects
+10. Save the report as CSV.
+11. Add at least five tests.
+
+Architecture:
+
+```text
+Employee records
+       |
+       v
+Validate structure
+       |
+       v
+Create performance category
+       |
+       v
+Filter top performers
+       |
+       v
+Group by department
+       |
+       v
+Aggregate metrics
+       |
+       v
+CSV report
+```
+
+---
+
+# 34. Interview Questions
+
+1. What is Pandas?
+2. What is a Series?
+3. What is a DataFrame?
+4. What is the difference between `loc` and `iloc`?
+5. What does `head()` do?
+6. What information does `info()` provide?
+7. What does `describe()` return?
+8. How do you select multiple columns?
+9. How do you filter rows?
+10. Why are parentheses required around multiple conditions?
+11. What is the difference between `&` and `and`?
+12. How do you detect missing values?
+13. What is the difference between `dropna()` and `fillna()`?
+14. How do you detect duplicate rows?
+15. What does `groupby()` do?
+16. What is aggregation?
+17. What is the difference between `unique()` and `nunique()`?
+18. What does `value_counts()` do?
+19. Why can `SettingWithCopyWarning` occur?
+20. Why should data types be inspected after loading a file?
+21. What does `index=False` do during CSV export?
+22. When should vectorized operations be preferred over `apply()`?
+23. What is the purpose of `reset_index()`?
+24. How can text columns be cleaned?
+25. Why should duplicate logic depend on business meaning?
+
+---
+
+# 35. Summary
+
+* Pandas is designed for structured and tabular data.
+* A Series represents one-dimensional labeled data.
+* A DataFrame represents two-dimensional tabular data.
+* Rows usually represent observations.
+* Columns usually represent features.
+* `head()`, `info()`, `shape`, `dtypes`, and `describe()` help inspect data.
+* `loc` selects using labels.
+* `iloc` selects using integer positions.
+* Boolean conditions filter rows.
+* `isna()` detects missing values.
+* `fillna()` replaces missing values.
+* `dropna()` removes missing records.
+* `duplicated()` detects duplicates.
+* `groupby()` creates grouped summaries.
+* Vectorized operations are usually preferable to Python loops.
+* Pandas is commonly used before machine-learning model training.
+
+# Lesson 4 Quiz
+
+### 1. What is the main difference between a Series and a DataFrame?
+
+### 2. What is the shape of this DataFrame?
+
+```python
+data = pd.DataFrame(
+    {
+        "name": ["Ali", "Sara", "Ahmed"],
+        "score": [70, 80, 90],
+    }
+)
+```
+
+### 3. What does this return?
+
+```python
+data["score"]
+```
+
+A. DataFrame
+B. Series
+C. Dictionary
+D. List
+
+### 4. What does this return?
+
+```python
+data[["name", "score"]]
+```
+
+### 5. Explain the difference between `loc` and `iloc`.
+
+### 6. What is wrong with this filter?
+
+```python
+data[
+    data["score"] >= 60
+    and data["score"] <= 90
+]
+```
+
+### 7. What does this code do?
+
+```python
+data["passed"] = data["score"] >= 60
+```
+
+### 8. How do you count missing values in every column?
+
+### 9. What is the difference between `dropna()` and `fillna()`?
+
+### 10. What does this return?
+
+```python
+data["city"].value_counts()
+```
+
+### 11. What does `groupby()` do?
+
+### 12. What is the result?
+
+```python
+sales.groupby("city")["revenue"].sum()
+```
+
+### 13. Why might this code produce a warning?
+
+```python
+selected = data[data["score"] >= 60]
+selected["status"] = "Passed"
+```
+
+### 14. How can the warning in Question 13 be avoided?
+
+### 15. What does this command do?
+
+```python
+data.to_csv(
+    "report.csv",
+    index=False,
+)
+```
+
+### 16. Why should `dtypes` be checked after loading a CSV?
+
+### 17. What is the approximate time complexity of scanning every row in a DataFrame containing (n) rows?
+
+A. (O(1))
+B. (O(\log n))
+C. (O(n))
+D. (O(n^2))
+
+### 18. What is the difference between `unique()` and `nunique()`?
+
+### 19. Why is this potentially unsafe?
+
+```python
+data.drop_duplicates(
+    subset=["name"]
+)
+```
+
+### 20. Why should missing values not always be filled automatically?
