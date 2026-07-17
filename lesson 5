@@ -1,0 +1,2298 @@
+# Lesson 5: Matplotlib Foundations for AI and Machine Learning
+
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** Matplotlib
+**Lessons 1–4:** Delivered, but quizzes and projects are not yet verified
+
+Matplotlib is Python’s core data-visualization library. It helps us understand datasets, identify patterns, detect problems, and communicate results.
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain why visualization is important in AI and machine learning.
+2. Create line charts, bar charts, scatter plots, and histograms.
+3. Add titles, axis labels, legends, and grids.
+4. Change figure size and layout.
+5. Visualize NumPy arrays and Pandas DataFrames.
+6. Save charts as image files.
+7. Choose an appropriate chart for a problem.
+8. Avoid misleading visualizations.
+9. Build a student-performance visualization dashboard.
+10. Debug common Matplotlib errors.
+
+---
+
+# 2. Why Visualization Matters
+
+Consider this dataset:
+
+| Study hours | Exam score |
+| ----------: | ---------: |
+|           1 |         45 |
+|           2 |         52 |
+|           3 |         60 |
+|           4 |         67 |
+|           5 |         76 |
+|           6 |         84 |
+
+Reading the table suggests that students who study more tend to score higher.
+
+A chart makes that relationship easier to see:
+
+```text
+Exam score
+90 |                         *
+80 |                    *
+70 |               *
+60 |          *
+50 |     *
+40 | *
+   +----------------------------
+     1  2  3  4  5  6
+           Study hours
+```
+
+Visualization helps us detect:
+
+* Trends
+* Relationships
+* Outliers
+* Missing values
+* Class imbalance
+* Incorrect values
+* Distribution shapes
+* Model performance
+
+In machine learning, visualization is not decoration. It is part of data analysis and model evaluation.
+
+---
+
+# 3. What Is Matplotlib?
+
+Matplotlib is a Python library for creating static, animated, and interactive visualizations.
+
+The most commonly used module is:
+
+```python
+import matplotlib.pyplot as plt
+```
+
+`pyplot` provides functions such as:
+
+```python
+plt.plot()
+plt.scatter()
+plt.bar()
+plt.hist()
+plt.xlabel()
+plt.ylabel()
+plt.title()
+plt.show()
+```
+
+A typical Matplotlib workflow is:
+
+```text
+Prepare data
+    |
+    v
+Create figure
+    |
+    v
+Draw chart
+    |
+    v
+Add labels and title
+    |
+    v
+Display or save
+```
+
+---
+
+# 4. Installing Matplotlib
+
+Install it using:
+
+```bash
+pip install matplotlib
+```
+
+Import it:
+
+```python
+import matplotlib.pyplot as plt
+```
+
+The alias `plt` is the standard convention.
+
+---
+
+# 5. Your First Line Chart
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+plt.plot(study_hours, exam_scores)
+plt.show()
+```
+
+This creates a line chart.
+
+## Code Explanation
+
+```python
+import matplotlib.pyplot as plt
+```
+
+Imports Matplotlib’s plotting interface.
+
+```python
+study_hours = [1, 2, 3, 4, 5, 6]
+```
+
+Creates the horizontal-axis values.
+
+```python
+exam_scores = [45, 52, 60, 67, 76, 84]
+```
+
+Creates the vertical-axis values.
+
+```python
+plt.plot(study_hours, exam_scores)
+```
+
+Draws a line connecting the data points.
+
+```python
+plt.show()
+```
+
+Displays the chart.
+
+---
+
+# 6. Understanding the Axes
+
+In a chart:
+
+```text
+y-axis
+  |
+  |
+  |
+  +---------------- x-axis
+```
+
+For the student example:
+
+```text
+x-axis → Study hours
+y-axis → Exam score
+```
+
+The independent variable usually appears on the x-axis.
+
+The dependent variable usually appears on the y-axis.
+
+In this example:
+
+[
+x = \text{study hours}
+]
+
+[
+y = \text{exam score}
+]
+
+We are examining how exam score changes as study hours change.
+
+---
+
+# 7. Adding Labels and a Title
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+plt.plot(study_hours, exam_scores)
+
+plt.title("Study Hours vs Exam Score")
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+
+plt.show()
+```
+
+Without labels, the chart may be difficult to understand.
+
+Every useful chart should usually answer:
+
+```text
+What is being shown?
+What does the x-axis represent?
+What does the y-axis represent?
+```
+
+---
+
+# 8. Adding Markers
+
+Markers show individual observations.
+
+```python
+plt.plot(
+    study_hours,
+    exam_scores,
+    marker="o",
+)
+```
+
+Common markers:
+
+```text
+"o" → circle
+"s" → square
+"^" → triangle
+"x" → cross
+"*" → star
+```
+
+Complete example:
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+plt.plot(
+    study_hours,
+    exam_scores,
+    marker="o",
+)
+
+plt.title("Study Hours vs Exam Score")
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+plt.show()
+```
+
+---
+
+# 9. Adding a Grid
+
+```python
+plt.grid(True)
+```
+
+A grid can make values easier to estimate.
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+plt.plot(
+    study_hours,
+    exam_scores,
+    marker="o",
+)
+
+plt.title("Study Hours vs Exam Score")
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+plt.grid(True)
+plt.show()
+```
+
+A grid should support readability rather than dominate the chart.
+
+---
+
+# 10. Figure Size
+
+Use `figure()` before creating the chart:
+
+```python
+plt.figure(figsize=(8, 5))
+```
+
+The values represent:
+
+```text
+width in inches
+height in inches
+```
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+plt.figure(figsize=(8, 5))
+
+plt.plot(
+    study_hours,
+    exam_scores,
+    marker="o",
+)
+
+plt.title("Study Hours vs Exam Score")
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+plt.grid(True)
+plt.show()
+```
+
+---
+
+# 11. Line Charts
+
+Line charts are useful for displaying change over an ordered sequence.
+
+Examples:
+
+* Sales over months
+* Temperature over days
+* Model loss over training epochs
+* Website traffic over time
+* Stock quantity over weeks
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+
+
+months = ["Jan", "Feb", "Mar", "Apr", "May"]
+sales = [12000, 15000, 14000, 19000, 22000]
+
+plt.figure(figsize=(8, 5))
+plt.plot(months, sales, marker="o")
+
+plt.title("Monthly Sales")
+plt.xlabel("Month")
+plt.ylabel("Sales in AED")
+plt.grid(True)
+
+plt.show()
+```
+
+A line chart should generally be used when the x-axis has a meaningful order.
+
+---
+
+# 12. Bar Charts
+
+Bar charts compare categories.
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+
+
+departments = [
+    "Engineering",
+    "Sales",
+    "Marketing",
+    "HR",
+]
+
+employee_counts = [25, 18, 12, 8]
+
+plt.figure(figsize=(8, 5))
+
+plt.bar(
+    departments,
+    employee_counts,
+)
+
+plt.title("Employees by Department")
+plt.xlabel("Department")
+plt.ylabel("Number of Employees")
+
+plt.show()
+```
+
+Use a bar chart for comparisons such as:
+
+* Revenue by category
+* Students by grade
+* Customers by city
+* Products by brand
+* Errors by error type
+
+---
+
+## Horizontal Bar Chart
+
+```python
+plt.barh(
+    departments,
+    employee_counts,
+)
+```
+
+Horizontal bar charts are useful when category names are long.
+
+---
+
+# 13. Scatter Plots
+
+Scatter plots show the relationship between two numerical variables.
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6, 7]
+exam_scores = [42, 50, 61, 65, 79, 82, 94]
+
+plt.figure(figsize=(8, 5))
+
+plt.scatter(
+    study_hours,
+    exam_scores,
+)
+
+plt.title("Relationship Between Study Hours and Scores")
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+plt.grid(True)
+
+plt.show()
+```
+
+Scatter plots are useful for detecting:
+
+* Positive relationships
+* Negative relationships
+* No relationship
+* Clusters
+* Outliers
+
+---
+
+# 14. Mathematical Intuition: Relationships
+
+A positive relationship looks like:
+
+```text
+y
+|           *
+|        *
+|      *
+|   *
+| *
++------------- x
+```
+
+As (x) increases, (y) tends to increase.
+
+A negative relationship looks like:
+
+```text
+y
+| *
+|   *
+|      *
+|        *
+|           *
++------------- x
+```
+
+As (x) increases, (y) tends to decrease.
+
+No clear relationship:
+
+```text
+y
+|    *       *
+| *      *
+|       *   *
+|  *  *
+|          *
++------------- x
+```
+
+A scatter plot does not prove causation. It only displays an observed relationship.
+
+---
+
+# 15. Histograms
+
+A histogram displays the distribution of numerical values.
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+
+
+scores = [
+    45,
+    50,
+    52,
+    55,
+    60,
+    61,
+    65,
+    67,
+    70,
+    72,
+    75,
+    78,
+    80,
+    82,
+    85,
+    90,
+    95,
+]
+
+plt.figure(figsize=(8, 5))
+
+plt.hist(
+    scores,
+    bins=5,
+    edgecolor="black",
+)
+
+plt.title("Distribution of Exam Scores")
+plt.xlabel("Exam Score")
+plt.ylabel("Number of Students")
+
+plt.show()
+```
+
+`bins=5` divides the score range into five intervals.
+
+A histogram answers:
+
+```text
+Where are most values concentrated?
+Are values spread out?
+Are there extreme values?
+Is the distribution symmetric?
+```
+
+---
+
+# 16. Histogram Mathematical Intuition
+
+Suppose the scores are divided into these intervals:
+
+```text
+40–49
+50–59
+60–69
+70–79
+80–89
+90–99
+```
+
+The histogram counts how many values fall into each interval.
+
+For example:
+
+```text
+Interval    Count
+40–49         1
+50–59         3
+60–69         4
+70–79         4
+80–89         3
+90–99         2
+```
+
+The bar height represents frequency:
+
+[
+\text{Frequency}
+================
+
+\text{Number of observations in a bin}
+]
+
+---
+
+# 17. Multiple Lines on One Chart
+
+```python
+import matplotlib.pyplot as plt
+
+
+epochs = [1, 2, 3, 4, 5]
+training_accuracy = [0.60, 0.72, 0.80, 0.87, 0.92]
+validation_accuracy = [0.58, 0.69, 0.76, 0.81, 0.83]
+
+plt.figure(figsize=(8, 5))
+
+plt.plot(
+    epochs,
+    training_accuracy,
+    marker="o",
+    label="Training Accuracy",
+)
+
+plt.plot(
+    epochs,
+    validation_accuracy,
+    marker="s",
+    label="Validation Accuracy",
+)
+
+plt.title("Model Accuracy")
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.legend()
+plt.grid(True)
+
+plt.show()
+```
+
+`label` names each line.
+
+```python
+plt.legend()
+```
+
+Displays the labels.
+
+---
+
+# 18. Why Training and Validation Curves Matter
+
+Suppose training accuracy continues improving, while validation accuracy stops improving:
+
+```text
+Accuracy
+1.0 |                   Training
+0.9 |                /
+0.8 |         Validation ----
+0.7 |       /
+0.6 |    /
+    +------------------------
+      1  2  3  4  5  Epoch
+```
+
+This may indicate overfitting.
+
+The model is improving on training data but not on unseen validation data.
+
+Visualization helps identify this problem quickly.
+
+---
+
+# 19. Legends
+
+A legend explains multiple plotted elements.
+
+```python
+plt.plot(
+    x_values,
+    first_values,
+    label="Dataset A",
+)
+
+plt.plot(
+    x_values,
+    second_values,
+    label="Dataset B",
+)
+
+plt.legend()
+```
+
+Without a legend, users may not know which line represents which dataset.
+
+---
+
+# 20. Axis Limits
+
+You can control the displayed range:
+
+```python
+plt.xlim(0, 10)
+plt.ylim(0, 100)
+```
+
+Example:
+
+```python
+plt.ylim(0, 100)
+```
+
+This is useful when exam scores are known to range from 0 to 100.
+
+However, manually changing limits can make differences appear larger or smaller than they are.
+
+---
+
+# 21. Misleading Axis Example
+
+Consider two values:
+
+```text
+Company A: 95
+Company B: 97
+```
+
+If the y-axis begins at 0:
+
+```text
+100 |          *
+ 75 |    *
+ 50 |
+ 25 |
+  0 +------------
+```
+
+The difference appears small.
+
+If the y-axis begins at 94:
+
+```text
+98 |          *
+97 |          *
+96 |
+95 |    *
+94 +------------
+```
+
+The same difference appears dramatic.
+
+Changing axis limits is not automatically wrong, but the scale must be clear and justified.
+
+---
+
+# 22. Plotting NumPy Arrays
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+study_hours = np.array([1, 2, 3, 4, 5, 6])
+scores = np.array([45, 52, 60, 67, 76, 84])
+
+plt.scatter(
+    study_hours,
+    scores,
+)
+
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+plt.title("Study Hours vs Exam Score")
+plt.show()
+```
+
+Matplotlib works directly with NumPy arrays.
+
+---
+
+# 23. Plotting Pandas DataFrames
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+students = pd.DataFrame(
+    {
+        "study_hours": [1, 2, 3, 4, 5, 6],
+        "exam_score": [45, 52, 60, 67, 76, 84],
+    }
+)
+
+plt.scatter(
+    students["study_hours"],
+    students["exam_score"],
+)
+
+plt.xlabel("Study Hours")
+plt.ylabel("Exam Score")
+plt.title("Study Hours vs Exam Score")
+plt.show()
+```
+
+Pandas columns can be passed directly to Matplotlib.
+
+---
+
+# 24. The Object-Oriented Matplotlib Interface
+
+So far, we used functions such as:
+
+```python
+plt.plot()
+plt.title()
+plt.xlabel()
+```
+
+For larger projects, the object-oriented interface is clearer.
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+axis.plot(
+    study_hours,
+    exam_scores,
+    marker="o",
+)
+
+axis.set_title(
+    "Study Hours vs Exam Score"
+)
+
+axis.set_xlabel("Study Hours")
+axis.set_ylabel("Exam Score")
+axis.grid(True)
+
+plt.show()
+```
+
+Here:
+
+```text
+figure → complete image or canvas
+axis   → individual plotting area
+```
+
+This interface is preferred when working with multiple charts.
+
+---
+
+# 25. Multiple Charts
+
+```python
+import matplotlib.pyplot as plt
+
+
+study_hours = [1, 2, 3, 4, 5, 6]
+exam_scores = [45, 52, 60, 67, 76, 84]
+
+figure, axes = plt.subplots(
+    nrows=1,
+    ncols=2,
+    figsize=(12, 5),
+)
+
+axes[0].plot(
+    study_hours,
+    exam_scores,
+    marker="o",
+)
+
+axes[0].set_title("Line Chart")
+axes[0].set_xlabel("Study Hours")
+axes[0].set_ylabel("Exam Score")
+
+axes[1].scatter(
+    study_hours,
+    exam_scores,
+)
+
+axes[1].set_title("Scatter Plot")
+axes[1].set_xlabel("Study Hours")
+axes[1].set_ylabel("Exam Score")
+
+figure.tight_layout()
+plt.show()
+```
+
+`axes[0]` represents the first chart.
+
+`axes[1]` represents the second chart.
+
+`tight_layout()` reduces overlap between labels and charts.
+
+---
+
+# 26. Saving a Chart
+
+```python
+plt.savefig(
+    "study_hours_vs_scores.png",
+    dpi=300,
+    bbox_inches="tight",
+)
+```
+
+Arguments:
+
+```text
+dpi=300
+```
+
+Creates a high-resolution image.
+
+```text
+bbox_inches="tight"
+```
+
+Removes unnecessary empty space around the chart.
+
+Save the chart before calling `plt.show()`:
+
+```python
+plt.savefig(
+    "chart.png",
+    dpi=300,
+    bbox_inches="tight",
+)
+
+plt.show()
+```
+
+---
+
+# 27. Choosing the Correct Chart
+
+| Question                                       | Appropriate chart |
+| ---------------------------------------------- | ----------------- |
+| How does a value change over time?             | Line chart        |
+| How do categories compare?                     | Bar chart         |
+| Are two numerical variables related?           | Scatter plot      |
+| How are numerical values distributed?          | Histogram         |
+| How do training and validation metrics change? | Line chart        |
+| How many records belong to each category?      | Bar chart         |
+
+Using the wrong chart can hide or distort information.
+
+---
+
+# 28. Main Python Implementation
+
+## Student Performance Visualization Report
+
+```python
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+REQUIRED_COLUMNS = {
+    "student",
+    "study_hours",
+    "attendance",
+    "exam_score",
+}
+
+
+def validate_student_data(
+    data: pd.DataFrame,
+) -> None:
+    """Validate student performance data."""
+    if data.empty:
+        raise ValueError(
+            "Student dataset cannot be empty."
+        )
+
+    missing_columns = (
+        REQUIRED_COLUMNS - set(data.columns)
+    )
+
+    if missing_columns:
+        raise ValueError(
+            "Missing required columns: "
+            f"{sorted(missing_columns)}"
+        )
+
+    numerical_columns = [
+        "study_hours",
+        "attendance",
+        "exam_score",
+    ]
+
+    if data[numerical_columns].isna().any().any():
+        raise ValueError(
+            "Numerical columns cannot contain missing values."
+        )
+
+    if (data["study_hours"] < 0).any():
+        raise ValueError(
+            "Study hours cannot be negative."
+        )
+
+    if (
+        (data["attendance"] < 0)
+        | (data["attendance"] > 100)
+    ).any():
+        raise ValueError(
+            "Attendance must be between 0 and 100."
+        )
+
+    if (
+        (data["exam_score"] < 0)
+        | (data["exam_score"] > 100)
+    ).any():
+        raise ValueError(
+            "Exam score must be between 0 and 100."
+        )
+
+
+def create_score_distribution(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save the score-distribution histogram."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    axis.hist(
+        data["exam_score"],
+        bins=5,
+        edgecolor="black",
+    )
+
+    axis.set_title(
+        "Distribution of Exam Scores"
+    )
+
+    axis.set_xlabel("Exam Score")
+    axis.set_ylabel("Number of Students")
+    axis.grid(axis="y")
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "score_distribution.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def create_study_score_scatter(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save the study-hours scatter plot."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    axis.scatter(
+        data["study_hours"],
+        data["exam_score"],
+    )
+
+    axis.set_title(
+        "Study Hours vs Exam Score"
+    )
+
+    axis.set_xlabel("Study Hours")
+    axis.set_ylabel("Exam Score")
+    axis.grid(True)
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "study_hours_vs_score.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def create_student_score_bar_chart(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save scores for each student."""
+    sorted_data = data.sort_values(
+        by="exam_score",
+        ascending=False,
+    )
+
+    figure, axis = plt.subplots(
+        figsize=(9, 5)
+    )
+
+    axis.bar(
+        sorted_data["student"],
+        sorted_data["exam_score"],
+    )
+
+    axis.set_title(
+        "Exam Scores by Student"
+    )
+
+    axis.set_xlabel("Student")
+    axis.set_ylabel("Exam Score")
+    axis.set_ylim(0, 100)
+
+    axis.tick_params(
+        axis="x",
+        rotation=45,
+    )
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "student_scores.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def create_attendance_score_scatter(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create attendance and score relationship chart."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    axis.scatter(
+        data["attendance"],
+        data["exam_score"],
+    )
+
+    axis.set_title(
+        "Attendance vs Exam Score"
+    )
+
+    axis.set_xlabel("Attendance Percentage")
+    axis.set_ylabel("Exam Score")
+    axis.set_xlim(0, 100)
+    axis.set_ylim(0, 100)
+    axis.grid(True)
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "attendance_vs_score.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def create_all_charts(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create all student-performance charts."""
+    output_directory.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    create_score_distribution(
+        data,
+        output_directory,
+    )
+
+    create_study_score_scatter(
+        data,
+        output_directory,
+    )
+
+    create_student_score_bar_chart(
+        data,
+        output_directory,
+    )
+
+    create_attendance_score_scatter(
+        data,
+        output_directory,
+    )
+
+
+def main() -> None:
+    """Generate student-performance visualizations."""
+    student_data = pd.DataFrame(
+        {
+            "student": [
+                "Ali",
+                "Sara",
+                "Ahmed",
+                "Fatima",
+                "Omar",
+                "Ayesha",
+                "Hassan",
+                "Mariam",
+            ],
+            "study_hours": [
+                2.0,
+                5.0,
+                3.0,
+                7.0,
+                1.5,
+                6.0,
+                4.0,
+                8.0,
+            ],
+            "attendance": [
+                60,
+                82,
+                70,
+                95,
+                55,
+                88,
+                76,
+                98,
+            ],
+            "exam_score": [
+                52,
+                78,
+                65,
+                94,
+                45,
+                86,
+                72,
+                97,
+            ],
+        }
+    )
+
+    validate_student_data(student_data)
+
+    output_directory = Path(
+        "reports/student_charts"
+    )
+
+    create_all_charts(
+        student_data,
+        output_directory,
+    )
+
+    print(
+        "Charts saved to: "
+        f"{output_directory}"
+    )
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 29. Architecture
+
+```text
+Student DataFrame
+       |
+       v
+Data validation
+       |
+       +----------------------+
+       |                      |
+       v                      v
+Distribution analysis    Relationship analysis
+       |                      |
+       v                      v
+Histogram               Scatter plots
+       |
+       v
+Category comparison
+       |
+       v
+Bar chart
+       |
+       v
+Save high-resolution images
+```
+
+---
+
+# 30. Detailed Code Explanation
+
+## Imports
+
+```python
+from pathlib import Path
+```
+
+Imports `Path` for managing directories and file paths.
+
+```python
+import matplotlib.pyplot as plt
+```
+
+Imports Matplotlib’s plotting interface.
+
+```python
+import pandas as pd
+```
+
+Imports Pandas for tabular data.
+
+---
+
+## Required Columns
+
+```python
+REQUIRED_COLUMNS = {
+    "student",
+    "study_hours",
+    "attendance",
+    "exam_score",
+}
+```
+
+Defines the columns that must exist.
+
+A set is used so we can compare required and available columns efficiently.
+
+---
+
+## Validation
+
+```python
+if data.empty:
+```
+
+Checks whether the DataFrame has zero rows.
+
+```python
+missing_columns = (
+    REQUIRED_COLUMNS - set(data.columns)
+)
+```
+
+Finds required columns that are missing.
+
+```python
+data[numerical_columns].isna().any().any()
+```
+
+Checks whether any numerical column contains a missing value.
+
+The first `.any()` checks each column.
+
+The second `.any()` checks the results across all columns.
+
+```python
+(data["study_hours"] < 0).any()
+```
+
+Checks whether any study-hours value is negative.
+
+```python
+(
+    (data["attendance"] < 0)
+    | (data["attendance"] > 100)
+).any()
+```
+
+Checks whether attendance is outside the valid range.
+
+---
+
+## Creating a Figure and Axis
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+```
+
+Creates a figure measuring eight inches wide and five inches high.
+
+`figure` represents the complete image.
+
+`axis` represents the plotting area.
+
+---
+
+## Histogram
+
+```python
+axis.hist(
+    data["exam_score"],
+    bins=5,
+    edgecolor="black",
+)
+```
+
+Creates a histogram using five intervals.
+
+`edgecolor` adds visible boundaries between bars.
+
+```python
+axis.grid(axis="y")
+```
+
+Adds grid lines only to the y-axis.
+
+---
+
+## Scatter Plot
+
+```python
+axis.scatter(
+    data["study_hours"],
+    data["exam_score"],
+)
+```
+
+Uses study hours as x-values and exam scores as y-values.
+
+Each point represents one student.
+
+---
+
+## Sorting Before a Bar Chart
+
+```python
+sorted_data = data.sort_values(
+    by="exam_score",
+    ascending=False,
+)
+```
+
+Sorts students from highest score to lowest score.
+
+```python
+axis.bar(
+    sorted_data["student"],
+    sorted_data["exam_score"],
+)
+```
+
+Creates one bar for every student.
+
+```python
+axis.set_ylim(0, 100)
+```
+
+Sets the y-axis to the valid exam-score range.
+
+```python
+axis.tick_params(
+    axis="x",
+    rotation=45,
+)
+```
+
+Rotates student names to reduce overlap.
+
+---
+
+## Saving the Chart
+
+```python
+figure.savefig(
+    output_directory
+    / "student_scores.png",
+    dpi=300,
+    bbox_inches="tight",
+)
+```
+
+Saves the chart as a high-resolution PNG.
+
+```python
+plt.close(figure)
+```
+
+Releases memory used by the figure.
+
+This is important when generating many charts.
+
+---
+
+## Creating the Output Directory
+
+```python
+output_directory.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+```
+
+Creates the output directory.
+
+`parents=True` creates missing parent directories.
+
+`exist_ok=True` avoids an error if the directory already exists.
+
+---
+
+# 31. Time Complexity
+
+Let:
+
+* (n) = number of students
+* (b) = number of histogram bins
+
+Validation scans the data:
+
+[
+O(n)
+]
+
+Creating the histogram:
+
+[
+O(n + b)
+]
+
+Creating each scatter plot:
+
+[
+O(n)
+]
+
+Sorting students for the bar chart:
+
+[
+O(n \log n)
+]
+
+Drawing the bar chart:
+
+[
+O(n)
+]
+
+The sorting operation dominates:
+
+[
+\boxed{O(n \log n)}
+]
+
+Without sorting, chart creation would be approximately:
+
+[
+\boxed{O(n)}
+]
+
+The charting library also uses memory for figure objects and graphical elements:
+
+[
+\boxed{O(n)}
+]
+
+approximately.
+
+---
+
+# 32. Unit Tests
+
+Visual output cannot be fully tested using simple equality checks, but we can test validation, file creation, and function execution.
+
+```python
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+import pandas as pd
+
+
+def run_tests() -> None:
+    valid_data = pd.DataFrame(
+        {
+            "student": ["Ali", "Sara"],
+            "study_hours": [2.0, 5.0],
+            "attendance": [60.0, 85.0],
+            "exam_score": [55.0, 82.0],
+        }
+    )
+
+    validate_student_data(valid_data)
+
+    with TemporaryDirectory() as directory:
+        output_directory = Path(directory)
+
+        create_all_charts(
+            valid_data,
+            output_directory,
+        )
+
+        expected_files = [
+            "score_distribution.png",
+            "study_hours_vs_score.png",
+            "student_scores.png",
+            "attendance_vs_score.png",
+        ]
+
+        for filename in expected_files:
+            file_path = (
+                output_directory / filename
+            )
+
+            assert file_path.exists()
+            assert file_path.stat().st_size > 0
+
+    invalid_data = valid_data.copy()
+    invalid_data.loc[0, "exam_score"] = 110
+
+    try:
+        validate_student_data(invalid_data)
+        raise AssertionError(
+            "Expected ValueError was not raised."
+        )
+    except ValueError:
+        pass
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+---
+
+# 33. Common Errors
+
+## Mismatched Data Lengths
+
+Incorrect:
+
+```python
+x_values = [1, 2, 3]
+y_values = [10, 20]
+
+plt.plot(x_values, y_values)
+```
+
+Error:
+
+```text
+ValueError:
+x and y must have same first dimension
+```
+
+Each x-value must have a corresponding y-value.
+
+---
+
+## Forgetting `plt.show()`
+
+In a normal Python script:
+
+```python
+plt.plot(x_values, y_values)
+```
+
+may create the chart without displaying it.
+
+Add:
+
+```python
+plt.show()
+```
+
+---
+
+## Saving After Closing
+
+Incorrect order:
+
+```python
+plt.close()
+plt.savefig("chart.png")
+```
+
+The figure has already been closed.
+
+Correct order:
+
+```python
+plt.savefig("chart.png")
+plt.close()
+```
+
+---
+
+## Overlapping Labels
+
+Long category names may overlap.
+
+Use:
+
+```python
+axis.tick_params(
+    axis="x",
+    rotation=45,
+)
+```
+
+Also use:
+
+```python
+figure.tight_layout()
+```
+
+---
+
+## Too Many Categories
+
+A bar chart containing hundreds of categories becomes unreadable.
+
+Possible problems:
+
+* Labels overlap
+* Bars become too narrow
+* Comparisons become difficult
+
+The visualization should match the amount of information.
+
+---
+
+## Wrong Chart Type
+
+Using a line chart for unordered categories may imply a relationship between them.
+
+Example categories:
+
+```text
+Phone
+Laptop
+Chair
+Book
+```
+
+These categories do not form a meaningful sequence.
+
+A bar chart is more appropriate.
+
+---
+
+## Not Closing Figures
+
+Generating many charts without closing them can consume memory.
+
+Use:
+
+```python
+plt.close(figure)
+```
+
+---
+
+## Misleading Axis Range
+
+Starting a bar-chart axis far above zero can exaggerate small differences.
+
+Bar charts generally work best when the numerical axis starts at zero.
+
+---
+
+## Missing Values
+
+Missing values can cause points or lines to disappear.
+
+Inspect data:
+
+```python
+print(data.isna().sum())
+```
+
+before plotting.
+
+---
+
+# 34. Debugging Techniques
+
+Inspect the data:
+
+```python
+print(data.head())
+```
+
+Check shape:
+
+```python
+print(data.shape)
+```
+
+Check column names:
+
+```python
+print(data.columns.tolist())
+```
+
+Check data types:
+
+```python
+print(data.dtypes)
+```
+
+Check missing values:
+
+```python
+print(data.isna().sum())
+```
+
+Check plotting lengths:
+
+```python
+print(len(x_values))
+print(len(y_values))
+```
+
+Check numerical ranges:
+
+```python
+print(data["exam_score"].min())
+print(data["exam_score"].max())
+```
+
+Save a test chart:
+
+```python
+figure.savefig(
+    "debug_chart.png",
+    dpi=150,
+)
+```
+
+Close old figures:
+
+```python
+plt.close("all")
+```
+
+---
+
+# 35. Exercises
+
+## Exercise 1: Line Chart
+
+Create a line chart for:
+
+```python
+days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+]
+
+temperatures = [
+    32,
+    34,
+    35,
+    33,
+    31,
+]
+```
+
+Add:
+
+* Title
+* Axis labels
+* Markers
+* Grid
+
+---
+
+## Exercise 2: Bar Chart
+
+Create a bar chart:
+
+```python
+products = [
+    "Phone",
+    "Laptop",
+    "Tablet",
+    "Monitor",
+]
+
+sales = [
+    120,
+    80,
+    95,
+    60,
+]
+```
+
+---
+
+## Exercise 3: Scatter Plot
+
+Create a scatter plot using:
+
+```python
+advertising_cost = [
+    1000,
+    1500,
+    2000,
+    2500,
+    3000,
+]
+
+revenue = [
+    5000,
+    6500,
+    8000,
+    9500,
+    12000,
+]
+```
+
+Explain the visible relationship.
+
+---
+
+## Exercise 4: Histogram
+
+Create a histogram for:
+
+```python
+customer_ages = [
+    18,
+    20,
+    22,
+    25,
+    26,
+    27,
+    30,
+    31,
+    32,
+    35,
+    38,
+    40,
+    42,
+    45,
+    50,
+]
+```
+
+Test different values of `bins`.
+
+---
+
+## Exercise 5: Training Curves
+
+Plot:
+
+```python
+epochs = [1, 2, 3, 4, 5, 6]
+
+training_loss = [
+    0.90,
+    0.70,
+    0.55,
+    0.42,
+    0.32,
+    0.25,
+]
+
+validation_loss = [
+    0.95,
+    0.76,
+    0.61,
+    0.54,
+    0.56,
+    0.62,
+]
+```
+
+Determine when validation performance starts becoming worse.
+
+---
+
+# 36. Mini Project: Sales Visualization Report
+
+Use this dataset:
+
+```python
+import pandas as pd
+
+
+sales_data = pd.DataFrame(
+    {
+        "month": [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+        ],
+        "revenue": [
+            50000,
+            62000,
+            58000,
+            71000,
+            76000,
+            85000,
+        ],
+        "orders": [
+            120,
+            145,
+            138,
+            165,
+            180,
+            210,
+        ],
+        "advertising_cost": [
+            5000,
+            6000,
+            5500,
+            7000,
+            7500,
+            9000,
+        ],
+    }
+)
+```
+
+## Requirements
+
+Create:
+
+1. Revenue by month line chart
+2. Orders by month bar chart
+3. Advertising cost versus revenue scatter plot
+4. Revenue distribution histogram
+5. Average order value column:
+
+[
+\text{Average Order Value}
+==========================
+
+\frac{\text{Revenue}}{\text{Orders}}
+]
+
+6. Average order value line chart
+7. High-resolution PNG exports
+8. Separate function for every chart
+9. Data validation
+10. At least five unit tests
+
+## Architecture
+
+```text
+Sales DataFrame
+      |
+      v
+Validate columns and values
+      |
+      v
+Calculate average order value
+      |
+      +------------------------+
+      |                        |
+      v                        v
+Time-based analysis      Relationship analysis
+      |                        |
+      v                        v
+Line/bar charts           Scatter plot
+      |
+      v
+Distribution analysis
+      |
+      v
+Histogram
+      |
+      v
+Export report images
+```
+
+---
+
+# 37. Common Visualization Mistakes
+
+1. Using charts without titles.
+2. Leaving axes unlabeled.
+3. Using a line chart for unordered categories.
+4. Creating too many visual elements.
+5. Hiding important differences with poor scales.
+6. Exaggerating differences using truncated axes.
+7. Plotting uncleaned data.
+8. Using too many categories in one chart.
+9. Ignoring missing values.
+10. Using a legend when labels can be placed directly.
+11. Choosing bins without inspecting the data.
+12. Assuming correlation proves causation.
+13. Saving low-resolution charts.
+14. Forgetting to close figures in automated scripts.
+15. Showing unnecessary decimal precision.
+
+---
+
+# 38. Interview Questions
+
+1. What is Matplotlib?
+2. What is `pyplot`?
+3. What is the difference between a figure and an axis?
+4. When should you use a line chart?
+5. When should you use a bar chart?
+6. When should you use a scatter plot?
+7. When should you use a histogram?
+8. What does `bins` mean in a histogram?
+9. What does `figsize` control?
+10. What does `dpi` control?
+11. Why are axis labels important?
+12. What is a legend?
+13. What does `tight_layout()` do?
+14. Why should figures be closed?
+15. What can a scatter plot reveal?
+16. What is a positive relationship?
+17. What is a negative relationship?
+18. Why can changing an axis range be misleading?
+19. How do you save a chart?
+20. Why should data be validated before plotting?
+21. How do you plot multiple lines?
+22. What does `set_ylim()` do?
+23. Why can a bar chart with hundreds of categories fail?
+24. What is overfitting, and how can training curves reveal it?
+25. Does a visual relationship prove causation?
+
+---
+
+# 39. Summary
+
+* Matplotlib is Python’s foundational visualization library.
+* Line charts show change across an ordered sequence.
+* Bar charts compare categories.
+* Scatter plots show relationships between numerical variables.
+* Histograms show numerical distributions.
+* Titles and axis labels make charts understandable.
+* Legends distinguish multiple plotted series.
+* Figure size controls chart dimensions.
+* `dpi` controls saved-image resolution.
+* The object-oriented interface uses `figure` and `axis`.
+* `tight_layout()` reduces overlapping chart elements.
+* Visualization helps detect trends, outliers, distributions, and model problems.
+* Misleading scales and incorrect chart types can distort conclusions.
+* Charts should be generated from validated and cleaned data.
+
+# Lesson 5 Quiz
+
+### 1. Which chart is most suitable for showing sales over twelve months?
+
+A. Histogram
+B. Line chart
+C. Scatter plot
+D. Pie chart
+
+### 2. Which chart is best for comparing revenue across product categories?
+
+A. Bar chart
+B. Scatter plot
+C. Histogram
+D. Line chart
+
+### 3. Which chart helps examine the relationship between study hours and exam scores?
+
+A. Histogram
+B. Bar chart
+C. Scatter plot
+D. Text table only
+
+### 4. What does a histogram show?
+
+A. Relationships between two categories
+B. Distribution of numerical values
+C. A single text value
+D. Source-code execution
+
+### 5. What does this create?
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+```
+
+### 6. What is the purpose of:
+
+```python
+axis.set_xlabel("Study Hours")
+```
+
+### 7. What does this argument mean?
+
+```python
+bins=5
+```
+
+### 8. Why should a legend be added when plotting multiple lines?
+
+### 9. What does:
+
+```python
+axis.set_ylim(0, 100)
+```
+
+do?
+
+### 10. Why can starting a bar chart’s y-axis at 95 be misleading?
+
+### 11. What is wrong with this code?
+
+```python
+x_values = [1, 2, 3]
+y_values = [10, 20]
+
+plt.plot(x_values, y_values)
+```
+
+### 12. What does `dpi=300` control when saving a chart?
+
+### 13. Why should `plt.close(figure)` be used in scripts that create many charts?
+
+### 14. What does `tight_layout()` help prevent?
+
+### 15. Which chart should normally be used for unordered categories?
+
+A. Line chart
+B. Bar chart
+C. Scatter plot
+D. Histogram
+
+### 16. What type of relationship is suggested when (y) generally increases as (x) increases?
+
+### 17. Does a strong scatter-plot relationship prove that one variable causes the other?
+
+### 18. What might it mean when training accuracy improves but validation accuracy stops improving?
+
+### 19. What is the approximate time complexity of plotting (n) data points?
+
+A. (O(1))
+B. (O(\log n))
+C. (O(n))
+D. (O(n^2))
+
+### 20. Why should missing values and incorrect data types be checked before creating charts?
