@@ -1,0 +1,1777 @@
+# Lesson 2: Python Refresher for AI and Machine Learning
+
+**Progress:** Lesson 1 completed
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** Python Refresher for AI/ML
+
+---
+
+## Previous Lesson Review
+
+From Lesson 1:
+
+* Artificial Intelligence is the broad field.
+* Machine Learning is a branch of AI that learns patterns from data.
+* Deep Learning is a branch of ML based on neural networks.
+* Features are model inputs.
+* Labels are expected outputs.
+* Training teaches a model from data.
+* Inference uses the trained model to make predictions.
+* Classification predicts categories.
+* Regression predicts numerical values.
+
+In this lesson, we will refresh the Python concepts needed to represent and process datasets.
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Use Python variables and data types correctly.
+2. Store data using lists, tuples, dictionaries, and sets.
+3. Process datasets using loops and conditions.
+4. Write reusable functions with type hints.
+5. Validate data and raise useful errors.
+6. Use comprehensions and built-in functions.
+7. Understand mutable and immutable objects.
+8. Build a small dataset-analysis program.
+9. Analyze the time complexity of Python operations.
+10. Debug common Python errors.
+
+---
+
+# 2. Why Python Is Used in AI and ML
+
+Python is popular in AI and machine learning because it has:
+
+* Clear and readable syntax
+* Strong scientific libraries
+* Large developer community
+* Support for rapid experimentation
+* Libraries such as NumPy, Pandas, scikit-learn, PyTorch, and TensorFlow
+
+A typical machine-learning workflow looks like this:
+
+```text
+Raw data
+   |
+   v
+Python data structures
+   |
+   v
+Cleaning and validation
+   |
+   v
+Feature preparation
+   |
+   v
+Model training
+   |
+   v
+Evaluation and prediction
+```
+
+Before using ML libraries, you must be comfortable manipulating data using standard Python.
+
+---
+
+# 3. Variables and Data Types
+
+A variable stores a value.
+
+```python
+student_name = "Ali"
+study_hours = 4.5
+passed = True
+exam_attempts = 2
+```
+
+Python automatically determines each variable’s type.
+
+```text
+student_name  → str
+study_hours   → float
+passed        → bool
+exam_attempts → int
+```
+
+## Important Scalar Types
+
+### Integer
+
+```python
+student_count = 25
+```
+
+An `int` stores a whole number.
+
+### Float
+
+```python
+accuracy = 0.92
+```
+
+A `float` stores a decimal number.
+
+### String
+
+```python
+model_name = "Decision Tree"
+```
+
+A `str` stores text.
+
+### Boolean
+
+```python
+is_trained = True
+```
+
+A `bool` contains either:
+
+```text
+True
+False
+```
+
+### None
+
+```python
+prediction = None
+```
+
+`None` represents the absence of a value.
+
+---
+
+# 4. Type Hints
+
+Python allows you to describe the expected type of a variable or function parameter.
+
+```python
+age: int = 18
+accuracy: float = 0.95
+model_name: str = "Linear Regression"
+```
+
+Function example:
+
+```python
+def calculate_square(number: float) -> float:
+    return number * number
+```
+
+This means:
+
+```text
+Input:  float
+Output: float
+```
+
+Type hints improve:
+
+* Readability
+* Editor autocomplete
+* Static analysis
+* Team collaboration
+* Error detection
+
+However, Python does not automatically enforce type hints at runtime.
+
+This code can still run:
+
+```python
+age: int = "eighteen"
+```
+
+A static type checker such as `mypy` would detect the mismatch.
+
+---
+
+# 5. Python Collections
+
+Machine-learning datasets contain many values. Python collections help organize them.
+
+---
+
+## Lists
+
+A list stores an ordered collection of values.
+
+```python
+scores = [72, 81, 65, 90, 88]
+```
+
+Access an item using its index:
+
+```python
+first_score = scores[0]
+```
+
+Indexes begin at zero:
+
+```text
+Value:  72  81  65  90  88
+Index:   0   1   2   3   4
+```
+
+Lists are mutable, meaning they can be changed.
+
+```python
+scores[0] = 75
+scores.append(95)
+```
+
+After these operations:
+
+```python
+[75, 81, 65, 90, 88, 95]
+```
+
+---
+
+## Tuples
+
+A tuple is ordered but immutable.
+
+```python
+image_size = (1920, 1080)
+```
+
+You cannot modify an individual tuple item:
+
+```python
+image_size[0] = 1280
+```
+
+This produces:
+
+```text
+TypeError: 'tuple' object does not support item assignment
+```
+
+Tuples are useful for values that should not change.
+
+---
+
+## Dictionaries
+
+A dictionary stores key-value pairs.
+
+```python
+student = {
+    "name": "Ali",
+    "score": 85,
+    "passed": True,
+}
+```
+
+Access a value by its key:
+
+```python
+student_name = student["name"]
+```
+
+Update a value:
+
+```python
+student["score"] = 90
+```
+
+Add a new value:
+
+```python
+student["study_hours"] = 5.5
+```
+
+Dictionaries are commonly used for:
+
+* Configuration
+* JSON data
+* API responses
+* Dataset records
+* Model settings
+
+---
+
+## Sets
+
+A set stores unique values.
+
+```python
+labels = {"cat", "dog", "bird", "cat"}
+```
+
+The duplicate `"cat"` is removed:
+
+```python
+{"cat", "dog", "bird"}
+```
+
+Sets are useful for:
+
+* Removing duplicates
+* Checking membership
+* Finding unique categories
+* Comparing groups
+
+---
+
+# 6. Mutable vs Immutable Objects
+
+## Mutable
+
+Mutable objects can change after creation.
+
+Examples:
+
+* Lists
+* Dictionaries
+* Sets
+
+```python
+scores = [70, 80]
+scores.append(90)
+```
+
+The original list changes.
+
+## Immutable
+
+Immutable objects cannot change after creation.
+
+Examples:
+
+* Integers
+* Floats
+* Strings
+* Booleans
+* Tuples
+
+```python
+name = "Ali"
+name = "Ahmed"
+```
+
+The string `"Ali"` was not modified. The variable now points to a new string.
+
+---
+
+# 7. Conditional Statements
+
+Conditions allow programs to make decisions.
+
+```python
+score = 75
+
+if score >= 60:
+    print("Pass")
+else:
+    print("Fail")
+```
+
+Multiple conditions:
+
+```python
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+elif score >= 60:
+    grade = "D"
+else:
+    grade = "F"
+```
+
+Python checks conditions from top to bottom and stops at the first matching condition.
+
+---
+
+# 8. Loops
+
+Loops process multiple data points.
+
+## For Loop
+
+```python
+scores = [72, 81, 65]
+
+for score in scores:
+    print(score)
+```
+
+Output:
+
+```text
+72
+81
+65
+```
+
+In ML, loops may be used to:
+
+* Process records
+* Evaluate predictions
+* Clean values
+* Calculate metrics
+* Test model parameters
+
+---
+
+## While Loop
+
+```python
+attempt = 1
+
+while attempt <= 3:
+    print(f"Attempt {attempt}")
+    attempt += 1
+```
+
+A `while` loop continues while its condition remains true.
+
+Be careful: forgetting to update the condition can create an infinite loop.
+
+---
+
+# 9. Functions
+
+A function groups reusable logic.
+
+```python
+def calculate_average(values: list[float]) -> float:
+    total = sum(values)
+    return total / len(values)
+```
+
+Usage:
+
+```python
+scores = [70.0, 80.0, 90.0]
+average = calculate_average(scores)
+```
+
+Functions are important because machine-learning projects should not place all logic in one large file.
+
+A clean ML project separates:
+
+```text
+Data loading
+Data validation
+Data cleaning
+Feature engineering
+Model training
+Evaluation
+Prediction
+```
+
+---
+
+# 10. Mathematical Intuition
+
+A Python function can represent a mathematical function.
+
+For example:
+
+[
+f(x) = x^2
+]
+
+Python representation:
+
+```python
+def square(number: float) -> float:
+    return number**2
+```
+
+Input:
+
+[
+x = 4
+]
+
+Output:
+
+[
+f(4) = 4^2 = 16
+]
+
+A machine-learning model is also a function:
+
+[
+\hat{y} = f(X)
+]
+
+Where:
+
+* (X) represents input features.
+* (f) represents the model.
+* (\hat{y}) represents the prediction.
+
+```text
+Features X → Model f → Prediction ŷ
+```
+
+---
+
+## Average
+
+For values:
+
+[
+x_1, x_2, x_3, \dots, x_n
+]
+
+The average is:
+
+[
+\bar{x} = \frac{x_1 + x_2 + \cdots + x_n}{n}
+]
+
+For scores:
+
+```text
+70, 80, 90
+```
+
+[
+\bar{x} = \frac{70 + 80 + 90}{3} = 80
+]
+
+Python:
+
+```python
+average = sum(scores) / len(scores)
+```
+
+---
+
+## Pass Rate
+
+[
+\text{Pass Rate}
+================
+
+\frac{\text{Number of passed students}}
+{\text{Total students}}
+\times 100
+]
+
+If eight out of ten students passed:
+
+[
+\text{Pass Rate}
+================
+
+\frac{8}{10}
+\times 100
+==========
+
+80%
+]
+
+---
+
+# 11. Visual Explanation
+
+We will build a student dataset analyzer.
+
+```text
+Student records
+      |
+      v
+Validate names and scores
+      |
+      v
+Calculate average
+      |
+      +------------------+
+      |                  |
+      v                  v
+Calculate pass rate   Assign grades
+      |                  |
+      +--------+---------+
+               |
+               v
+          Generate report
+```
+
+This resembles a small data-processing pipeline.
+
+---
+
+# 12. Python Implementation
+
+## Student Dataset Analyzer
+
+```python
+from typing import NamedTuple
+
+
+PASSING_SCORE = 60.0
+
+
+class Student(NamedTuple):
+    """Represent one student record."""
+
+    name: str
+    score: float
+
+
+def validate_students(students: list[Student]) -> None:
+    """Validate the student dataset."""
+    if not students:
+        raise ValueError("The student dataset cannot be empty.")
+
+    for student in students:
+        if not student.name.strip():
+            raise ValueError("Student name cannot be empty.")
+
+        if not 0 <= student.score <= 100:
+            raise ValueError(
+                f"Score for {student.name} must be between 0 and 100."
+            )
+
+
+def calculate_average(students: list[Student]) -> float:
+    """Calculate the average student score."""
+    total_score = sum(student.score for student in students)
+    return total_score / len(students)
+
+
+def assign_grade(score: float) -> str:
+    """Convert a numerical score into a letter grade."""
+    if score >= 90:
+        return "A"
+
+    if score >= 80:
+        return "B"
+
+    if score >= 70:
+        return "C"
+
+    if score >= 60:
+        return "D"
+
+    return "F"
+
+
+def calculate_pass_rate(
+    students: list[Student],
+    passing_score: float = PASSING_SCORE,
+) -> float:
+    """Calculate the percentage of students who passed."""
+    passed_count = sum(
+        1
+        for student in students
+        if student.score >= passing_score
+    )
+
+    return passed_count / len(students) * 100
+
+
+def build_grade_distribution(
+    students: list[Student],
+) -> dict[str, int]:
+    """Count how many students received each grade."""
+    distribution = {
+        "A": 0,
+        "B": 0,
+        "C": 0,
+        "D": 0,
+        "F": 0,
+    }
+
+    for student in students:
+        grade = assign_grade(student.score)
+        distribution[grade] += 1
+
+    return distribution
+
+
+def find_top_student(students: list[Student]) -> Student:
+    """Return the student with the highest score."""
+    return max(students, key=lambda student: student.score)
+
+
+def main() -> None:
+    """Run the student dataset analysis."""
+    students = [
+        Student("Ali", 92.0),
+        Student("Sara", 85.0),
+        Student("Ahmed", 58.0),
+        Student("Fatima", 76.0),
+        Student("Omar", 64.0),
+    ]
+
+    validate_students(students)
+
+    average_score = calculate_average(students)
+    pass_rate = calculate_pass_rate(students)
+    grade_distribution = build_grade_distribution(students)
+    top_student = find_top_student(students)
+
+    print(f"Average score: {average_score:.2f}")
+    print(f"Pass rate: {pass_rate:.2f}%")
+    print(
+        f"Top student: {top_student.name} "
+        f"({top_student.score:.2f})"
+    )
+
+    print("\nGrade distribution:")
+
+    for grade, count in grade_distribution.items():
+        print(f"{grade}: {count}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+## Expected Output
+
+```text
+Average score: 75.00
+Pass rate: 80.00%
+Top student: Ali (92.00)
+
+Grade distribution:
+A: 1
+B: 1
+C: 1
+D: 1
+F: 1
+```
+
+---
+
+# 13. Code Explanation
+
+## Import
+
+```python
+from typing import NamedTuple
+```
+
+Imports `NamedTuple`, which lets us create structured, immutable records.
+
+---
+
+## Constant
+
+```python
+PASSING_SCORE = 60.0
+```
+
+Defines the default passing score.
+
+Uppercase names are used for constants according to Python conventions.
+
+---
+
+## Student Record
+
+```python
+class Student(NamedTuple):
+```
+
+Creates a structured record named `Student`.
+
+```python
+"""Represent one student record."""
+```
+
+Documents the purpose of the class.
+
+```python
+name: str
+```
+
+Each student must have a string name.
+
+```python
+score: float
+```
+
+Each student must have a numerical score.
+
+Creating a student:
+
+```python
+student = Student("Ali", 92.0)
+```
+
+Accessing its values:
+
+```python
+student.name
+student.score
+```
+
+---
+
+## Validation Function
+
+```python
+def validate_students(students: list[Student]) -> None:
+```
+
+Accepts a list of students and returns no value.
+
+```python
+if not students:
+```
+
+Checks whether the list is empty.
+
+```python
+raise ValueError("The student dataset cannot be empty.")
+```
+
+Stops execution and provides a useful error message.
+
+```python
+for student in students:
+```
+
+Processes each student.
+
+```python
+if not student.name.strip():
+```
+
+`strip()` removes spaces. An empty result means the name contains no useful characters.
+
+```python
+if not 0 <= student.score <= 100:
+```
+
+Checks that the score is within the accepted range.
+
+---
+
+## Average Function
+
+```python
+total_score = sum(student.score for student in students)
+```
+
+This generator expression extracts each score and passes it to `sum()`.
+
+It behaves similarly to:
+
+```python
+total_score = 0.0
+
+for student in students:
+    total_score += student.score
+```
+
+```python
+return total_score / len(students)
+```
+
+Divides the total score by the number of students.
+
+---
+
+## Grade Function
+
+```python
+def assign_grade(score: float) -> str:
+```
+
+Accepts a score and returns a grade string.
+
+```python
+if score >= 90:
+    return "A"
+```
+
+A score of at least 90 receives an A.
+
+The function exits immediately when it reaches a `return`.
+
+Because of this, separate `if` statements work correctly here.
+
+---
+
+## Pass Rate Function
+
+```python
+passing_score: float = PASSING_SCORE
+```
+
+Defines an optional parameter. When no passing score is provided, `60.0` is used.
+
+```python
+passed_count = sum(
+    1
+    for student in students
+    if student.score >= passing_score
+)
+```
+
+Produces `1` for every student who passed and adds those values together.
+
+For example:
+
+```text
+Scores:       92, 85, 58, 76, 64
+Passed:        1,  1,  0,  1,  1
+Total passed:  4
+```
+
+```python
+return passed_count / len(students) * 100
+```
+
+Converts the passed fraction into a percentage.
+
+---
+
+## Grade Distribution
+
+```python
+distribution = {
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "D": 0,
+    "F": 0,
+}
+```
+
+Creates a dictionary containing a counter for every grade.
+
+```python
+grade = assign_grade(student.score)
+```
+
+Calculates the student’s grade.
+
+```python
+distribution[grade] += 1
+```
+
+Increases the matching grade counter.
+
+---
+
+## Finding the Highest Score
+
+```python
+return max(students, key=lambda student: student.score)
+```
+
+`max()` finds the largest item.
+
+The `key` function tells Python to compare students by score.
+
+The lambda:
+
+```python
+lambda student: student.score
+```
+
+is equivalent to:
+
+```python
+def get_score(student: Student) -> float:
+    return student.score
+```
+
+---
+
+## Main Function
+
+```python
+def main() -> None:
+```
+
+Contains the program’s main workflow.
+
+```python
+students = [...]
+```
+
+Creates the dataset.
+
+```python
+validate_students(students)
+```
+
+Checks the data before performing calculations.
+
+```python
+average_score = calculate_average(students)
+```
+
+Calculates the average.
+
+```python
+pass_rate = calculate_pass_rate(students)
+```
+
+Calculates the percentage of passing students.
+
+```python
+for grade, count in grade_distribution.items():
+```
+
+Iterates through the dictionary’s keys and values.
+
+---
+
+## Entry-Point Check
+
+```python
+if __name__ == "__main__":
+    main()
+```
+
+Runs `main()` only when this file is executed directly.
+
+It prevents `main()` from running automatically when the file is imported into another Python module.
+
+---
+
+# 14. Time Complexity
+
+Let (n) be the number of students.
+
+## Validation
+
+```python
+validate_students(students)
+```
+
+Checks every student once:
+
+[
+O(n)
+]
+
+## Average
+
+```python
+calculate_average(students)
+```
+
+Reads every score once:
+
+[
+O(n)
+]
+
+## Pass Rate
+
+```python
+calculate_pass_rate(students)
+```
+
+Checks every student once:
+
+[
+O(n)
+]
+
+## Grade Distribution
+
+```python
+build_grade_distribution(students)
+```
+
+Processes every student once:
+
+[
+O(n)
+]
+
+## Top Student
+
+```python
+find_top_student(students)
+```
+
+Searches every student:
+
+[
+O(n)
+]
+
+The program performs several separate (O(n)) operations:
+
+[
+O(n) + O(n) + O(n) + O(n) + O(n)
+]
+
+Constants are ignored in Big-O notation:
+
+[
+O(5n) = O(n)
+]
+
+Therefore, the overall time complexity is:
+
+[
+\boxed{O(n)}
+]
+
+The grade-distribution dictionary always contains five grades, so its additional space complexity is:
+
+[
+\boxed{O(1)}
+]
+
+The input dataset itself requires:
+
+[
+O(n)
+]
+
+space.
+
+---
+
+# 15. Unit Tests
+
+Create a separate file named:
+
+```text
+test_student_analyzer.py
+```
+
+Add:
+
+```python
+def run_tests() -> None:
+    students = [
+        Student("Ali", 90.0),
+        Student("Sara", 70.0),
+        Student("Ahmed", 50.0),
+    ]
+
+    assert assign_grade(95.0) == "A"
+    assert assign_grade(82.0) == "B"
+    assert assign_grade(75.0) == "C"
+    assert assign_grade(65.0) == "D"
+    assert assign_grade(40.0) == "F"
+
+    assert calculate_average(students) == 70.0
+
+    assert calculate_pass_rate(students) == (
+        2 / 3 * 100
+    )
+
+    assert find_top_student(students).name == "Ali"
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+Output:
+
+```text
+All tests passed.
+```
+
+For decimal calculations, exact equality can sometimes be unreliable because floating-point numbers are approximations.
+
+A safer comparison is:
+
+```python
+result = calculate_pass_rate(students)
+expected = 66.66666666666666
+
+assert abs(result - expected) < 0.0001
+```
+
+---
+
+# 16. Debugging Techniques
+
+## Print the Value and Type
+
+```python
+print(score)
+print(type(score))
+```
+
+This helps detect values such as:
+
+```text
+"85" instead of 85
+```
+
+The first is a string; the second is an integer.
+
+---
+
+## Print During a Loop
+
+```python
+for student in students:
+    print(student.name, student.score)
+```
+
+This confirms that every record is processed correctly.
+
+---
+
+## Use Assertions
+
+```python
+assert len(students) > 0
+```
+
+An assertion checks an assumption during development.
+
+---
+
+## Read the Last Line of a Traceback First
+
+Example:
+
+```text
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+```
+
+This usually means numeric and text values were mixed.
+
+Bad data:
+
+```python
+scores = [70, 80, "90"]
+```
+
+Correct data:
+
+```python
+scores = [70, 80, 90]
+```
+
+---
+
+## Use Descriptive Error Messages
+
+Weak error:
+
+```python
+raise ValueError("Invalid")
+```
+
+Better error:
+
+```python
+raise ValueError(
+    f"Score for {student.name} must be between 0 and 100."
+)
+```
+
+---
+
+# 17. Common Errors
+
+## Division by Zero
+
+```python
+average = sum(scores) / len(scores)
+```
+
+When `scores` is empty:
+
+```text
+ZeroDivisionError
+```
+
+Prevent it with validation:
+
+```python
+if not scores:
+    raise ValueError("Scores cannot be empty.")
+```
+
+---
+
+## IndexError
+
+```python
+scores = [70, 80]
+print(scores[5])
+```
+
+There is no index `5`.
+
+```text
+IndexError: list index out of range
+```
+
+---
+
+## KeyError
+
+```python
+student = {"name": "Ali"}
+print(student["score"])
+```
+
+The key `"score"` does not exist.
+
+Safer access:
+
+```python
+score = student.get("score")
+```
+
+This returns `None` when the key is missing.
+
+---
+
+## TypeError
+
+```python
+score = "90"
+result = score + 10
+```
+
+Python cannot add a string and integer.
+
+Correct conversion:
+
+```python
+score = float("90")
+result = score + 10
+```
+
+---
+
+## NameError
+
+```python
+print(model_accuracy)
+```
+
+If `model_accuracy` has not been created:
+
+```text
+NameError
+```
+
+---
+
+## Modifying a List While Iterating
+
+Problematic code:
+
+```python
+scores = [40, 80, 50, 90]
+
+for score in scores:
+    if score < 60:
+        scores.remove(score)
+```
+
+Changing a list while iterating over it can skip values.
+
+Safer approach:
+
+```python
+passing_scores = [
+    score
+    for score in scores
+    if score >= 60
+]
+```
+
+---
+
+# 18. Exercises
+
+## Exercise 1: Maximum and Minimum
+
+Write two functions:
+
+```python
+def find_highest_score(scores: list[float]) -> float:
+    ...
+
+
+def find_lowest_score(scores: list[float]) -> float:
+    ...
+```
+
+Do not use `max()` or `min()`.
+
+---
+
+## Exercise 2: Score Validation
+
+Create:
+
+```python
+def validate_score(score: float) -> None:
+    ...
+```
+
+It should raise a `ValueError` when the score is:
+
+* Below 0
+* Above 100
+
+---
+
+## Exercise 3: Filtering
+
+Given:
+
+```python
+scores = [45, 72, 88, 51, 90, 67]
+```
+
+Create a new list containing only passing scores using:
+
+1. A normal loop
+2. A list comprehension
+
+---
+
+## Exercise 4: Count Grades
+
+Given:
+
+```python
+scores = [95, 83, 72, 68, 45, 91]
+```
+
+Produce:
+
+```python
+{
+    "A": 2,
+    "B": 1,
+    "C": 1,
+    "D": 1,
+    "F": 1,
+}
+```
+
+---
+
+## Exercise 5: Optional Passing Score
+
+Modify the pass-rate function so that this works:
+
+```python
+calculate_pass_rate(students, passing_score=70.0)
+```
+
+---
+
+# 19. Mini Project: Dataset Quality Report
+
+Build a program that analyzes a small numeric dataset before it is used for machine learning.
+
+## Input
+
+```python
+values = [12.5, 18.0, None, 25.5, -3.0, 40.0, None, 31.5]
+```
+
+## Requirements
+
+The program must calculate:
+
+1. Total number of records
+2. Number of missing values
+3. Number of valid numerical values
+4. Minimum valid value
+5. Maximum valid value
+6. Average valid value
+7. Number of negative values
+8. Percentage of missing values
+
+## Architecture
+
+```text
+Raw values
+    |
+    v
+Identify missing values
+    |
+    v
+Separate valid values
+    |
+    v
+Calculate statistics
+    |
+    v
+Generate quality report
+```
+
+## Expected Structure
+
+```python
+def remove_missing_values(
+    values: list[float | None],
+) -> list[float]:
+    ...
+
+
+def calculate_missing_percentage(
+    values: list[float | None],
+) -> float:
+    ...
+
+
+def generate_quality_report(
+    values: list[float | None],
+) -> dict[str, float | int]:
+    ...
+```
+
+## Required Tests
+
+```python
+assert remove_missing_values(
+    [1.0, None, 2.0]
+) == [1.0, 2.0]
+
+assert calculate_missing_percentage(
+    [1.0, None]
+) == 50.0
+
+assert generate_quality_report(
+    [1.0, 2.0, 3.0]
+)["average"] == 2.0
+```
+
+---
+
+# 20. Common Mistakes
+
+1. Using unclear variable names such as `x1`, `a`, or `temp` without context.
+2. Writing all program logic inside one function.
+3. Ignoring empty datasets.
+4. Mixing strings and numbers.
+5. Modifying a list while iterating over it.
+6. Using global variables unnecessarily.
+7. Forgetting that list indexes begin at zero.
+8. Assuming type hints automatically validate data.
+9. Comparing floating-point results using exact equality.
+10. Catching every exception without understanding the cause.
+
+Problematic exception handling:
+
+```python
+try:
+    result = calculate_average(students)
+except Exception:
+    pass
+```
+
+This hides the error.
+
+Better:
+
+```python
+try:
+    result = calculate_average(students)
+except ValueError as error:
+    print(f"Invalid dataset: {error}")
+```
+
+---
+
+# 21. Interview Questions
+
+1. What is the difference between a list and a tuple?
+2. What does mutable mean?
+3. Which Python collections are mutable?
+4. What is the difference between `append()` and `extend()`?
+5. What is a dictionary?
+6. Why are sets useful?
+7. What is a type hint?
+8. Does Python enforce type hints at runtime?
+9. What is a list comprehension?
+10. What is a generator expression?
+11. What does `raise` do?
+12. What is the purpose of `if __name__ == "__main__"`?
+13. What is the difference between `return` and `print`?
+14. What is a lambda function?
+15. What is the time complexity of searching a list?
+16. What is the average time complexity of dictionary lookup?
+17. Why should input data be validated?
+18. What happens when you divide by zero?
+19. What is the difference between `==` and `is`?
+20. Why can floating-point comparisons be unreliable?
+
+---
+
+# 22. Summary
+
+* Python variables reference values.
+* Core scalar types include integers, floats, strings, booleans, and `None`.
+* Lists are ordered and mutable.
+* Tuples are ordered and immutable.
+* Dictionaries store key-value pairs.
+* Sets store unique values.
+* Conditions control decisions.
+* Loops process collections.
+* Functions make code reusable and modular.
+* Type hints document expected input and output types.
+* Validation prevents bad data from entering later stages.
+* Comprehensions provide concise data transformations.
+* Machine-learning models can be understood as functions mapping features to predictions.
+* The student analyzer processes an entire dataset in (O(n)) time.
+
+---
+
+# Lesson 2 Quiz
+
+### 1. Which Python collection is ordered and immutable?
+
+A. List
+B. Dictionary
+C. Tuple
+D. Set
+
+### 2. What does this type hint mean?
+
+```python
+def predict(value: float) -> int:
+```
+
+A. The function accepts an integer and returns a float.
+B. The function accepts a float and returns an integer.
+C. Python will reject every non-float automatically.
+D. The function has no return value.
+
+### 3. What is wrong with this code?
+
+```python
+scores = [80, 90, "70"]
+average = sum(scores) / len(scores)
+```
+
+### 4. What is the result?
+
+```python
+labels = {"cat", "dog", "cat", "bird"}
+print(len(labels))
+```
+
+A. 3
+B. 4
+C. 2
+D. Error
+
+### 5. Explain the difference between mutable and immutable objects.
+
+### 6. What will this function return?
+
+```python
+def classify(score: float) -> str:
+    if score >= 60:
+        return "Pass"
+
+    return "Fail"
+
+
+result = classify(60.0)
+```
+
+### 7. What error occurs?
+
+```python
+scores = []
+average = sum(scores) / len(scores)
+```
+
+### 8. What does this expression produce?
+
+```python
+[
+    score
+    for score in [40, 70, 90, 50]
+    if score >= 60
+]
+```
+
+### 9. What is the time complexity of checking every item in a list containing (n) values?
+
+A. (O(1))
+B. (O(\log n))
+C. (O(n))
+D. (O(n^2))
+
+### 10. Why should a dataset be validated before analysis or model training?
+
+### 11. Explain the difference between `return` and `print`.
+
+### 12. What does this line do?
+
+```python
+max(students, key=lambda student: student.score)
+```
+
+### 13. What is the output?
+
+```python
+student = {
+    "name": "Ali",
+    "score": 85,
+}
+
+student["score"] += 5
+
+print(student["score"])
+```
+
+### 14. Why is this condition valid?
+
+```python
+0 <= score <= 100
+```
+
+### 15. Calculate the average:
+
+```text
+Scores: 60, 70, 80, 90
+```
+
+### 16. Three out of five students passed. What is the pass rate?
+
+### 17. Why can this assertion be unreliable?
+
+```python
+assert 0.1 + 0.2 == 0.3
+```
+
+### 18. What is the purpose of:
+
+```python
+if __name__ == "__main__":
+    main()
+```
+
+### 19. Which structure is most suitable for storing unique class labels?
+
+A. List
+B. Set
+C. String
+D. Float
+
+### 20. Identify the bug:
+
+```python
+def calculate_average(values: list[float]) -> float:
+    total = sum(values)
+    return total / len(scores)
+```
