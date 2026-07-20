@@ -1,0 +1,1799 @@
+# Lesson 9: Working with APIs for AI and Machine Learning
+
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** APIs
+**Lessons 1–8:** Delivered; quiz mastery is not yet verified
+
+APIs allow Python applications to collect data from external systems, send predictions, access AI services, and connect machine-learning models to real applications.
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain what an API is.
+2. Understand HTTP requests and responses.
+3. Use common HTTP methods.
+4. Send query parameters, headers, and JSON bodies.
+5. Read JSON responses.
+6. Handle status codes and API errors.
+7. Use timeouts safely.
+8. Understand authentication and API keys.
+9. Handle pagination and rate limits.
+10. Build and test a reusable Python API client.
+
+---
+
+# 2. Real-World Example
+
+Suppose you are building a house-price prediction application.
+
+The frontend sends this data:
+
+```json
+{
+  "area": 1800,
+  "bedrooms": 3,
+  "location": "Dubai"
+}
+```
+
+The backend passes it to a machine-learning API:
+
+```text
+Web application
+      |
+      | POST request
+      v
+Prediction API
+      |
+      v
+Trained ML model
+      |
+      v
+Predicted price
+```
+
+The API might return:
+
+```json
+{
+  "predicted_price": 1450000,
+  "currency": "AED"
+}
+```
+
+The frontend and machine-learning service can communicate even if they are written in different programming languages.
+
+---
+
+# 3. What Is an API?
+
+API means:
+
+```text
+Application Programming Interface
+```
+
+An API defines how one software system communicates with another.
+
+Examples:
+
+* A weather application requesting forecast data
+* A mobile application sending login information
+* A chatbot sending a prompt to an AI model
+* A website requesting product prices
+* A machine-learning service returning predictions
+
+A simple API interaction:
+
+```text
+Client
+  |
+  | Request
+  v
+Server
+  |
+  | Response
+  v
+Client
+```
+
+The client asks for something.
+
+The server processes the request and returns a response.
+
+---
+
+# 4. What Is HTTP?
+
+HTTP is a communication protocol used by web applications and APIs.
+
+A request normally contains:
+
+```text
+Method
+URL
+Headers
+Query parameters
+Optional body
+```
+
+A response normally contains:
+
+```text
+Status code
+Headers
+Response body
+```
+
+Example:
+
+```text
+GET /students/42
+```
+
+Response:
+
+```json
+{
+  "id": 42,
+  "name": "Ali",
+  "score": 85
+}
+```
+
+---
+
+# 5. API Endpoint
+
+An endpoint is a URL representing an API resource or operation.
+
+Example structure:
+
+```text
+https://api.example.com/v1/students
+```
+
+Parts:
+
+```text
+https://              Protocol
+api.example.com       Domain
+/v1                   API version
+/students             Resource
+```
+
+Specific student:
+
+```text
+https://api.example.com/v1/students/42
+```
+
+---
+
+# 6. Common HTTP Methods
+
+## GET
+
+Retrieves data.
+
+```text
+GET /students
+GET /students/42
+```
+
+## POST
+
+Creates data or submits work.
+
+```text
+POST /predictions
+POST /students
+```
+
+## PUT
+
+Usually replaces a complete resource.
+
+```text
+PUT /students/42
+```
+
+## PATCH
+
+Updates part of a resource.
+
+```text
+PATCH /students/42
+```
+
+## DELETE
+
+Removes a resource.
+
+```text
+DELETE /students/42
+```
+
+Summary:
+
+| Method | Typical purpose   |
+| ------ | ----------------- |
+| GET    | Read              |
+| POST   | Create or execute |
+| PUT    | Replace           |
+| PATCH  | Partially update  |
+| DELETE | Remove            |
+
+---
+
+# 7. HTTP Status Codes
+
+Status codes indicate the result of a request.
+
+## Success
+
+```text
+200 OK
+201 Created
+204 No Content
+```
+
+## Client Errors
+
+```text
+400 Bad Request
+401 Unauthorized
+403 Forbidden
+404 Not Found
+409 Conflict
+422 Unprocessable Content
+429 Too Many Requests
+```
+
+## Server Errors
+
+```text
+500 Internal Server Error
+502 Bad Gateway
+503 Service Unavailable
+504 Gateway Timeout
+```
+
+Status-code groups:
+
+```text
+2xx → Success
+4xx → Client-side problem
+5xx → Server-side problem
+```
+
+A `200` response does not guarantee that the returned data is logically correct. The response structure must still be validated.
+
+---
+
+# 8. Installing the Requests Library
+
+Install:
+
+```bash
+pip install requests
+```
+
+Import:
+
+```python
+import requests
+```
+
+The `requests` library simplifies HTTP communication in Python.
+
+---
+
+# 9. Basic GET Request
+
+```python
+import requests
+
+
+response = requests.get(
+    "https://api.example.com/v1/students",
+    timeout=10,
+)
+
+print(response.status_code)
+print(response.text)
+```
+
+## Explanation
+
+```python
+import requests
+```
+
+Imports the HTTP library.
+
+```python
+response = requests.get(...)
+```
+
+Sends a GET request.
+
+```python
+timeout=10
+```
+
+Stops waiting after approximately ten seconds instead of waiting indefinitely.
+
+```python
+response.status_code
+```
+
+Contains the HTTP status code.
+
+```python
+response.text
+```
+
+Contains the response body as text.
+
+The example domain is a placeholder and must be replaced with an actual API endpoint.
+
+---
+
+# 10. Reading JSON Responses
+
+Most modern APIs return JSON.
+
+```python
+data = response.json()
+```
+
+Example response:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Ali",
+    "score": 85
+  },
+  {
+    "id": 2,
+    "name": "Sara",
+    "score": 92
+  }
+]
+```
+
+Python representation:
+
+```python
+[
+    {
+        "id": 1,
+        "name": "Ali",
+        "score": 85,
+    },
+    {
+        "id": 2,
+        "name": "Sara",
+        "score": 92,
+    },
+]
+```
+
+JSON objects become dictionaries.
+
+JSON arrays become lists.
+
+---
+
+# 11. Query Parameters
+
+Query parameters modify or filter a request.
+
+Example URL:
+
+```text
+/students?course=AI&minimum_score=80
+```
+
+Python:
+
+```python
+params = {
+    "course": "AI",
+    "minimum_score": 80,
+}
+
+response = requests.get(
+    "https://api.example.com/v1/students",
+    params=params,
+    timeout=10,
+)
+```
+
+Requests converts the dictionary into a query string.
+
+This is safer than manually concatenating strings.
+
+---
+
+# 12. Request Headers
+
+Headers provide request metadata.
+
+```python
+headers = {
+    "Accept": "application/json",
+    "User-Agent": "StudentAnalytics/1.0",
+}
+
+response = requests.get(
+    "https://api.example.com/v1/students",
+    headers=headers,
+    timeout=10,
+)
+```
+
+Common headers:
+
+```text
+Accept
+Content-Type
+Authorization
+User-Agent
+```
+
+`Accept` describes the response format the client expects.
+
+`Content-Type` describes the body format being sent.
+
+---
+
+# 13. Sending JSON with POST
+
+Suppose a prediction API expects:
+
+```json
+{
+  "study_hours": 5.5,
+  "attendance": 85,
+  "previous_score": 78
+}
+```
+
+Python:
+
+```python
+import requests
+
+
+payload = {
+    "study_hours": 5.5,
+    "attendance": 85,
+    "previous_score": 78,
+}
+
+response = requests.post(
+    "https://api.example.com/v1/predictions",
+    json=payload,
+    timeout=10,
+)
+```
+
+Using:
+
+```python
+json=payload
+```
+
+automatically serializes the dictionary as JSON and sets the appropriate content type.
+
+Read the prediction:
+
+```python
+prediction = response.json()
+
+print(prediction)
+```
+
+---
+
+# 14. Authentication
+
+Many APIs require authentication.
+
+A common approach uses an API key:
+
+```python
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY",
+}
+```
+
+Request:
+
+```python
+response = requests.get(
+    "https://api.example.com/v1/data",
+    headers=headers,
+    timeout=10,
+)
+```
+
+Do not hardcode real secrets directly in source code.
+
+Unsafe:
+
+```python
+API_KEY = "real-secret-key"
+```
+
+Safer:
+
+```python
+import os
+
+
+api_key = os.getenv("API_KEY")
+```
+
+Then configure the environment variable outside the code.
+
+---
+
+# 15. Validating Environment Variables
+
+```python
+import os
+
+
+api_key = os.getenv("API_KEY")
+
+if not api_key:
+    raise RuntimeError(
+        "API_KEY environment variable is missing."
+    )
+```
+
+This fails early with a clear message.
+
+Never print secret keys in logs.
+
+---
+
+# 16. Timeouts
+
+This is unsafe:
+
+```python
+requests.get(url)
+```
+
+The request may wait for a long time.
+
+Use:
+
+```python
+requests.get(
+    url,
+    timeout=10,
+)
+```
+
+You can separate connection and reading timeouts:
+
+```python
+requests.get(
+    url,
+    timeout=(3, 10),
+)
+```
+
+Meaning:
+
+```text
+3 seconds  → Connection timeout
+10 seconds → Response-read timeout
+```
+
+Timeouts are essential in production systems.
+
+---
+
+# 17. Checking for HTTP Errors
+
+```python
+response = requests.get(
+    url,
+    timeout=10,
+)
+
+response.raise_for_status()
+```
+
+`raise_for_status()` raises an exception for many 4xx and 5xx responses.
+
+Example:
+
+```python
+try:
+    response.raise_for_status()
+except requests.HTTPError as error:
+    print(f"HTTP request failed: {error}")
+```
+
+---
+
+# 18. Important Request Exceptions
+
+```text
+requests.Timeout
+requests.ConnectionError
+requests.HTTPError
+requests.RequestException
+```
+
+Relationship:
+
+```text
+RequestException
+├── Timeout
+├── ConnectionError
+└── HTTPError
+```
+
+Example:
+
+```python
+try:
+    response = requests.get(
+        url,
+        timeout=10,
+    )
+
+    response.raise_for_status()
+
+except requests.Timeout:
+    print("The API request timed out.")
+
+except requests.ConnectionError:
+    print("The API could not be reached.")
+
+except requests.HTTPError as error:
+    print(f"The API returned an error: {error}")
+```
+
+---
+
+# 19. Validating Response Data
+
+A successful response can still have an unexpected structure.
+
+Suppose you expect:
+
+```json
+{
+  "prediction": "Pass",
+  "probability": 0.87
+}
+```
+
+Validate it:
+
+```python
+data = response.json()
+
+required_fields = {
+    "prediction",
+    "probability",
+}
+
+missing_fields = (
+    required_fields - set(data)
+)
+
+if missing_fields:
+    raise ValueError(
+        "API response is missing fields: "
+        f"{sorted(missing_fields)}"
+    )
+```
+
+Also validate types and ranges:
+
+```python
+probability = data["probability"]
+
+if not isinstance(
+    probability,
+    int | float,
+):
+    raise TypeError(
+        "Probability must be numerical."
+    )
+
+if not 0 <= probability <= 1:
+    raise ValueError(
+        "Probability must be between 0 and 1."
+    )
+```
+
+---
+
+# 20. Pagination
+
+APIs often return large datasets in pages.
+
+Example request:
+
+```text
+GET /products?page=1&limit=100
+```
+
+Response:
+
+```json
+{
+  "items": [],
+  "page": 1,
+  "total_pages": 5
+}
+```
+
+Basic pagination loop:
+
+```python
+all_items = []
+page = 1
+
+while True:
+    response = requests.get(
+        url,
+        params={
+            "page": page,
+            "limit": 100,
+        },
+        timeout=10,
+    )
+
+    response.raise_for_status()
+
+    data = response.json()
+
+    all_items.extend(data["items"])
+
+    if page >= data["total_pages"]:
+        break
+
+    page += 1
+```
+
+Without pagination handling, you may collect only the first portion of a dataset.
+
+---
+
+# 21. Rate Limits
+
+APIs may limit how many requests a client can send.
+
+A rate limit may be expressed as:
+
+```text
+100 requests per minute
+```
+
+Exceeding it may produce:
+
+```text
+429 Too Many Requests
+```
+
+A client should:
+
+* Avoid unnecessary requests
+* Cache repeated results
+* Respect retry instructions
+* Use delays where required
+* Batch requests when supported
+
+Do not continuously retry a rejected request without delay.
+
+---
+
+# 22. Retries
+
+Some failures are temporary:
+
+* Network interruption
+* `502 Bad Gateway`
+* `503 Service Unavailable`
+* `504 Gateway Timeout`
+
+Retries may help, but retrying every error is wrong.
+
+Do not normally retry:
+
+```text
+400 Bad Request
+401 Unauthorized
+403 Forbidden
+404 Not Found
+```
+
+These usually require correcting the request.
+
+---
+
+# 23. API Data to Pandas
+
+Suppose an API returns a list of records:
+
+```python
+records = response.json()
+```
+
+Convert to a DataFrame:
+
+```python
+import pandas as pd
+
+
+data = pd.DataFrame(records)
+```
+
+Then inspect it:
+
+```python
+print(data.head())
+print(data.shape)
+print(data.dtypes)
+print(data.isna().sum())
+```
+
+An API response should still go through cleaning and validation before machine-learning use.
+
+---
+
+# 24. API Data Pipeline
+
+```text
+API endpoint
+     |
+     v
+HTTP request
+     |
+     v
+Status validation
+     |
+     v
+JSON parsing
+     |
+     v
+Schema validation
+     |
+     v
+Pandas DataFrame
+     |
+     v
+Data cleaning
+     |
+     v
+CSV or database
+```
+
+---
+
+# 25. Reusable API Client
+
+```python
+from typing import Any
+
+import requests
+
+
+class ApiClient:
+    """Provide reusable JSON API operations."""
+
+    def __init__(
+        self,
+        base_url: str,
+        api_key: str | None = None,
+        timeout: float = 10.0,
+    ) -> None:
+        """Initialize the API client."""
+        self.base_url = base_url.rstrip("/")
+        self.timeout = timeout
+        self.session = requests.Session()
+
+        self.session.headers.update(
+            {
+                "Accept": "application/json",
+                "User-Agent": "MLDataClient/1.0",
+            }
+        )
+
+        if api_key:
+            self.session.headers.update(
+                {
+                    "Authorization": (
+                        f"Bearer {api_key}"
+                    )
+                }
+            )
+
+    def get(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+    ) -> Any:
+        """Send a GET request and return JSON."""
+        url = self._build_url(endpoint)
+
+        try:
+            response = self.session.get(
+                url,
+                params=params,
+                timeout=self.timeout,
+            )
+
+            response.raise_for_status()
+
+            return response.json()
+
+        except requests.Timeout as error:
+            raise RuntimeError(
+                f"Request timed out: {url}"
+            ) from error
+
+        except requests.ConnectionError as error:
+            raise RuntimeError(
+                f"Could not connect to API: {url}"
+            ) from error
+
+        except requests.HTTPError as error:
+            raise RuntimeError(
+                "API returned an HTTP error: "
+                f"{error}"
+            ) from error
+
+        except requests.JSONDecodeError as error:
+            raise RuntimeError(
+                "API returned invalid JSON."
+            ) from error
+
+    def post(
+        self,
+        endpoint: str,
+        payload: dict[str, Any],
+    ) -> Any:
+        """Send a JSON POST request."""
+        url = self._build_url(endpoint)
+
+        try:
+            response = self.session.post(
+                url,
+                json=payload,
+                timeout=self.timeout,
+            )
+
+            response.raise_for_status()
+
+            return response.json()
+
+        except requests.RequestException as error:
+            raise RuntimeError(
+                f"API request failed: {url}"
+            ) from error
+
+    def close(self) -> None:
+        """Close the underlying HTTP session."""
+        self.session.close()
+
+    def _build_url(
+        self,
+        endpoint: str,
+    ) -> str:
+        """Build a complete API URL."""
+        normalized_endpoint = endpoint.lstrip("/")
+
+        return (
+            f"{self.base_url}/"
+            f"{normalized_endpoint}"
+        )
+```
+
+---
+
+# 26. Code Explanation
+
+## Class Definition
+
+```python
+class ApiClient:
+```
+
+Creates a reusable client that groups API-related behavior.
+
+---
+
+## Constructor
+
+```python
+def __init__(
+    self,
+    base_url: str,
+    api_key: str | None = None,
+    timeout: float = 10.0,
+) -> None:
+```
+
+Accepts:
+
+* Base API URL
+* Optional API key
+* Timeout value
+
+```python
+self.base_url = base_url.rstrip("/")
+```
+
+Removes a trailing slash so generated URLs do not contain accidental double slashes.
+
+```python
+self.session = requests.Session()
+```
+
+Creates a persistent session.
+
+A session can reuse connections and default headers.
+
+---
+
+## Default Headers
+
+```python
+self.session.headers.update(...)
+```
+
+Adds headers to every request made by the client.
+
+```python
+if api_key:
+```
+
+Adds authorization only when a key is provided.
+
+---
+
+## GET Method
+
+```python
+url = self._build_url(endpoint)
+```
+
+Combines the base URL with an endpoint.
+
+```python
+response = self.session.get(...)
+```
+
+Sends the HTTP request.
+
+```python
+response.raise_for_status()
+```
+
+Raises an error for unsuccessful HTTP responses.
+
+```python
+return response.json()
+```
+
+Parses and returns JSON.
+
+---
+
+## Exception Chaining
+
+```python
+raise RuntimeError(...) from error
+```
+
+Creates a clearer application-level error while preserving the original cause.
+
+---
+
+## POST Method
+
+```python
+json=payload
+```
+
+Serializes the payload as JSON.
+
+---
+
+## Closing the Session
+
+```python
+self.session.close()
+```
+
+Releases network resources.
+
+---
+
+## URL Builder
+
+```python
+endpoint.lstrip("/")
+```
+
+Removes leading slashes.
+
+```python
+f"{self.base_url}/{normalized_endpoint}"
+```
+
+Builds the complete endpoint URL.
+
+---
+
+# 27. Using the Client
+
+```python
+import os
+
+
+def main() -> None:
+    """Use the API client."""
+    api_key = os.getenv("API_KEY")
+
+    client = ApiClient(
+        base_url="https://api.example.com/v1",
+        api_key=api_key,
+        timeout=10,
+    )
+
+    try:
+        students = client.get(
+            "/students",
+            params={
+                "course": "AI",
+                "limit": 100,
+            },
+        )
+
+        print(students)
+
+        prediction = client.post(
+            "/predictions",
+            payload={
+                "study_hours": 6.0,
+                "attendance": 90,
+                "previous_score": 82,
+            },
+        )
+
+        print(prediction)
+
+    finally:
+        client.close()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+`finally` ensures the client is closed whether the requests succeed or fail.
+
+---
+
+# 28. Mathematical Intuition: Request Cost
+
+Suppose an API returns (p) records per page and contains (n) records.
+
+The required number of requests is approximately:
+
+[
+\left\lceil \frac{n}{p} \right\rceil
+]
+
+For:
+
+[
+n = 1000
+]
+
+and:
+
+[
+p = 100
+]
+
+the number of requests is:
+
+[
+\frac{1000}{100} = 10
+]
+
+If every request takes (t) seconds, sequential request time is approximately:
+
+[
+T = \frac{n}{p} \times t
+]
+
+If each request takes 0.5 seconds:
+
+[
+T = 10 \times 0.5 = 5 \text{ seconds}
+]
+
+This excludes processing and network variation.
+
+---
+
+# 29. Time Complexity
+
+For one response containing (n) records:
+
+JSON parsing:
+
+[
+O(n)
+]
+
+Schema validation:
+
+[
+O(n)
+]
+
+DataFrame creation:
+
+[
+O(n)
+]
+
+Overall processing:
+
+[
+\boxed{O(n)}
+]
+
+Network time is not represented well by Big-O because it depends on latency, server performance, and response size.
+
+Memory use is approximately:
+
+[
+\boxed{O(n)}
+]
+
+when the entire API response is loaded at once.
+
+---
+
+# 30. Unit Testing Without Real API Calls
+
+Unit tests should not depend on a live API.
+
+Reasons:
+
+* Network may be unavailable
+* API may be slow
+* Data may change
+* Rate limits may be triggered
+* Tests become unreliable
+
+Use mocks.
+
+```python
+from unittest.mock import Mock, patch
+
+
+def run_tests() -> None:
+    client = ApiClient(
+        base_url="https://api.example.com/v1"
+    )
+
+    mock_response = Mock()
+    mock_response.raise_for_status.return_value = None
+    mock_response.json.return_value = {
+        "id": 1,
+        "name": "Ali",
+        "score": 85,
+    }
+
+    with patch.object(
+        client.session,
+        "get",
+        return_value=mock_response,
+    ) as mocked_get:
+        result = client.get(
+            "/students/1"
+        )
+
+    assert result["id"] == 1
+    assert result["name"] == "Ali"
+    assert result["score"] == 85
+
+    mocked_get.assert_called_once()
+
+    called_url = mocked_get.call_args.args[0]
+
+    assert called_url == (
+        "https://api.example.com/v1/students/1"
+    )
+
+    client.close()
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+---
+
+# 31. Testing Timeout Handling
+
+```python
+from unittest.mock import patch
+
+import requests
+
+
+def test_timeout() -> None:
+    client = ApiClient(
+        base_url="https://api.example.com/v1"
+    )
+
+    with patch.object(
+        client.session,
+        "get",
+        side_effect=requests.Timeout,
+    ):
+        try:
+            client.get("/students")
+
+            raise AssertionError(
+                "Expected RuntimeError."
+            )
+
+        except RuntimeError as error:
+            assert "timed out" in str(error)
+
+    client.close()
+```
+
+---
+
+# 32. Common Mistakes
+
+## No Timeout
+
+```python
+requests.get(url)
+```
+
+The application may wait indefinitely.
+
+---
+
+## Hardcoding API Keys
+
+```python
+api_key = "secret-value"
+```
+
+Secrets may be committed to Git.
+
+---
+
+## Ignoring Status Codes
+
+```python
+data = requests.get(url).json()
+```
+
+The server may have returned an error response.
+
+Use `raise_for_status()`.
+
+---
+
+## Assuming Every Response Is JSON
+
+An API may return:
+
+* HTML error page
+* Empty response
+* Plain text
+* Malformed JSON
+
+Handle JSON parsing errors.
+
+---
+
+## Retrying Client Errors
+
+Repeatedly retrying a `401 Unauthorized` response will not fix an invalid API key.
+
+---
+
+## No Response Validation
+
+A `200` response may still omit required fields.
+
+---
+
+## Fetching Only the First Page
+
+Many APIs paginate responses.
+
+---
+
+## Logging Secrets
+
+Never log:
+
+* API keys
+* Tokens
+* Passwords
+* Authorization headers
+
+---
+
+## No Rate-Limit Handling
+
+Sending excessive requests can lead to temporary blocking.
+
+---
+
+## Using API Data Without Cleaning
+
+External API data may contain:
+
+* Missing values
+* Incorrect types
+* Duplicates
+* Changed fields
+* Unexpected categories
+
+---
+
+# 33. Debugging Techniques
+
+Inspect the requested URL:
+
+```python
+print(response.url)
+```
+
+Inspect status:
+
+```python
+print(response.status_code)
+```
+
+Inspect response headers:
+
+```python
+print(response.headers)
+```
+
+Inspect a limited body preview:
+
+```python
+print(response.text[:500])
+```
+
+Inspect JSON type:
+
+```python
+data = response.json()
+
+print(type(data))
+```
+
+Inspect dictionary keys:
+
+```python
+if isinstance(data, dict):
+    print(data.keys())
+```
+
+Measure response time:
+
+```python
+print(response.elapsed.total_seconds())
+```
+
+Do not print authentication headers.
+
+---
+
+# 34. Exercises
+
+## Exercise 1: HTTP Methods
+
+Match each operation with the correct method:
+
+1. Retrieve a user
+2. Create a prediction
+3. Update only a user’s city
+4. Delete an order
+5. Replace a complete profile
+
+---
+
+## Exercise 2: Query Parameters
+
+Write a GET request with:
+
+```text
+course = AI
+minimum_score = 75
+page = 2
+```
+
+Use a dictionary rather than manually building the URL.
+
+---
+
+## Exercise 3: Response Validation
+
+Validate this response:
+
+```python
+prediction = {
+    "label": "Pass",
+    "probability": 0.89,
+}
+```
+
+Requirements:
+
+* `label` must exist.
+* `probability` must exist.
+* Probability must be between 0 and 1.
+
+---
+
+## Exercise 4: Error Handling
+
+Create a function that handles:
+
+* Timeout
+* Connection failure
+* HTTP error
+* Invalid JSON
+
+---
+
+## Exercise 5: API DataFrame
+
+Convert this API response into a Pandas DataFrame:
+
+```python
+records = [
+    {
+        "product": "Phone",
+        "price": 1500,
+    },
+    {
+        "product": "Laptop",
+        "price": 3500,
+    },
+]
+```
+
+Calculate the average price.
+
+---
+
+# 35. Mini Project: Product Price API Collector
+
+Build an API client that collects product offers.
+
+Expected API response:
+
+```json
+{
+  "items": [
+    {
+      "product_id": 1,
+      "title": "Phone 128GB",
+      "price": 1500,
+      "currency": "AED",
+      "provider": "Store A"
+    }
+  ],
+  "page": 1,
+  "total_pages": 4
+}
+```
+
+## Requirements
+
+1. Read the base URL from configuration.
+2. Read the API key from an environment variable.
+3. Use a reusable `requests.Session`.
+4. Set request timeouts.
+5. Fetch all pages.
+6. Validate response fields.
+7. Convert prices to numeric.
+8. Remove records with invalid prices.
+9. Remove duplicate offers.
+10. Convert results into a Pandas DataFrame.
+11. Save results as CSV.
+12. Save metadata as JSON.
+13. Record:
+
+    * Page count
+    * Raw offer count
+    * Clean offer count
+    * Minimum price
+    * Maximum price
+    * Average price
+14. Mock all HTTP calls in unit tests.
+15. Never use a live API during unit testing.
+
+Architecture:
+
+```text
+Configuration
+      |
+      v
+Authenticated API client
+      |
+      v
+Paginated requests
+      |
+      v
+Response validation
+      |
+      v
+Offer normalization
+      |
+      v
+Pandas DataFrame
+      |
+      +----------------------+
+      |                      |
+      v                      v
+Offers CSV               Metadata JSON
+```
+
+---
+
+# 36. Interview Questions
+
+1. What is an API?
+2. What is an endpoint?
+3. What is HTTP?
+4. What is the difference between GET and POST?
+5. What is the difference between PUT and PATCH?
+6. What do 2xx status codes represent?
+7. What does `404` mean?
+8. What does `429` mean?
+9. What does `500` mean?
+10. What are query parameters?
+11. What are HTTP headers?
+12. What does `response.json()` do?
+13. What does `raise_for_status()` do?
+14. Why are timeouts necessary?
+15. What is bearer-token authentication?
+16. Why should secrets be stored in environment variables?
+17. What is pagination?
+18. What is rate limiting?
+19. Which errors should normally be retried?
+20. Why should response schemas be validated?
+21. What is a `requests.Session`?
+22. Why should API unit tests use mocks?
+23. What is the difference between network failure and HTTP failure?
+24. Why can a successful HTTP response still contain unusable data?
+25. How can API data be converted into a Pandas DataFrame?
+
+---
+
+# 37. Summary
+
+* APIs allow software systems to communicate.
+* HTTP requests contain methods, URLs, headers, parameters, and optional bodies.
+* GET retrieves data.
+* POST creates data or submits operations.
+* Status codes indicate request results.
+* JSON is a common API data format.
+* Query parameters should be passed using dictionaries.
+* API keys should not be hardcoded.
+* Every request should have a timeout.
+* `raise_for_status()` detects HTTP failures.
+* API responses must be structurally validated.
+* Pagination is required for large datasets.
+* Rate limits must be respected.
+* `requests.Session` supports connection reuse and shared headers.
+* API data should be cleaned before ML use.
+* Unit tests should mock network calls.
+
+# Lesson 9 Quiz
+
+### 1. What does API stand for?
+
+A. Automated Python Interface
+B. Application Programming Interface
+C. Applied Prediction Integration
+D. Application Processing Internet
+
+### 2. Which HTTP method normally retrieves data?
+
+A. POST
+B. DELETE
+C. GET
+D. PATCH
+
+### 3. Which method is commonly used to create a resource or submit a prediction?
+
+### 4. What does a `200` status code generally mean?
+
+### 5. What does `404` mean?
+
+### 6. What does `429` indicate?
+
+### 7. What is the purpose of query parameters?
+
+### 8. What does this do?
+
+```python
+response = requests.get(
+    url,
+    timeout=10,
+)
+```
+
+### 9. Why is omitting a timeout dangerous?
+
+### 10. What does:
+
+```python
+response.raise_for_status()
+```
+
+do?
+
+### 11. What does:
+
+```python
+response.json()
+```
+
+return?
+
+### 12. Why should API keys not be hardcoded?
+
+### 13. What is pagination?
+
+### 14. Why might collecting only page one produce an incomplete dataset?
+
+### 15. Should a `401 Unauthorized` response be retried repeatedly without changing anything?
+
+### 16. Why must a successful JSON response still be validated?
+
+### 17. What is the purpose of `requests.Session()`?
+
+### 18. Why should API calls be mocked in unit tests?
+
+### 19. What is the approximate processing complexity for validating (n) returned records?
+
+A. (O(1))
+B. (O(\log n))
+C. (O(n))
+D. (O(n^2))
+
+### 20. Why should external API data be cleaned before machine-learning training?
