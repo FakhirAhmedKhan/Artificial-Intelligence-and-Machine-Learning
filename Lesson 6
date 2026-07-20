@@ -1,0 +1,2206 @@
+# Lesson 6: Seaborn Foundations for Statistical Visualization
+
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** Seaborn
+**Lessons 1–5:** Delivered; quiz mastery is not yet verified
+
+Seaborn is a statistical visualization library built on Matplotlib and designed to work closely with Pandas DataFrames. It provides higher-level functions for visualizing relationships, categories, distributions, and matrices. ([seaborn.pydata.org][1])
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain the difference between Matplotlib and Seaborn.
+2. Create statistical charts from Pandas DataFrames.
+3. Build scatter, line, bar, count, histogram, box, and violin plots.
+4. Use `hue` to represent an additional variable.
+5. Create correlation heatmaps.
+6. Understand figure-level and axes-level functions.
+7. Choose an appropriate statistical visualization.
+8. Identify distributions, relationships, categories, and outliers.
+9. Build an exploratory data-analysis report.
+10. Debug common Seaborn problems.
+
+---
+
+# 2. Why Seaborn?
+
+In Lesson 5, we created charts using Matplotlib:
+
+```python
+axis.scatter(
+    students["study_hours"],
+    students["exam_score"],
+)
+```
+
+With Seaborn:
+
+```python
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+)
+```
+
+The Seaborn version directly understands:
+
+* DataFrame column names
+* Categorical variables
+* Statistical groupings
+* Legends
+* Confidence intervals
+* Multiple visual dimensions
+
+Seaborn does not replace Matplotlib. It uses Matplotlib underneath, so Matplotlib functions are still used for figure sizes, titles, labels, layouts, and saving files. ([GitHub][2])
+
+---
+
+# 3. Installing and Importing Seaborn
+
+The official installation command is: ([seaborn.pydata.org][3])
+
+```bash
+pip install seaborn
+```
+
+Import Seaborn:
+
+```python
+import seaborn as sns
+```
+
+A typical import section is:
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+```
+
+---
+
+# 4. Example Dataset
+
+We will use a student-performance dataset:
+
+```python
+import pandas as pd
+
+
+students = pd.DataFrame(
+    {
+        "student": [
+            "Ali",
+            "Sara",
+            "Ahmed",
+            "Fatima",
+            "Omar",
+            "Ayesha",
+            "Hassan",
+            "Mariam",
+            "Bilal",
+            "Noor",
+        ],
+        "study_hours": [
+            2.0,
+            5.0,
+            3.0,
+            7.0,
+            1.5,
+            6.0,
+            4.0,
+            8.0,
+            2.5,
+            5.5,
+        ],
+        "attendance": [
+            60,
+            82,
+            70,
+            95,
+            55,
+            88,
+            76,
+            98,
+            65,
+            84,
+        ],
+        "exam_score": [
+            52,
+            78,
+            65,
+            94,
+            45,
+            86,
+            72,
+            97,
+            58,
+            81,
+        ],
+        "gender": [
+            "Male",
+            "Female",
+            "Male",
+            "Female",
+            "Male",
+            "Female",
+            "Male",
+            "Female",
+            "Male",
+            "Female",
+        ],
+        "course": [
+            "Python",
+            "Python",
+            "Data Science",
+            "Data Science",
+            "Python",
+            "AI",
+            "AI",
+            "Data Science",
+            "Python",
+            "AI",
+        ],
+    }
+)
+```
+
+Each row represents one student.
+
+Each column represents one variable.
+
+---
+
+# 5. Setting a Theme
+
+```python
+import seaborn as sns
+
+
+sns.set_theme()
+```
+
+This applies Seaborn’s default visual styling.
+
+You can also use:
+
+```python
+sns.set_theme(style="whitegrid")
+```
+
+Common styles include:
+
+```text
+darkgrid
+whitegrid
+dark
+white
+ticks
+```
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+sns.set_theme(style="whitegrid")
+
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+)
+
+plt.show()
+```
+
+---
+
+# 6. Scatter Plot
+
+A scatter plot displays the relationship between two numerical variables. Seaborn’s official relational-plot documentation recommends `scatterplot()` for basic relationships where both variables are numeric. ([seaborn.pydata.org][4])
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+sns.set_theme(style="whitegrid")
+
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+    ax=axis,
+)
+
+axis.set_title(
+    "Study Hours vs Exam Score"
+)
+
+plt.show()
+```
+
+## Visual Meaning
+
+```text
+Exam score
+100 |                         *
+ 90 |                    *
+ 80 |               *
+ 70 |          *
+ 60 |      *
+ 50 |  *
+    +---------------------------
+      1  2  3  4  5  6  7  8
+             Study hours
+```
+
+This suggests a positive relationship:
+
+```text
+More study hours → generally higher scores
+```
+
+However, a visual relationship does not prove that study time alone caused the higher scores.
+
+---
+
+# 7. Using `hue`
+
+`hue` uses another variable to divide observations into groups.
+
+```python
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+    hue="course",
+)
+```
+
+Now every course receives a separate visual category.
+
+```text
+Python students
+AI students
+Data Science students
+```
+
+Complete example:
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+    hue="course",
+    ax=axis,
+)
+
+axis.set_title(
+    "Study Hours and Scores by Course"
+)
+
+axis.set_xlabel("Study Hours")
+axis.set_ylabel("Exam Score")
+
+plt.show()
+```
+
+`hue` is useful for comparing multiple groups without creating separate charts.
+
+---
+
+# 8. Using `style` and `size`
+
+You can represent additional variables:
+
+```python
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+    hue="course",
+    style="gender",
+    size="attendance",
+)
+```
+
+This chart represents:
+
+```text
+x-position → Study hours
+y-position → Exam score
+color group → Course
+marker shape → Gender
+marker size → Attendance
+```
+
+This is powerful, but adding too many dimensions can make the chart difficult to read.
+
+---
+
+# 9. Line Plot
+
+A line plot displays change across an ordered variable.
+
+Suppose we have model-training data:
+
+```python
+training_history = pd.DataFrame(
+    {
+        "epoch": [1, 2, 3, 4, 5, 6],
+        "training_loss": [
+            0.92,
+            0.70,
+            0.54,
+            0.41,
+            0.31,
+            0.24,
+        ],
+        "validation_loss": [
+            0.95,
+            0.74,
+            0.59,
+            0.50,
+            0.52,
+            0.60,
+        ],
+    }
+)
+```
+
+Create a line chart:
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.lineplot(
+    data=training_history,
+    x="epoch",
+    y="training_loss",
+    label="Training Loss",
+    ax=axis,
+)
+
+sns.lineplot(
+    data=training_history,
+    x="epoch",
+    y="validation_loss",
+    label="Validation Loss",
+    ax=axis,
+)
+
+axis.set_title("Model Training History")
+axis.set_xlabel("Epoch")
+axis.set_ylabel("Loss")
+
+plt.show()
+```
+
+The validation loss starts increasing after epoch 4, while training loss keeps decreasing.
+
+This may indicate overfitting.
+
+---
+
+# 10. Bar Plot
+
+A bar plot compares numerical values across categories.
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.barplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    ax=axis,
+)
+
+axis.set_title(
+    "Average Exam Score by Course"
+)
+
+plt.show()
+```
+
+A Seaborn bar plot normally summarizes multiple observations in each category.
+
+For example:
+
+```text
+Python course → average score
+AI course → average score
+Data Science course → average score
+```
+
+This differs from Matplotlib’s `bar()`, where you often provide already calculated bar heights.
+
+---
+
+# 11. Mathematical Intuition for a Bar Plot
+
+Suppose the Python scores are:
+
+[
+52,\ 78,\ 45,\ 58
+]
+
+The mean is:
+
+[
+\bar{x}
+=======
+
+\frac{52 + 78 + 45 + 58}{4}
+]
+
+[
+\bar{x}
+=======
+
+# \frac{233}{4}
+
+58.25
+]
+
+The Python bar height would represent approximately:
+
+[
+58.25
+]
+
+Therefore, the bar may represent a statistical summary rather than an individual observation.
+
+---
+
+# 12. Count Plot
+
+A count plot displays how many rows belong to each category.
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.countplot(
+    data=students,
+    x="course",
+    ax=axis,
+)
+
+axis.set_title(
+    "Number of Students by Course"
+)
+
+axis.set_xlabel("Course")
+axis.set_ylabel("Student Count")
+
+plt.show()
+```
+
+This is similar to:
+
+```python
+students["course"].value_counts()
+```
+
+A count plot uses frequencies, not averages.
+
+---
+
+# 13. Histogram
+
+A histogram shows the distribution of a numerical variable.
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.histplot(
+    data=students,
+    x="exam_score",
+    bins=5,
+    ax=axis,
+)
+
+axis.set_title(
+    "Exam Score Distribution"
+)
+
+plt.show()
+```
+
+Add a density estimate:
+
+```python
+sns.histplot(
+    data=students,
+    x="exam_score",
+    bins=5,
+    kde=True,
+)
+```
+
+The histogram groups values into intervals.
+
+The density curve estimates the general shape of the distribution.
+
+---
+
+# 14. Distribution Shapes
+
+## Approximately Symmetrical
+
+```text
+Frequency
+   |
+   |       ***
+   |     *******
+   |   ***********
+   |________________
+             Values
+```
+
+Values are distributed similarly around the center.
+
+## Right-Skewed
+
+```text
+Frequency
+   |
+   | ****
+   | ******
+   |   ****
+   |      ***______
+   |________________
+             Values
+```
+
+Most values are lower, with a long tail toward higher values.
+
+## Left-Skewed
+
+```text
+Frequency
+   |
+   |       ****
+   |     ******
+   |   ****
+   |___**
+   |________________
+             Values
+```
+
+Most values are higher, with a long tail toward lower values.
+
+---
+
+# 15. Box Plot
+
+A box plot summarizes a numerical distribution.
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.boxplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    ax=axis,
+)
+
+axis.set_title(
+    "Exam Score Distribution by Course"
+)
+
+plt.show()
+```
+
+The Seaborn API includes box plots for comparing distributions across categories. ([seaborn.pydata.org][5])
+
+---
+
+# 16. Box Plot Components
+
+```text
+       possible outlier
+              *
+              |
+        upper whisker
+              |
+        +-----------+
+        |     Q3    |
+        |-----------| ← Median
+        |     Q1    |
+        +-----------+
+              |
+        lower whisker
+```
+
+A box plot commonly displays:
+
+* Median
+* First quartile
+* Third quartile
+* Interquartile range
+* Whiskers
+* Potential outliers
+
+---
+
+# 17. Mathematical Intuition: Quartiles
+
+Given sorted scores:
+
+```text
+45, 52, 58, 65, 72, 78, 81, 86, 94, 97
+```
+
+The median divides the dataset into two halves.
+
+The quartiles divide the values into four sections:
+
+```text
+Q1 → 25th percentile
+Q2 → 50th percentile or median
+Q3 → 75th percentile
+```
+
+The interquartile range is:
+
+[
+IQR = Q3 - Q1
+]
+
+A common outlier rule is:
+
+[
+\text{Lower boundary}
+=====================
+
+Q1 - 1.5(IQR)
+]
+
+[
+\text{Upper boundary}
+=====================
+
+Q3 + 1.5(IQR)
+]
+
+Values outside these boundaries may be displayed as potential outliers.
+
+They should not automatically be deleted. They may be genuine observations.
+
+---
+
+# 18. Violin Plot
+
+A violin plot combines distribution shape with categorical comparison.
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.violinplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    ax=axis,
+)
+
+axis.set_title(
+    "Score Distribution by Course"
+)
+
+plt.show()
+```
+
+Seaborn provides violin plots as categorical distribution visualizations. ([seaborn.pydata.org][5])
+
+A wider part of the violin represents a region with more observations.
+
+A violin plot can reveal distribution shape more clearly than a box plot, but it can be misleading with extremely small datasets.
+
+---
+
+# 19. Strip Plot
+
+A strip plot shows individual observations across categories.
+
+```python
+sns.stripplot(
+    data=students,
+    x="course",
+    y="exam_score",
+)
+```
+
+When points overlap, use jitter:
+
+```python
+sns.stripplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    jitter=True,
+)
+```
+
+---
+
+# 20. Swarm Plot
+
+A swarm plot adjusts points so they do not overlap.
+
+```python
+sns.swarmplot(
+    data=students,
+    x="course",
+    y="exam_score",
+)
+```
+
+The official categorical API describes `swarmplot()` as a categorical scatter plot whose points are adjusted to avoid overlapping. ([seaborn.pydata.org][5])
+
+Swarm plots work best with relatively small datasets.
+
+---
+
+# 21. Combining a Box Plot and Strip Plot
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 5)
+)
+
+sns.boxplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    ax=axis,
+)
+
+sns.stripplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    ax=axis,
+)
+
+axis.set_title(
+    "Score Distribution and Individual Results"
+)
+
+plt.show()
+```
+
+The box plot shows the statistical summary.
+
+The strip plot shows the actual observations.
+
+---
+
+# 22. Correlation
+
+Correlation measures the strength and direction of a linear relationship between two numerical variables.
+
+Its common range is:
+
+[
+-1 \leq r \leq 1
+]
+
+Interpretation:
+
+```text
+r close to 1   → strong positive relationship
+r close to -1  → strong negative relationship
+r close to 0   → weak linear relationship
+```
+
+Examples:
+
+```text
+Study hours and exam score → possibly positive
+Product price and demand → possibly negative
+Student ID and exam score → probably meaningless
+```
+
+Correlation does not prove causation.
+
+---
+
+# 23. Correlation Matrix
+
+Select numerical columns:
+
+```python
+numerical_data = students[
+    [
+        "study_hours",
+        "attendance",
+        "exam_score",
+    ]
+]
+```
+
+Calculate correlations:
+
+```python
+correlation_matrix = numerical_data.corr()
+```
+
+Possible structure:
+
+```text
+               study_hours  attendance  exam_score
+study_hours          1.00        0.91        0.95
+attendance           0.91        1.00        0.96
+exam_score           0.95        0.96        1.00
+```
+
+The diagonal is always 1 because each variable is perfectly correlated with itself.
+
+---
+
+# 24. Heatmap
+
+A heatmap represents matrix values using color intensity.
+
+```python
+figure, axis = plt.subplots(
+    figsize=(8, 6)
+)
+
+sns.heatmap(
+    correlation_matrix,
+    annot=True,
+    fmt=".2f",
+    ax=axis,
+)
+
+axis.set_title(
+    "Feature Correlation Heatmap"
+)
+
+plt.show()
+```
+
+Seaborn’s `heatmap()` function plots rectangular data as a color-encoded matrix and can use DataFrame row and column labels. ([seaborn.pydata.org][6])
+
+Arguments:
+
+```text
+annot=True → display numerical values
+fmt=".2f"  → display two decimal places
+```
+
+---
+
+# 25. Pair Plot
+
+A pair plot displays relationships between multiple numerical variables.
+
+```python
+sns.pairplot(
+    data=students,
+    vars=[
+        "study_hours",
+        "attendance",
+        "exam_score",
+    ],
+    hue="course",
+)
+
+plt.show()
+```
+
+It creates:
+
+* Scatter plots between pairs of variables
+* Distribution plots along the diagonal
+
+This is useful for early exploratory data analysis.
+
+However, pair plots become expensive and cluttered when a dataset contains many columns.
+
+---
+
+# 26. Figure-Level vs Axes-Level Functions
+
+## Axes-Level Functions
+
+Examples:
+
+```python
+sns.scatterplot()
+sns.lineplot()
+sns.boxplot()
+sns.histplot()
+sns.heatmap()
+```
+
+They draw onto a Matplotlib axis.
+
+Example:
+
+```python
+figure, axis = plt.subplots()
+
+sns.scatterplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+    ax=axis,
+)
+```
+
+## Figure-Level Functions
+
+Examples:
+
+```python
+sns.relplot()
+sns.catplot()
+sns.displot()
+sns.pairplot()
+```
+
+They create and manage their own figure.
+
+For example, `catplot()` is documented as a figure-level interface for categorical plots. ([seaborn.pydata.org][7])
+
+```python
+chart = sns.catplot(
+    data=students,
+    x="course",
+    y="exam_score",
+    kind="box",
+)
+```
+
+Do not pass a normal Matplotlib `ax` argument to functions that create their own figure unless that function explicitly supports it.
+
+---
+
+# 27. Faceting
+
+Faceting creates separate charts for different groups.
+
+```python
+sns.relplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+    col="course",
+    kind="scatter",
+)
+
+plt.show()
+```
+
+This creates one chart for each course.
+
+```text
+Python chart | AI chart | Data Science chart
+```
+
+Faceting is useful when putting every group on one chart becomes cluttered.
+
+---
+
+# 28. Main Python Implementation
+
+## Exploratory Student Analysis Report
+
+```python
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+
+REQUIRED_COLUMNS = {
+    "student",
+    "study_hours",
+    "attendance",
+    "exam_score",
+    "gender",
+    "course",
+}
+
+
+def validate_student_data(
+    data: pd.DataFrame,
+) -> None:
+    """Validate the student-analysis dataset."""
+    if data.empty:
+        raise ValueError(
+            "Student dataset cannot be empty."
+        )
+
+    missing_columns = (
+        REQUIRED_COLUMNS - set(data.columns)
+    )
+
+    if missing_columns:
+        raise ValueError(
+            "Missing required columns: "
+            f"{sorted(missing_columns)}"
+        )
+
+    numerical_columns = [
+        "study_hours",
+        "attendance",
+        "exam_score",
+    ]
+
+    if data[numerical_columns].isna().any().any():
+        raise ValueError(
+            "Numerical columns cannot contain missing values."
+        )
+
+    if (data["study_hours"] < 0).any():
+        raise ValueError(
+            "Study hours cannot be negative."
+        )
+
+    percentage_columns = [
+        "attendance",
+        "exam_score",
+    ]
+
+    for column in percentage_columns:
+        invalid_values = (
+            (data[column] < 0)
+            | (data[column] > 100)
+        )
+
+        if invalid_values.any():
+            raise ValueError(
+                f"{column} must be between 0 and 100."
+            )
+
+
+def save_score_distribution(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save an exam-score distribution."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    sns.histplot(
+        data=data,
+        x="exam_score",
+        bins=6,
+        kde=True,
+        ax=axis,
+    )
+
+    axis.set_title(
+        "Exam Score Distribution"
+    )
+
+    axis.set_xlabel("Exam Score")
+    axis.set_ylabel("Student Count")
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "score_distribution.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def save_study_score_relationship(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save a study-score scatter plot."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    sns.scatterplot(
+        data=data,
+        x="study_hours",
+        y="exam_score",
+        hue="course",
+        style="gender",
+        ax=axis,
+    )
+
+    axis.set_title(
+        "Study Hours vs Exam Score"
+    )
+
+    axis.set_xlabel("Study Hours")
+    axis.set_ylabel("Exam Score")
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "study_hours_vs_score.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def save_course_boxplot(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save course score distributions."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    sns.boxplot(
+        data=data,
+        x="course",
+        y="exam_score",
+        ax=axis,
+    )
+
+    sns.stripplot(
+        data=data,
+        x="course",
+        y="exam_score",
+        ax=axis,
+    )
+
+    axis.set_title(
+        "Exam Scores by Course"
+    )
+
+    axis.set_xlabel("Course")
+    axis.set_ylabel("Exam Score")
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "course_score_distribution.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def save_course_countplot(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save student counts by course."""
+    figure, axis = plt.subplots(
+        figsize=(8, 5)
+    )
+
+    sns.countplot(
+        data=data,
+        x="course",
+        ax=axis,
+    )
+
+    axis.set_title(
+        "Students by Course"
+    )
+
+    axis.set_xlabel("Course")
+    axis.set_ylabel("Student Count")
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "students_by_course.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def save_correlation_heatmap(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Create and save a feature correlation heatmap."""
+    numerical_data = data[
+        [
+            "study_hours",
+            "attendance",
+            "exam_score",
+        ]
+    ]
+
+    correlation_matrix = numerical_data.corr()
+
+    figure, axis = plt.subplots(
+        figsize=(7, 5)
+    )
+
+    sns.heatmap(
+        correlation_matrix,
+        annot=True,
+        fmt=".2f",
+        ax=axis,
+    )
+
+    axis.set_title(
+        "Student Feature Correlations"
+    )
+
+    figure.tight_layout()
+
+    figure.savefig(
+        output_directory
+        / "correlation_heatmap.png",
+        dpi=300,
+        bbox_inches="tight",
+    )
+
+    plt.close(figure)
+
+
+def generate_visual_report(
+    data: pd.DataFrame,
+    output_directory: Path,
+) -> None:
+    """Generate all exploratory-analysis charts."""
+    output_directory.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    sns.set_theme(style="whitegrid")
+
+    save_score_distribution(
+        data,
+        output_directory,
+    )
+
+    save_study_score_relationship(
+        data,
+        output_directory,
+    )
+
+    save_course_boxplot(
+        data,
+        output_directory,
+    )
+
+    save_course_countplot(
+        data,
+        output_directory,
+    )
+
+    save_correlation_heatmap(
+        data,
+        output_directory,
+    )
+
+
+def main() -> None:
+    """Run the student exploratory analysis."""
+    students = pd.DataFrame(
+        {
+            "student": [
+                "Ali",
+                "Sara",
+                "Ahmed",
+                "Fatima",
+                "Omar",
+                "Ayesha",
+                "Hassan",
+                "Mariam",
+                "Bilal",
+                "Noor",
+            ],
+            "study_hours": [
+                2.0,
+                5.0,
+                3.0,
+                7.0,
+                1.5,
+                6.0,
+                4.0,
+                8.0,
+                2.5,
+                5.5,
+            ],
+            "attendance": [
+                60,
+                82,
+                70,
+                95,
+                55,
+                88,
+                76,
+                98,
+                65,
+                84,
+            ],
+            "exam_score": [
+                52,
+                78,
+                65,
+                94,
+                45,
+                86,
+                72,
+                97,
+                58,
+                81,
+            ],
+            "gender": [
+                "Male",
+                "Female",
+                "Male",
+                "Female",
+                "Male",
+                "Female",
+                "Male",
+                "Female",
+                "Male",
+                "Female",
+            ],
+            "course": [
+                "Python",
+                "Python",
+                "Data Science",
+                "Data Science",
+                "Python",
+                "AI",
+                "AI",
+                "Data Science",
+                "Python",
+                "AI",
+            ],
+        }
+    )
+
+    validate_student_data(students)
+
+    output_directory = Path(
+        "reports/seaborn_student_analysis"
+    )
+
+    generate_visual_report(
+        students,
+        output_directory,
+    )
+
+    print(
+        "Visual report saved to: "
+        f"{output_directory}"
+    )
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 29. Architecture
+
+```text
+Student DataFrame
+       |
+       v
+Schema and range validation
+       |
+       +-----------------------------+
+       |              |              |
+       v              v              v
+Distribution     Relationships    Categories
+       |              |              |
+       v              v              v
+Histogram       Scatter plot     Box/count plots
+       |
+       v
+Correlation calculation
+       |
+       v
+Heatmap
+       |
+       v
+High-resolution report images
+```
+
+---
+
+# 30. Important Code Explanation
+
+```python
+sns.histplot(
+    data=data,
+    x="exam_score",
+    bins=6,
+    kde=True,
+    ax=axis,
+)
+```
+
+* `data=data` provides the DataFrame.
+* `x="exam_score"` selects the column.
+* `bins=6` creates six intervals.
+* `kde=True` adds an estimated density curve.
+* `ax=axis` draws on the supplied Matplotlib axis.
+
+```python
+sns.scatterplot(
+    data=data,
+    x="study_hours",
+    y="exam_score",
+    hue="course",
+    style="gender",
+    ax=axis,
+)
+```
+
+* `x` controls horizontal position.
+* `y` controls vertical position.
+* `hue` separates course groups.
+* `style` separates gender groups.
+
+```python
+correlation_matrix = numerical_data.corr()
+```
+
+Calculates pairwise correlations between numerical columns.
+
+```python
+sns.heatmap(
+    correlation_matrix,
+    annot=True,
+    fmt=".2f",
+    ax=axis,
+)
+```
+
+* `annot=True` prints each correlation value.
+* `fmt=".2f"` displays two decimal places.
+
+```python
+plt.close(figure)
+```
+
+Releases the figure after saving it.
+
+---
+
+# 31. Time Complexity
+
+Let:
+
+* (n) = number of rows
+* (m) = number of numerical features
+* (k) = number of categories
+
+Validation scans the data:
+
+[
+O(n)
+]
+
+Histogram:
+
+[
+O(n)
+]
+
+Scatter plot:
+
+[
+O(n)
+]
+
+Box and strip plots:
+
+[
+O(n)
+]
+
+Count plot:
+
+[
+O(n)
+]
+
+Correlation matrix:
+
+[
+O(nm^2)
+]
+
+For three fixed numerical features:
+
+[
+m = 3
+]
+
+Therefore:
+
+[
+O(nm^2) = O(9n) = O(n)
+]
+
+For datasets with many features, correlation calculation becomes more expensive.
+
+The heatmap displays:
+
+[
+m^2
+]
+
+cells.
+
+---
+
+# 32. Unit Tests
+
+```python
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+import pandas as pd
+
+
+def run_tests() -> None:
+    valid_data = pd.DataFrame(
+        {
+            "student": ["Ali", "Sara", "Ahmed"],
+            "study_hours": [2.0, 5.0, 3.0],
+            "attendance": [60.0, 82.0, 70.0],
+            "exam_score": [52.0, 78.0, 65.0],
+            "gender": ["Male", "Female", "Male"],
+            "course": [
+                "Python",
+                "Python",
+                "AI",
+            ],
+        }
+    )
+
+    validate_student_data(valid_data)
+
+    correlation_matrix = valid_data[
+        [
+            "study_hours",
+            "attendance",
+            "exam_score",
+        ]
+    ].corr()
+
+    assert correlation_matrix.shape == (3, 3)
+
+    assert correlation_matrix.loc[
+        "exam_score",
+        "exam_score",
+    ] == 1.0
+
+    with TemporaryDirectory() as directory:
+        output_directory = Path(directory)
+
+        generate_visual_report(
+            valid_data,
+            output_directory,
+        )
+
+        expected_files = [
+            "score_distribution.png",
+            "study_hours_vs_score.png",
+            "course_score_distribution.png",
+            "students_by_course.png",
+            "correlation_heatmap.png",
+        ]
+
+        for filename in expected_files:
+            file_path = (
+                output_directory / filename
+            )
+
+            assert file_path.exists()
+            assert file_path.stat().st_size > 0
+
+    invalid_data = valid_data.copy()
+    invalid_data.loc[0, "attendance"] = 150
+
+    try:
+        validate_student_data(invalid_data)
+        raise AssertionError(
+            "Expected ValueError was not raised."
+        )
+    except ValueError:
+        pass
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+---
+
+# 33. Common Mistakes
+
+## Using a Categorical Column as a Numeric Axis
+
+Problem:
+
+```python
+sns.scatterplot(
+    data=students,
+    x="student",
+    y="course",
+)
+```
+
+A scatter plot is normally intended for numerical relationships.
+
+Use a count plot or categorical plot instead.
+
+---
+
+## Misunderstanding a Bar Plot
+
+```python
+sns.barplot(
+    data=students,
+    x="course",
+    y="exam_score",
+)
+```
+
+This does not necessarily draw one bar per student.
+
+It summarizes scores within each course.
+
+---
+
+## Using `countplot()` with a Numerical Summary
+
+A count plot counts rows.
+
+It does not calculate total revenue or average score.
+
+For statistical summaries, use `barplot()` or calculate the aggregation first.
+
+---
+
+## Too Many `hue` Categories
+
+```python
+hue="student"
+```
+
+When every observation has a unique value, the legend becomes unreadable.
+
+Use `hue` for meaningful groups.
+
+---
+
+## Trusting Correlation Without Context
+
+A strong correlation may result from:
+
+* A hidden third variable
+* Small sample size
+* Data leakage
+* Coincidence
+* Incorrect data
+* Non-independent observations
+
+Correlation does not establish causation.
+
+---
+
+## Using a Violin Plot with Very Little Data
+
+A density shape estimated from two or three observations may imply more information than the dataset actually contains.
+
+Use a strip plot or box plot with individual observations.
+
+---
+
+## Ignoring Missing Values
+
+Missing values may remove observations silently from charts.
+
+Check:
+
+```python
+print(data.isna().sum())
+```
+
+---
+
+## Creating an Oversized Pair Plot
+
+A pair plot with 30 features attempts to create roughly:
+
+[
+30 \times 30 = 900
+]
+
+plot areas.
+
+Select only important features first.
+
+---
+
+## Mixing Figure-Level and Axes-Level Logic
+
+This is problematic:
+
+```python
+figure, axis = plt.subplots()
+
+sns.relplot(
+    data=students,
+    x="study_hours",
+    y="exam_score",
+)
+```
+
+`relplot()` creates its own figure, so the manually created `axis` is unused.
+
+---
+
+# 34. Debugging Techniques
+
+Inspect DataFrame columns:
+
+```python
+print(data.columns.tolist())
+```
+
+Inspect types:
+
+```python
+print(data.dtypes)
+```
+
+Inspect missing values:
+
+```python
+print(data.isna().sum())
+```
+
+Inspect categories:
+
+```python
+print(data["course"].value_counts())
+```
+
+Inspect numerical ranges:
+
+```python
+print(data.describe())
+```
+
+Inspect the correlation matrix before plotting:
+
+```python
+print(correlation_matrix)
+```
+
+Confirm the column is numerical:
+
+```python
+print(
+    pd.api.types.is_numeric_dtype(
+        data["exam_score"]
+    )
+)
+```
+
+Close old figures:
+
+```python
+plt.close("all")
+```
+
+---
+
+# 35. Exercises
+
+## Exercise 1: Scatter Plot
+
+Create a scatter plot:
+
+```python
+advertising_data = pd.DataFrame(
+    {
+        "advertising_cost": [
+            1000,
+            1500,
+            2000,
+            2500,
+            3000,
+        ],
+        "revenue": [
+            5000,
+            6500,
+            8200,
+            9600,
+            12000,
+        ],
+        "channel": [
+            "Social",
+            "Search",
+            "Social",
+            "Search",
+            "Social",
+        ],
+    }
+)
+```
+
+Use:
+
+```text
+x → advertising_cost
+y → revenue
+hue → channel
+```
+
+---
+
+## Exercise 2: Count Plot
+
+Create a count plot showing the number of students in each course.
+
+Add `hue="gender"`.
+
+---
+
+## Exercise 3: Histogram
+
+Create an exam-score histogram with:
+
+```python
+bins=5
+kde=True
+```
+
+Explain where most scores are concentrated.
+
+---
+
+## Exercise 4: Box Plot
+
+Create a box plot comparing exam scores by course.
+
+Add a strip plot showing the individual students.
+
+---
+
+## Exercise 5: Correlation Heatmap
+
+Calculate and display correlations between:
+
+* Study hours
+* Attendance
+* Exam score
+
+Explain which pair has the strongest relationship.
+
+---
+
+# 36. Mini Project: E-Commerce Exploratory Analysis
+
+Use:
+
+```python
+sales = pd.DataFrame(
+    {
+        "order_id": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+        ],
+        "category": [
+            "Phone",
+            "Laptop",
+            "Phone",
+            "Tablet",
+            "Laptop",
+            "Phone",
+            "Tablet",
+            "Laptop",
+            "Phone",
+            "Tablet",
+        ],
+        "price": [
+            1500,
+            3500,
+            1800,
+            1200,
+            4200,
+            2000,
+            1400,
+            3900,
+            1700,
+            1100,
+        ],
+        "quantity": [
+            2,
+            1,
+            3,
+            2,
+            1,
+            2,
+            4,
+            1,
+            3,
+            2,
+        ],
+        "customer_rating": [
+            4.2,
+            4.8,
+            4.4,
+            3.9,
+            4.7,
+            4.5,
+            4.0,
+            4.6,
+            4.3,
+            3.8,
+        ],
+        "region": [
+            "Dubai",
+            "Dubai",
+            "Sharjah",
+            "Abu Dhabi",
+            "Dubai",
+            "Sharjah",
+            "Dubai",
+            "Abu Dhabi",
+            "Sharjah",
+            "Dubai",
+        ],
+    }
+)
+```
+
+## Requirements
+
+1. Validate required columns.
+2. Add:
+
+[
+\text{Revenue}
+==============
+
+\text{Price}
+\times
+\text{Quantity}
+]
+
+3. Create a revenue distribution histogram.
+4. Create a price-versus-rating scatter plot.
+5. Use category as `hue`.
+6. Create category revenue bar plots.
+7. Create regional order count plots.
+8. Create category price box plots.
+9. Create a numerical correlation heatmap.
+10. Save every chart as a 300-DPI PNG.
+11. Use separate functions.
+12. Add at least five tests.
+
+---
+
+# 37. Interview Questions
+
+1. What is Seaborn?
+2. How is Seaborn related to Matplotlib?
+3. Why does Seaborn work well with Pandas?
+4. What does `hue` represent?
+5. What does `style` represent?
+6. What does `size` represent in a scatter plot?
+7. What is the difference between `barplot()` and `countplot()`?
+8. What does a histogram show?
+9. What does `kde=True` add?
+10. What does a box plot show?
+11. What is the interquartile range?
+12. What is a violin plot?
+13. When is a strip plot useful?
+14. How is a swarm plot different from a strip plot?
+15. What is correlation?
+16. What is the range of correlation?
+17. Does correlation prove causation?
+18. What does a heatmap show?
+19. What does `annot=True` do?
+20. What is a pair plot?
+21. What is faceting?
+22. What is the difference between figure-level and axes-level functions?
+23. Why can pair plots become expensive?
+24. Why can violin plots be misleading with tiny datasets?
+25. Why should numerical columns be validated before plotting?
+
+---
+
+# 38. Summary
+
+* Seaborn provides high-level statistical visualizations.
+* It works closely with Pandas and builds on Matplotlib.
+* Scatter plots show numerical relationships.
+* `hue` introduces an additional grouping variable.
+* Line plots show change across an ordered variable.
+* Bar plots summarize numerical values by category.
+* Count plots show category frequencies.
+* Histograms show numerical distributions.
+* Box plots summarize quartiles and potential outliers.
+* Violin plots show estimated distribution shapes.
+* Strip and swarm plots display individual observations.
+* Correlation measures linear relationships.
+* Heatmaps visualize matrix values.
+* Pair plots compare several numerical variables.
+* Figure-level functions create their own figures.
+* Axes-level functions can draw on supplied Matplotlib axes.
+* Statistical charts must be interpreted in the context of data quality and sample size.
+
+# Lesson 6 Quiz
+
+### 1. Seaborn is built on top of which library?
+
+A. NumPy
+B. Matplotlib
+C. Flask
+D. TensorFlow
+
+### 2. What does `hue` do?
+
+A. Removes missing values
+B. Groups observations using another variable
+C. Changes the DataFrame index
+D. Trains a model
+
+### 3. Which chart is best for viewing the relationship between study hours and exam scores?
+
+A. Count plot
+B. Scatter plot
+C. Histogram
+D. Bar chart
+
+### 4. What does this chart normally display?
+
+```python
+sns.countplot(
+    data=students,
+    x="course",
+)
+```
+
+### 5. What is the difference between `barplot()` and `countplot()`?
+
+### 6. What does `kde=True` add to a histogram?
+
+### 7. What does a box plot display?
+
+### 8. What is the formula for the interquartile range?
+
+### 9. Should every value outside the box-plot whiskers be deleted?
+
+### 10. What is the difference between a strip plot and a swarm plot?
+
+### 11. What does a correlation value close to `1` suggest?
+
+### 12. What does a correlation value close to `-1` suggest?
+
+### 13. Does correlation prove causation?
+
+### 14. What does this calculate?
+
+```python
+students[
+    [
+        "study_hours",
+        "attendance",
+        "exam_score",
+    ]
+].corr()
+```
+
+### 15. What does this argument do?
+
+```python
+annot=True
+```
+
+inside `sns.heatmap()`?
+
+### 16. Why is the diagonal of a correlation matrix equal to `1`?
+
+### 17. What is the difference between an axes-level and figure-level function?
+
+### 18. Why can a pair plot with many columns become expensive?
+
+### 19. What is the approximate complexity of calculating a correlation matrix for (n) rows and (m) features?
+
+A. (O(1))
+B. (O(n))
+C. (O(nm^2))
+D. (O(2^n))
+
+### 20. Why should a violin plot be interpreted carefully when the dataset contains very few observations?
+
+[1]: https://seaborn.pydata.org/tutorial/introduction.html?utm_source=chatgpt.com "An introduction to seaborn - PyData |"
+[2]: https://github.com/mwaskom/seaborn?utm_source=chatgpt.com "mwaskom/seaborn: Statistical data visualization in Python"
+[3]: https://seaborn.pydata.org/installing.html?utm_source=chatgpt.com "Installing and getting started — seaborn 0.13.2 documentation"
+[4]: https://seaborn.pydata.org/tutorial/relational.html?utm_source=chatgpt.com "Visualizing statistical relationships - Seaborn - PyData |"
+[5]: https://seaborn.pydata.org/api.html?utm_source=chatgpt.com "API reference — seaborn 0.13.2 documentation - PyData |"
+[6]: https://seaborn.pydata.org/generated/seaborn.heatmap.html?utm_source=chatgpt.com "seaborn.heatmap — seaborn 0.13.2 documentation - PyData |"
+[7]: https://seaborn.pydata.org/generated/seaborn.catplot.html?utm_source=chatgpt.com "seaborn.catplot — seaborn 0.13.2 documentation - PyData |"
