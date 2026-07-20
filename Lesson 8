@@ -1,0 +1,2161 @@
+# Lesson 8: File Handling for AI and Machine Learning
+
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** File Handling
+**Lessons 1–7:** Delivered; quizzes and projects are not yet verified
+
+Machine-learning systems rarely keep data inside Python code. They usually read datasets, configurations, model outputs, logs, and reports from files.
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain why file handling matters in AI and ML.
+2. Work safely with file paths using `pathlib`.
+3. Read and write text files.
+4. Use context managers.
+5. Read and write CSV files.
+6. Read and write JSON files.
+7. Handle missing or invalid files.
+8. Work with directories and multiple files.
+9. Understand file encodings.
+10. Build a reusable dataset-loading pipeline.
+
+---
+
+# 2. Real-World Example
+
+Suppose you are building a house-price model.
+
+Your project may contain:
+
+```text
+house-price-project/
+│
+├── data/
+│   ├── raw/
+│   │   └── houses.csv
+│   └── processed/
+│       └── cleaned_houses.csv
+│
+├── config/
+│   └── model_config.json
+│
+├── reports/
+│   └── training_summary.txt
+│
+├── models/
+│   └── model.pkl
+│
+└── src/
+    └── main.py
+```
+
+The application needs to:
+
+1. Read `houses.csv`.
+2. Load model settings from JSON.
+3. Save cleaned data.
+4. Write training results.
+5. Store a trained model.
+
+This requires reliable file handling.
+
+---
+
+# 3. File-Handling Workflow
+
+```text
+Locate file
+    |
+    v
+Validate path
+    |
+    v
+Open file
+    |
+    v
+Read or write data
+    |
+    v
+Handle errors
+    |
+    v
+Close file safely
+```
+
+Python context managers handle the closing step automatically.
+
+---
+
+# 4. Understanding File Paths
+
+A file path identifies where a file exists.
+
+Windows example:
+
+```text
+C:\Users\Ali\Projects\data\students.csv
+```
+
+Linux or macOS example:
+
+```text
+/home/ali/projects/data/students.csv
+```
+
+Hardcoding complete paths makes code difficult to move between systems.
+
+Problematic:
+
+```python
+file_path = "C:\\Users\\Ali\\Desktop\\students.csv"
+```
+
+Better:
+
+```python
+from pathlib import Path
+
+
+file_path = Path("data") / "students.csv"
+```
+
+`pathlib` handles path separators across operating systems.
+
+---
+
+# 5. Using `Path`
+
+```python
+from pathlib import Path
+
+
+file_path = Path("data/students.csv")
+```
+
+Useful properties:
+
+```python
+print(file_path.name)
+print(file_path.stem)
+print(file_path.suffix)
+print(file_path.parent)
+```
+
+Possible output:
+
+```text
+students.csv
+students
+.csv
+data
+```
+
+Meaning:
+
+```text
+name   → Complete filename
+stem   → Filename without extension
+suffix → File extension
+parent → Containing directory
+```
+
+---
+
+# 6. Checking Whether a Path Exists
+
+```python
+from pathlib import Path
+
+
+file_path = Path("data/students.csv")
+
+print(file_path.exists())
+print(file_path.is_file())
+print(file_path.is_dir())
+```
+
+Use:
+
+```python
+if not file_path.exists():
+    raise FileNotFoundError(
+        f"File does not exist: {file_path}"
+    )
+```
+
+A path can exist but still be a directory rather than a file.
+
+Safer validation:
+
+```python
+if not file_path.is_file():
+    raise FileNotFoundError(
+        f"Expected a file: {file_path}"
+    )
+```
+
+---
+
+# 7. Creating Directories
+
+```python
+from pathlib import Path
+
+
+output_directory = Path("reports")
+
+output_directory.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+```
+
+Arguments:
+
+```text
+parents=True
+```
+
+Creates missing parent directories.
+
+```text
+exist_ok=True
+```
+
+Prevents an error if the directory already exists.
+
+Nested example:
+
+```python
+output_directory = Path(
+    "reports/experiments/run_001"
+)
+
+output_directory.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+```
+
+---
+
+# 8. Reading a Text File
+
+Suppose `notes.txt` contains:
+
+```text
+Machine learning learns patterns from data.
+Data quality affects model quality.
+```
+
+Read the file:
+
+```python
+from pathlib import Path
+
+
+file_path = Path("notes.txt")
+
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+) as file:
+    content = file.read()
+
+print(content)
+```
+
+---
+
+# 9. Context Managers
+
+This structure:
+
+```python
+with file_path.open(...) as file:
+```
+
+creates a context manager.
+
+It automatically closes the file when the block finishes.
+
+Visual explanation:
+
+```text
+Enter with block
+      |
+      v
+File opens
+      |
+      v
+Read or write
+      |
+      v
+Block ends
+      |
+      v
+File closes automatically
+```
+
+Without a context manager:
+
+```python
+file = open("notes.txt", "r")
+content = file.read()
+file.close()
+```
+
+This can fail to close the file if an error occurs before `close()`.
+
+Use context managers for normal file operations.
+
+---
+
+# 10. File Modes
+
+| Mode  | Meaning                                 |
+| ----- | --------------------------------------- |
+| `"r"` | Read                                    |
+| `"w"` | Write and replace existing content      |
+| `"a"` | Append to the end                       |
+| `"x"` | Create a new file and fail if it exists |
+| `"b"` | Binary mode                             |
+| `"t"` | Text mode                               |
+
+Examples:
+
+```python
+file_path.open("r")
+file_path.open("w")
+file_path.open("a")
+file_path.open("rb")
+file_path.open("wb")
+```
+
+---
+
+# 11. Reading an Entire File
+
+```python
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+) as file:
+    content = file.read()
+```
+
+This loads the complete file into memory.
+
+Suitable for small files.
+
+For a file of size (s):
+
+[
+\text{Time complexity} = O(s)
+]
+
+[
+\text{Space complexity} = O(s)
+]
+
+Large files may consume too much memory.
+
+---
+
+# 12. Reading Line by Line
+
+```python
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+) as file:
+    for line in file:
+        cleaned_line = line.strip()
+        print(cleaned_line)
+```
+
+This is more memory-efficient for large files.
+
+Approximate complexity:
+
+[
+\text{Time} = O(s)
+]
+
+[
+\text{Additional space} = O(1)
+]
+
+when only one line is processed at a time.
+
+---
+
+# 13. `readline()` and `readlines()`
+
+Read one line:
+
+```python
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+) as file:
+    first_line = file.readline()
+```
+
+Read all lines into a list:
+
+```python
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+) as file:
+    lines = file.readlines()
+```
+
+Example output:
+
+```python
+[
+    "First line\n",
+    "Second line\n",
+]
+```
+
+`readlines()` stores all lines in memory.
+
+---
+
+# 14. Writing a Text File
+
+```python
+from pathlib import Path
+
+
+report_path = Path(
+    "reports/training_summary.txt"
+)
+
+report_path.parent.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+with report_path.open(
+    mode="w",
+    encoding="utf-8",
+) as file:
+    file.write("Model: Linear Regression\n")
+    file.write("Accuracy: 91.50%\n")
+```
+
+`"w"` replaces existing content.
+
+If the file does not exist, Python creates it.
+
+---
+
+# 15. Appending to a File
+
+```python
+with report_path.open(
+    mode="a",
+    encoding="utf-8",
+) as file:
+    file.write("Training completed successfully.\n")
+```
+
+Append mode preserves previous content and adds new content at the end.
+
+This is useful for:
+
+* Logs
+* Experiment histories
+* Error records
+* Audit trails
+
+---
+
+# 16. Writing Multiple Lines
+
+```python
+lines = [
+    "Model: Decision Tree\n",
+    "Accuracy: 88.00%\n",
+    "Status: Completed\n",
+]
+
+with report_path.open(
+    mode="w",
+    encoding="utf-8",
+) as file:
+    file.writelines(lines)
+```
+
+`writelines()` does not automatically add line breaks.
+
+You must include `\n`.
+
+---
+
+# 17. File Encoding
+
+Text must be converted between characters and bytes.
+
+UTF-8 supports many languages and symbols.
+
+Use:
+
+```python
+encoding="utf-8"
+```
+
+Example:
+
+```python
+message = "مرحبا — Hello — سلام"
+```
+
+Write it:
+
+```python
+with Path("message.txt").open(
+    mode="w",
+    encoding="utf-8",
+) as file:
+    file.write(message)
+```
+
+Using the wrong encoding may cause:
+
+```text
+UnicodeDecodeError
+```
+
+or corrupted text.
+
+---
+
+# 18. Reading CSV with Python’s `csv` Module
+
+Suppose `students.csv` contains:
+
+```csv
+name,study_hours,exam_score
+Ali,2.5,55
+Sara,5.0,82
+Ahmed,3.5,68
+```
+
+Read it:
+
+```python
+import csv
+from pathlib import Path
+
+
+file_path = Path("data/students.csv")
+
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+    newline="",
+) as file:
+    reader = csv.DictReader(file)
+
+    for row in reader:
+        print(row)
+```
+
+Each row becomes a dictionary:
+
+```python
+{
+    "name": "Ali",
+    "study_hours": "2.5",
+    "exam_score": "55",
+}
+```
+
+CSV values are initially strings.
+
+You must convert numerical fields.
+
+---
+
+# 19. Converting CSV Values
+
+```python
+students = []
+
+with file_path.open(
+    mode="r",
+    encoding="utf-8",
+    newline="",
+) as file:
+    reader = csv.DictReader(file)
+
+    for row in reader:
+        student = {
+            "name": row["name"],
+            "study_hours": float(
+                row["study_hours"]
+            ),
+            "exam_score": float(
+                row["exam_score"]
+            ),
+        }
+
+        students.append(student)
+```
+
+Invalid numerical text may raise:
+
+```text
+ValueError
+```
+
+---
+
+# 20. Writing CSV with `csv.DictWriter`
+
+```python
+import csv
+from pathlib import Path
+
+
+students = [
+    {
+        "name": "Ali",
+        "study_hours": 2.5,
+        "exam_score": 55,
+    },
+    {
+        "name": "Sara",
+        "study_hours": 5.0,
+        "exam_score": 82,
+    },
+]
+
+output_path = Path(
+    "reports/student_results.csv"
+)
+
+output_path.parent.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+fieldnames = [
+    "name",
+    "study_hours",
+    "exam_score",
+]
+
+with output_path.open(
+    mode="w",
+    encoding="utf-8",
+    newline="",
+) as file:
+    writer = csv.DictWriter(
+        file,
+        fieldnames=fieldnames,
+    )
+
+    writer.writeheader()
+    writer.writerows(students)
+```
+
+---
+
+# 21. Reading CSV with Pandas
+
+For data analysis, Pandas is usually more convenient:
+
+```python
+import pandas as pd
+
+
+students = pd.read_csv(
+    "data/students.csv"
+)
+```
+
+Inspect:
+
+```python
+print(students.head())
+print(students.info())
+print(students.dtypes)
+```
+
+Pandas attempts to infer data types automatically.
+
+However, inference can be wrong when a column contains inconsistent values.
+
+---
+
+# 22. Writing CSV with Pandas
+
+```python
+students.to_csv(
+    "reports/cleaned_students.csv",
+    index=False,
+)
+```
+
+`index=False` prevents the DataFrame index from becoming an extra CSV column.
+
+Safer path handling:
+
+```python
+from pathlib import Path
+
+
+output_path = Path(
+    "reports/cleaned_students.csv"
+)
+
+output_path.parent.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+students.to_csv(
+    output_path,
+    index=False,
+)
+```
+
+---
+
+# 23. Reading Large CSV Files in Chunks
+
+Loading a very large CSV may exceed memory.
+
+Use chunks:
+
+```python
+import pandas as pd
+
+
+chunk_iterator = pd.read_csv(
+    "data/large_dataset.csv",
+    chunksize=10_000,
+)
+
+for chunk in chunk_iterator:
+    print(chunk.shape)
+```
+
+Each chunk contains up to 10,000 rows.
+
+Visual workflow:
+
+```text
+Large CSV
+   |
+   +--> Chunk 1 → Process
+   |
+   +--> Chunk 2 → Process
+   |
+   +--> Chunk 3 → Process
+```
+
+This reduces peak memory usage.
+
+---
+
+# 24. JSON Files
+
+JSON stores structured data.
+
+Example:
+
+```json
+{
+  "model_name": "Random Forest",
+  "test_size": 0.2,
+  "random_state": 42,
+  "features": [
+    "study_hours",
+    "attendance"
+  ]
+}
+```
+
+JSON supports:
+
+* Objects
+* Arrays
+* Strings
+* Numbers
+* Booleans
+* Null values
+
+Python equivalents:
+
+| JSON    | Python           |
+| ------- | ---------------- |
+| Object  | Dictionary       |
+| Array   | List             |
+| String  | String           |
+| Number  | Integer or float |
+| `true`  | `True`           |
+| `false` | `False`          |
+| `null`  | `None`           |
+
+---
+
+# 25. Reading JSON
+
+```python
+import json
+from pathlib import Path
+
+
+config_path = Path(
+    "config/model_config.json"
+)
+
+with config_path.open(
+    mode="r",
+    encoding="utf-8",
+) as file:
+    config = json.load(file)
+
+print(config["model_name"])
+print(config["test_size"])
+```
+
+`json.load()` reads JSON from a file.
+
+---
+
+# 26. Writing JSON
+
+```python
+import json
+from pathlib import Path
+
+
+config = {
+    "model_name": "Random Forest",
+    "test_size": 0.2,
+    "random_state": 42,
+    "features": [
+        "study_hours",
+        "attendance",
+    ],
+}
+
+output_path = Path(
+    "config/model_config.json"
+)
+
+output_path.parent.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+with output_path.open(
+    mode="w",
+    encoding="utf-8",
+) as file:
+    json.dump(
+        config,
+        file,
+        indent=2,
+    )
+```
+
+`indent=2` makes the JSON easier to read.
+
+---
+
+# 27. `json.load()` vs `json.loads()`
+
+Read from a file:
+
+```python
+json.load(file)
+```
+
+Read from a JSON string:
+
+```python
+json.loads(json_text)
+```
+
+Write to a file:
+
+```python
+json.dump(data, file)
+```
+
+Convert to a JSON string:
+
+```python
+json.dumps(data)
+```
+
+Mnemonic:
+
+```text
+load  → file
+loads → string
+
+dump  → file
+dumps → string
+```
+
+---
+
+# 28. Handling File Errors
+
+Common exceptions include:
+
+```text
+FileNotFoundError
+PermissionError
+IsADirectoryError
+UnicodeDecodeError
+json.JSONDecodeError
+ValueError
+```
+
+Example:
+
+```python
+from pathlib import Path
+
+
+file_path = Path("data/students.csv")
+
+try:
+    content = file_path.read_text(
+        encoding="utf-8"
+    )
+except FileNotFoundError:
+    print(
+        f"File was not found: {file_path}"
+    )
+except PermissionError:
+    print(
+        f"Permission denied: {file_path}"
+    )
+```
+
+Do not catch every exception and ignore it.
+
+Bad:
+
+```python
+try:
+    content = file_path.read_text()
+except Exception:
+    pass
+```
+
+This hides the real problem.
+
+---
+
+# 29. Validating File Extensions
+
+```python
+from pathlib import Path
+
+
+def validate_csv_path(
+    file_path: Path,
+) -> None:
+    """Validate that a path points to a CSV file."""
+    if file_path.suffix.lower() != ".csv":
+        raise ValueError(
+            f"Expected a CSV file: {file_path}"
+        )
+```
+
+An extension check alone does not prove that the file contains valid CSV data.
+
+It only validates the filename convention.
+
+---
+
+# 30. Listing Files in a Directory
+
+```python
+from pathlib import Path
+
+
+data_directory = Path("data")
+
+for path in data_directory.iterdir():
+    print(path)
+```
+
+List only CSV files:
+
+```python
+for csv_path in data_directory.glob(
+    "*.csv"
+):
+    print(csv_path)
+```
+
+Search recursively:
+
+```python
+for csv_path in data_directory.rglob(
+    "*.csv"
+):
+    print(csv_path)
+```
+
+Difference:
+
+```text
+glob()  → current directory pattern
+rglob() → recursive pattern
+```
+
+---
+
+# 31. Main Project: Dataset File Pipeline
+
+This program:
+
+1. Loads a CSV dataset.
+2. Validates required columns.
+3. Converts numerical columns.
+4. Removes invalid rows.
+5. Generates a quality report.
+6. Saves cleaned CSV and JSON metadata.
+
+```python
+import json
+from pathlib import Path
+
+import pandas as pd
+
+
+REQUIRED_COLUMNS = {
+    "student_id",
+    "name",
+    "study_hours",
+    "attendance",
+    "exam_score",
+}
+
+
+def validate_input_path(
+    file_path: Path,
+) -> None:
+    """Validate an input CSV file path."""
+    if not file_path.exists():
+        raise FileNotFoundError(
+            f"Dataset was not found: {file_path}"
+        )
+
+    if not file_path.is_file():
+        raise ValueError(
+            f"Expected a file: {file_path}"
+        )
+
+    if file_path.suffix.lower() != ".csv":
+        raise ValueError(
+            f"Expected a CSV file: {file_path}"
+        )
+
+
+def load_student_data(
+    file_path: Path,
+) -> pd.DataFrame:
+    """Load student data from CSV."""
+    validate_input_path(file_path)
+
+    try:
+        return pd.read_csv(file_path)
+    except UnicodeDecodeError as error:
+        raise ValueError(
+            "The dataset is not valid UTF-8."
+        ) from error
+    except pd.errors.EmptyDataError as error:
+        raise ValueError(
+            "The CSV file is empty."
+        ) from error
+    except pd.errors.ParserError as error:
+        raise ValueError(
+            "The CSV structure is invalid."
+        ) from error
+
+
+def validate_columns(
+    data: pd.DataFrame,
+) -> None:
+    """Validate required dataset columns."""
+    missing_columns = (
+        REQUIRED_COLUMNS - set(data.columns)
+    )
+
+    if missing_columns:
+        raise ValueError(
+            "Missing required columns: "
+            f"{sorted(missing_columns)}"
+        )
+
+
+def clean_student_data(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Clean student records."""
+    validate_columns(data)
+
+    cleaned = data.copy()
+
+    cleaned["name"] = (
+        cleaned["name"]
+        .replace(
+            r"^\s*$",
+            pd.NA,
+            regex=True,
+        )
+        .str.strip()
+        .str.title()
+    )
+
+    numerical_columns = [
+        "study_hours",
+        "attendance",
+        "exam_score",
+    ]
+
+    for column in numerical_columns:
+        cleaned[column] = pd.to_numeric(
+            cleaned[column],
+            errors="coerce",
+        )
+
+    cleaned = cleaned.dropna(
+        subset=[
+            "student_id",
+            "name",
+            "study_hours",
+            "attendance",
+            "exam_score",
+        ]
+    )
+
+    valid_rows = (
+        (cleaned["study_hours"] >= 0)
+        & cleaned["attendance"].between(
+            0,
+            100,
+        )
+        & cleaned["exam_score"].between(
+            0,
+            100,
+        )
+    )
+
+    cleaned = cleaned[valid_rows].copy()
+
+    cleaned = cleaned.drop_duplicates(
+        subset=["student_id"],
+        keep="last",
+    )
+
+    cleaned = cleaned.reset_index(
+        drop=True
+    )
+
+    return cleaned
+
+
+def create_quality_metadata(
+    raw_data: pd.DataFrame,
+    cleaned_data: pd.DataFrame,
+) -> dict[str, int | float]:
+    """Create dataset-cleaning metadata."""
+    raw_rows = len(raw_data)
+    cleaned_rows = len(cleaned_data)
+    removed_rows = raw_rows - cleaned_rows
+
+    removal_percentage = (
+        removed_rows / raw_rows * 100
+        if raw_rows > 0
+        else 0.0
+    )
+
+    return {
+        "raw_rows": raw_rows,
+        "cleaned_rows": cleaned_rows,
+        "removed_rows": removed_rows,
+        "removal_percentage": round(
+            removal_percentage,
+            2,
+        ),
+        "column_count": len(
+            cleaned_data.columns
+        ),
+    }
+
+
+def save_cleaned_data(
+    data: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Save cleaned data as CSV."""
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    data.to_csv(
+        output_path,
+        index=False,
+    )
+
+
+def save_metadata(
+    metadata: dict[str, int | float],
+    output_path: Path,
+) -> None:
+    """Save dataset metadata as JSON."""
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    with output_path.open(
+        mode="w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            metadata,
+            file,
+            indent=2,
+        )
+
+
+def run_pipeline(
+    input_path: Path,
+    cleaned_output_path: Path,
+    metadata_output_path: Path,
+) -> None:
+    """Run the complete student-data pipeline."""
+    raw_data = load_student_data(
+        input_path
+    )
+
+    cleaned_data = clean_student_data(
+        raw_data
+    )
+
+    metadata = create_quality_metadata(
+        raw_data,
+        cleaned_data,
+    )
+
+    save_cleaned_data(
+        cleaned_data,
+        cleaned_output_path,
+    )
+
+    save_metadata(
+        metadata,
+        metadata_output_path,
+    )
+
+    print(
+        f"Raw rows: {metadata['raw_rows']}"
+    )
+
+    print(
+        "Cleaned rows: "
+        f"{metadata['cleaned_rows']}"
+    )
+
+    print(
+        "Removed rows: "
+        f"{metadata['removed_rows']}"
+    )
+
+
+def main() -> None:
+    """Run the example pipeline."""
+    input_path = Path(
+        "data/raw/students.csv"
+    )
+
+    cleaned_output_path = Path(
+        "data/processed/students_cleaned.csv"
+    )
+
+    metadata_output_path = Path(
+        "reports/student_data_metadata.json"
+    )
+
+    run_pipeline(
+        input_path,
+        cleaned_output_path,
+        metadata_output_path,
+    )
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 32. Architecture
+
+```text
+Raw CSV file
+     |
+     v
+Path validation
+     |
+     v
+CSV loading
+     |
+     v
+Column validation
+     |
+     v
+Type conversion
+     |
+     v
+Row validation
+     |
+     v
+Duplicate removal
+     |
+     +------------------------+
+     |                        |
+     v                        v
+Cleaned CSV              JSON metadata
+```
+
+---
+
+# 33. Mathematical Intuition
+
+Suppose the raw file contains:
+
+[
+R = 1000
+]
+
+rows.
+
+After cleaning:
+
+[
+C = 920
+]
+
+rows remain.
+
+Removed rows:
+
+[
+D = R - C
+]
+
+[
+D = 1000 - 920 = 80
+]
+
+Removal percentage:
+
+[
+\text{Removal percentage}
+=========================
+
+\frac{D}{R}
+\times 100
+]
+
+# [
+
+\frac{80}{1000}
+\times 100
+==========
+
+8%
+]
+
+A high removal percentage may indicate:
+
+* Poor source data
+* Cleaning rules that are too strict
+* Incorrect assumptions
+* Parsing problems
+
+---
+
+# 34. Code Explanation
+
+```python
+if not file_path.exists():
+```
+
+Checks whether the path exists.
+
+```python
+if not file_path.is_file():
+```
+
+Prevents a directory from being treated as a file.
+
+```python
+file_path.suffix.lower()
+```
+
+Gets the extension and normalizes capitalization.
+
+```python
+pd.read_csv(file_path)
+```
+
+Loads the CSV into a DataFrame.
+
+```python
+except pd.errors.EmptyDataError:
+```
+
+Handles an empty CSV file.
+
+```python
+except pd.errors.ParserError:
+```
+
+Handles malformed CSV structure.
+
+```python
+REQUIRED_COLUMNS - set(data.columns)
+```
+
+Finds required columns that are missing.
+
+```python
+pd.to_numeric(
+    cleaned[column],
+    errors="coerce",
+)
+```
+
+Converts valid values to numbers and invalid values to missing values.
+
+```python
+cleaned["attendance"].between(
+    0,
+    100,
+)
+```
+
+Checks whether attendance is in the accepted range.
+
+```python
+cleaned[valid_rows].copy()
+```
+
+Filters valid rows and creates an independent DataFrame.
+
+```python
+json.dump(
+    metadata,
+    file,
+    indent=2,
+)
+```
+
+Writes readable JSON metadata.
+
+---
+
+# 35. Time Complexity
+
+Let:
+
+* (n) = number of rows
+* (m) = number of columns
+* (s) = file size
+
+Reading the CSV:
+
+[
+O(s)
+]
+
+Validating columns:
+
+[
+O(m)
+]
+
+Converting and validating rows:
+
+[
+O(n)
+]
+
+Removing duplicate IDs:
+
+[
+O(n)
+]
+
+Writing cleaned data:
+
+[
+O(nm)
+]
+
+For a fixed number of columns, the pipeline is approximately:
+
+[
+\boxed{O(n)}
+]
+
+Memory usage is approximately:
+
+[
+\boxed{O(nm)}
+]
+
+because the DataFrame is loaded into memory.
+
+Chunked processing may be needed for very large files.
+
+---
+
+# 36. Unit Tests
+
+```python
+import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+import pandas as pd
+
+
+def run_tests() -> None:
+    with TemporaryDirectory() as directory:
+        base_path = Path(directory)
+
+        input_path = (
+            base_path / "students.csv"
+        )
+
+        cleaned_path = (
+            base_path / "cleaned.csv"
+        )
+
+        metadata_path = (
+            base_path / "metadata.json"
+        )
+
+        raw_data = pd.DataFrame(
+            {
+                "student_id": [
+                    1,
+                    2,
+                    2,
+                    3,
+                ],
+                "name": [
+                    " Ali ",
+                    "Sara",
+                    "Sara",
+                    "",
+                ],
+                "study_hours": [
+                    2.0,
+                    5.0,
+                    5.0,
+                    3.0,
+                ],
+                "attendance": [
+                    60,
+                    85,
+                    85,
+                    110,
+                ],
+                "exam_score": [
+                    55,
+                    82,
+                    82,
+                    70,
+                ],
+            }
+        )
+
+        raw_data.to_csv(
+            input_path,
+            index=False,
+        )
+
+        loaded_data = load_student_data(
+            input_path
+        )
+
+        assert len(loaded_data) == 4
+
+        cleaned_data = clean_student_data(
+            loaded_data
+        )
+
+        assert len(cleaned_data) == 2
+        assert cleaned_data[
+            "student_id"
+        ].is_unique
+
+        assert (
+            cleaned_data["name"]
+            == cleaned_data["name"].str.strip()
+        ).all()
+
+        metadata = create_quality_metadata(
+            loaded_data,
+            cleaned_data,
+        )
+
+        assert metadata["raw_rows"] == 4
+        assert metadata["cleaned_rows"] == 2
+        assert metadata["removed_rows"] == 2
+
+        save_cleaned_data(
+            cleaned_data,
+            cleaned_path,
+        )
+
+        save_metadata(
+            metadata,
+            metadata_path,
+        )
+
+        assert cleaned_path.exists()
+        assert metadata_path.exists()
+
+        with metadata_path.open(
+            mode="r",
+            encoding="utf-8",
+        ) as file:
+            saved_metadata = json.load(file)
+
+        assert saved_metadata[
+            "cleaned_rows"
+        ] == 2
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+---
+
+# 37. Common Mistakes
+
+## Hardcoding Absolute Paths
+
+Problem:
+
+```python
+file_path = (
+    "C:\\Users\\Ali\\Desktop\\data.csv"
+)
+```
+
+This usually fails on another computer.
+
+Use project-relative paths and `Path`.
+
+---
+
+## Forgetting the Context Manager
+
+Problem:
+
+```python
+file = open("data.txt", "r")
+content = file.read()
+```
+
+The file may remain open.
+
+Use:
+
+```python
+with open("data.txt", "r") as file:
+    content = file.read()
+```
+
+---
+
+## Using `"w"` Accidentally
+
+```python
+with file_path.open("w") as file:
+```
+
+This replaces previous file contents.
+
+Use `"a"` when appending is intended.
+
+---
+
+## Ignoring Encoding
+
+```python
+file_path.read_text()
+```
+
+The system default encoding can differ.
+
+Use:
+
+```python
+file_path.read_text(
+    encoding="utf-8"
+)
+```
+
+---
+
+## Reading Huge Files Completely
+
+```python
+content = file.read()
+```
+
+This can exhaust memory.
+
+Use line-by-line or chunked processing.
+
+---
+
+## Trusting File Extensions
+
+A file named:
+
+```text
+dataset.csv
+```
+
+may still contain invalid data.
+
+Validate the actual contents.
+
+---
+
+## Exporting a Pandas Index
+
+```python
+data.to_csv("data.csv")
+```
+
+This can add an unwanted index column.
+
+Use:
+
+```python
+data.to_csv(
+    "data.csv",
+    index=False,
+)
+```
+
+---
+
+## Catching Every Error
+
+Bad:
+
+```python
+try:
+    data = pd.read_csv(path)
+except Exception:
+    data = pd.DataFrame()
+```
+
+This hides whether the problem was:
+
+* Missing file
+* Permission failure
+* Invalid CSV
+* Encoding issue
+
+Catch specific exceptions.
+
+---
+
+## Loading Unsafe Serialized Files
+
+Python’s `pickle` format can execute code during loading.
+
+Never load an untrusted `.pkl` or `.pickle` file.
+
+Only load serialized model files from trusted sources.
+
+---
+
+# 38. Debugging Techniques
+
+Print the resolved path:
+
+```python
+print(file_path.resolve())
+```
+
+Check path status:
+
+```python
+print(file_path.exists())
+print(file_path.is_file())
+print(file_path.is_dir())
+```
+
+Check extension:
+
+```python
+print(file_path.suffix)
+```
+
+Inspect directory contents:
+
+```python
+for path in file_path.parent.iterdir():
+    print(path)
+```
+
+Inspect CSV columns:
+
+```python
+data = pd.read_csv(file_path)
+
+print(data.columns.tolist())
+print(data.head())
+print(data.dtypes)
+```
+
+Check file size:
+
+```python
+print(file_path.stat().st_size)
+```
+
+Check JSON syntax:
+
+```python
+try:
+    config = json.loads(json_text)
+except json.JSONDecodeError as error:
+    print(error)
+```
+
+---
+
+# 39. Exercises
+
+## Exercise 1: Text File
+
+Create a file named:
+
+```text
+learning_log.txt
+```
+
+Write:
+
+* Lesson number
+* Lesson title
+* Completion date
+* Main concepts learned
+
+Then append another lesson without deleting the previous content.
+
+---
+
+## Exercise 2: CSV Reading
+
+Create:
+
+```csv
+product_id,name,price,stock
+1,Phone,1500,10
+2,Laptop,3500,5
+3,Tablet,1200,8
+```
+
+Load it using:
+
+1. Python’s `csv` module
+2. Pandas
+
+Convert price and stock into numerical values.
+
+---
+
+## Exercise 3: JSON Configuration
+
+Create a JSON configuration containing:
+
+```text
+model name
+test size
+random state
+feature names
+```
+
+Write it to a file and read it back.
+
+---
+
+## Exercise 4: Directory Search
+
+Search recursively for every `.csv` file inside:
+
+```text
+data/
+```
+
+Print:
+
+* Filename
+* Complete path
+* File size
+
+---
+
+## Exercise 5: Error Handling
+
+Write a function that:
+
+1. Accepts a file path.
+2. Raises `FileNotFoundError` when missing.
+3. Raises `ValueError` when the extension is not `.csv`.
+4. Returns a DataFrame for a valid CSV.
+
+---
+
+# 40. Mini Project: Multi-File Sales Consolidator
+
+Directory:
+
+```text
+data/sales/
+├── january.csv
+├── february.csv
+├── march.csv
+└── notes.txt
+```
+
+Each CSV contains:
+
+```text
+order_id
+product
+quantity
+unit_price
+region
+```
+
+## Requirements
+
+1. Find all CSV files using `glob()`.
+2. Ignore non-CSV files.
+3. Load every CSV.
+4. Add a `source_file` column.
+5. Validate required columns.
+6. Convert quantity and price to numeric.
+7. Remove invalid rows.
+8. Combine all files.
+9. Calculate:
+
+[
+\text{Revenue}
+==============
+
+\text{Quantity}
+\times
+\text{Unit Price}
+]
+
+10. Save the combined dataset.
+11. Save JSON metadata containing:
+
+    * Number of input files
+    * Raw row count
+    * Clean row count
+    * Total revenue
+12. Add unit tests.
+13. Document errors without stopping the entire pipeline when one optional file is malformed.
+
+Architecture:
+
+```text
+Sales directory
+      |
+      v
+Find CSV files
+      |
+      v
+Load each file
+      |
+      v
+Validate and clean
+      |
+      v
+Combine DataFrames
+      |
+      v
+Calculate revenue
+      |
+      +----------------------+
+      |                      |
+      v                      v
+Combined CSV             JSON summary
+```
+
+---
+
+# 41. Interview Questions
+
+1. What is file handling?
+2. Why is file handling important in machine learning?
+3. What does `Path` provide?
+4. What is the difference between absolute and relative paths?
+5. What does a context manager do?
+6. What is the difference between `"r"`, `"w"`, and `"a"`?
+7. What does UTF-8 mean?
+8. What is the difference between `read()` and `readline()`?
+9. Why can `read()` be dangerous for large files?
+10. What does `newline=""` do when working with CSV?
+11. What does `csv.DictReader` return?
+12. Why are CSV values initially strings?
+13. What does `pd.read_csv()` do?
+14. Why use `index=False`?
+15. What is chunked CSV reading?
+16. What is JSON?
+17. What is the difference between `json.load()` and `json.loads()`?
+18. What is the difference between `json.dump()` and `json.dumps()`?
+19. What exception occurs when a file is missing?
+20. What exception can malformed JSON produce?
+21. What does `glob("*.csv")` do?
+22. What does `rglob("*.csv")` do?
+23. Why should file extensions not be fully trusted?
+24. Why should specific exceptions be caught?
+25. Why is loading untrusted pickle files dangerous?
+
+---
+
+# 42. Summary
+
+* File handling connects Python programs to real datasets and outputs.
+* `pathlib.Path` provides portable path management.
+* Context managers close files automatically.
+* `"r"` reads, `"w"` replaces, and `"a"` appends.
+* UTF-8 is a reliable default text encoding.
+* Large files should be processed line by line or in chunks.
+* CSV files represent tabular data.
+* Pandas simplifies CSV processing.
+* JSON stores structured configuration and metadata.
+* File paths and contents must both be validated.
+* Specific exceptions provide clearer error handling.
+* Cleaned datasets and metadata should be stored separately.
+* Untrusted serialized Python files must not be loaded.
+
+# Lesson 8 Quiz
+
+### 1. What is the main benefit of `pathlib.Path`?
+
+A. It trains models
+B. It manages file paths portably
+C. It creates charts
+D. It replaces Pandas
+
+### 2. What does a context manager do when handling a file?
+
+### 3. What is the difference between `"w"` and `"a"` modes?
+
+### 4. What happens when `"w"` mode opens an existing file?
+
+### 5. Why should `encoding="utf-8"` usually be specified?
+
+### 6. What is the difference between:
+
+```python
+file.read()
+```
+
+and:
+
+```python
+for line in file:
+```
+
+### 7. Which method is safer for a very large text file?
+
+### 8. What does this return?
+
+```python
+file_path.suffix
+```
+
+### 9. What does:
+
+```python
+output_directory.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+```
+
+do?
+
+### 10. Why are numerical CSV values often converted after reading?
+
+### 11. What does `index=False` do here?
+
+```python
+data.to_csv(
+    "cleaned.csv",
+    index=False,
+)
+```
+
+### 12. What is the difference between `json.load()` and `json.loads()`?
+
+### 13. What exception is raised when a file does not exist?
+
+### 14. What does this find?
+
+```python
+data_directory.glob("*.csv")
+```
+
+### 15. How is `rglob()` different from `glob()`?
+
+### 16. Why is checking `.csv` extension insufficient to validate a dataset?
+
+### 17. What is chunked file processing?
+
+### 18. What is the time complexity of reading a file containing (s) bytes?
+
+A. (O(1))
+B. (O(\log s))
+C. (O(s))
+D. (O(s^2))
+
+### 19. Why should broad exception handling such as `except Exception` normally be avoided?
+
+### 20. Why is loading an untrusted pickle file dangerous?
