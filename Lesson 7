@@ -1,0 +1,2141 @@
+# Lesson 7: Data Cleaning Foundations for AI and Machine Learning
+
+**Current phase:** Phase 1 — Python Foundations
+**Current lesson:** Data Cleaning
+**Lessons 1–6:** Delivered; quizzes and projects are not yet verified
+
+Data cleaning is the process of finding and correcting incomplete, inconsistent, duplicated, invalid, or incorrectly formatted data before analysis or model training.
+
+A machine-learning model trained on poor-quality data will usually produce poor-quality results.
+
+```text
+Poor data → Poor patterns → Poor predictions
+```
+
+---
+
+# 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Explain why data cleaning is necessary.
+2. Detect missing values.
+3. Remove or replace missing values.
+4. Find and remove duplicate records.
+5. Correct incorrect data types.
+6. Standardize text and categorical values.
+7. Detect invalid numerical values.
+8. Identify possible outliers.
+9. Validate cleaned datasets.
+10. Build a reusable data-cleaning pipeline.
+
+---
+
+# 2. Real-World Example
+
+Suppose an online store has this customer dataset:
+
+| Customer ID | Name   | City      | Age | Spending |
+| ----------: | ------ | --------- | --: | -------: |
+|         101 | Ali    | Dubai     |  25 |     2500 |
+|         102 | sara   | dubai     |   — |     3200 |
+|         102 | sara   | dubai     |   — |     3200 |
+|         103 | Ahmed  | Sharjah   |  -5 |     1800 |
+|         104 | Fatima | Abu dhabi |  31 |  unknown |
+|         105 | Omar   | Dubai     | 250 |     4000 |
+
+Problems include:
+
+* Missing age
+* Duplicate row
+* Inconsistent capitalization
+* Negative age
+* Impossible age
+* Text inside a numerical column
+* Inconsistent city names
+
+If this data is used without cleaning, calculations and models may become unreliable.
+
+---
+
+# 3. Why Data Cleaning Matters
+
+Machine-learning algorithms do not automatically understand whether data is sensible.
+
+A model may accept:
+
+```text
+Age = -5
+Age = 250
+Salary = "unknown"
+City = "dubai"
+City = "Dubai "
+```
+
+Even though these values are inconsistent or invalid.
+
+Data cleaning improves:
+
+* Accuracy
+* Reliability
+* Reproducibility
+* Model stability
+* Feature quality
+* Reporting quality
+* Debugging
+
+A common machine-learning workflow is:
+
+```text
+Raw data
+   |
+   v
+Inspection
+   |
+   v
+Cleaning
+   |
+   v
+Validation
+   |
+   v
+Exploratory analysis
+   |
+   v
+Feature engineering
+   |
+   v
+Model training
+```
+
+---
+
+# 4. Types of Data Quality Problems
+
+## Missing Values
+
+Examples:
+
+```text
+None
+NaN
+Empty string
+"unknown"
+"N/A"
+"-"
+```
+
+## Duplicate Records
+
+The same row or entity appears multiple times.
+
+## Incorrect Data Types
+
+Examples:
+
+```text
+Age stored as text
+Price stored as text
+Date stored as general string
+```
+
+## Inconsistent Categories
+
+Examples:
+
+```text
+Dubai
+dubai
+DUBAI
+Dubai 
+```
+
+## Invalid Values
+
+Examples:
+
+```text
+Negative salary
+Attendance above 100%
+Age below 0
+```
+
+## Outliers
+
+Values far from most observations.
+
+Example:
+
+```text
+Customer ages:
+21, 25, 28, 30, 32, 250
+```
+
+## Incorrect Units
+
+Example:
+
+```text
+Height values:
+170 cm
+1.75 meters
+68 inches
+```
+
+## Inconsistent Dates
+
+Examples:
+
+```text
+2026-07-21
+21/07/2026
+July 21, 2026
+```
+
+---
+
+# 5. Creating a Dirty Dataset
+
+```python
+import pandas as pd
+
+
+customers = pd.DataFrame(
+    {
+        "customer_id": [
+            101,
+            102,
+            102,
+            103,
+            104,
+            105,
+            106,
+        ],
+        "name": [
+            " Ali ",
+            "sara",
+            "sara",
+            "AHMED",
+            "Fatima",
+            "",
+            "Noor",
+        ],
+        "city": [
+            "Dubai",
+            "dubai",
+            "dubai",
+            "Sharjah ",
+            "abu dhabi",
+            None,
+            "DUBAI",
+        ],
+        "age": [
+            25,
+            None,
+            None,
+            -5,
+            31,
+            250,
+            "29",
+        ],
+        "total_spent": [
+            2500,
+            3200,
+            3200,
+            1800,
+            "unknown",
+            4000,
+            2100,
+        ],
+    }
+)
+```
+
+Display it:
+
+```python
+print(customers)
+```
+
+---
+
+# 6. Inspecting Data Before Cleaning
+
+Never start cleaning blindly.
+
+Use:
+
+```python
+print(customers.head())
+print(customers.shape)
+print(customers.columns)
+print(customers.dtypes)
+print(customers.info())
+```
+
+## Check Missing Values
+
+```python
+print(customers.isna().sum())
+```
+
+## Check Duplicates
+
+```python
+print(customers.duplicated().sum())
+```
+
+## Inspect Unique Values
+
+```python
+print(customers["city"].unique())
+```
+
+## Inspect Numerical Statistics
+
+```python
+print(customers.describe())
+```
+
+However, numerical columns stored as text may not appear correctly inside `describe()`.
+
+---
+
+# 7. Missing Values
+
+Pandas usually represents missing numerical data as:
+
+```text
+NaN
+```
+
+Check missing values:
+
+```python
+customers.isna()
+```
+
+Count missing values per column:
+
+```python
+missing_counts = customers.isna().sum()
+```
+
+Calculate missing percentages:
+
+```python
+missing_percentage = (
+    customers.isna().mean() * 100
+)
+```
+
+Why this works:
+
+```text
+True  → 1
+False → 0
+```
+
+The mean of Boolean values gives the missing fraction.
+
+---
+
+# 8. Removing Missing Values
+
+Remove rows containing any missing value:
+
+```python
+cleaned = customers.dropna()
+```
+
+Remove rows only when important columns are missing:
+
+```python
+cleaned = customers.dropna(
+    subset=["customer_id", "name"]
+)
+```
+
+Remove columns containing missing values:
+
+```python
+cleaned = customers.dropna(
+    axis=1
+)
+```
+
+This is usually too aggressive because an entire feature may be lost.
+
+---
+
+# 9. Filling Missing Values
+
+## Fill Numerical Data with the Mean
+
+```python
+customers["age"] = customers["age"].fillna(
+    customers["age"].mean()
+)
+```
+
+This only works after the column has a correct numerical type.
+
+## Fill with the Median
+
+```python
+customers["age"] = customers["age"].fillna(
+    customers["age"].median()
+)
+```
+
+The median is often safer when outliers exist.
+
+## Fill Categorical Data
+
+```python
+customers["city"] = customers["city"].fillna(
+    "Unknown"
+)
+```
+
+## Fill with the Most Common Value
+
+```python
+most_common_city = customers["city"].mode()[0]
+
+customers["city"] = customers["city"].fillna(
+    most_common_city
+)
+```
+
+---
+
+# 10. Mean vs Median
+
+Suppose ages are:
+
+```text
+20, 22, 24, 26, 250
+```
+
+Mean:
+
+[
+\frac{20 + 22 + 24 + 26 + 250}{5}
+=================================
+
+68.4
+]
+
+Median:
+
+```text
+24
+```
+
+The mean is heavily affected by the extreme value `250`.
+
+Therefore, the median is often more robust for skewed data or data containing outliers.
+
+---
+
+# 11. Missing-Value Decisions
+
+There is no universal strategy.
+
+## Remove the Row When
+
+* Very few rows are affected.
+* The missing field is essential.
+* The row cannot be recovered.
+* Removing it will not create serious bias.
+
+## Fill the Value When
+
+* The missing rate is manageable.
+* The feature is useful.
+* A defensible replacement exists.
+* Removing rows would waste too much data.
+
+## Leave Missing When
+
+* The model supports missing values.
+* Missingness itself contains useful information.
+* Replacing it would create false certainty.
+
+---
+
+# 12. Duplicate Records
+
+Detect exact duplicate rows:
+
+```python
+duplicate_mask = customers.duplicated()
+```
+
+Count duplicates:
+
+```python
+duplicate_count = customers.duplicated().sum()
+```
+
+Display duplicates:
+
+```python
+duplicates = customers[
+    customers.duplicated(
+        keep=False
+    )
+]
+```
+
+Remove exact duplicates:
+
+```python
+customers = customers.drop_duplicates()
+```
+
+---
+
+## Duplicate Entities
+
+Two rows may represent the same customer even when they are not identical.
+
+Example:
+
+| Customer ID | Name | Spending |
+| ----------: | ---- | -------: |
+|         102 | Sara |     3200 |
+|         102 | Sara |     3500 |
+
+These are not exact duplicate rows, but the repeated customer ID may violate the dataset’s rules.
+
+Check duplicate IDs:
+
+```python
+customers[
+    customers["customer_id"].duplicated(
+        keep=False
+    )
+]
+```
+
+Remove duplicate IDs:
+
+```python
+customers = customers.drop_duplicates(
+    subset=["customer_id"],
+    keep="last",
+)
+```
+
+Choosing `first` or `last` must be based on business meaning.
+
+---
+
+# 13. Correcting Data Types
+
+Inspect types:
+
+```python
+print(customers.dtypes)
+```
+
+A column containing numbers and text may have:
+
+```text
+object
+```
+
+Convert to numeric:
+
+```python
+customers["age"] = pd.to_numeric(
+    customers["age"],
+    errors="coerce",
+)
+```
+
+`errors="coerce"` converts invalid values to `NaN`.
+
+Example:
+
+```text
+"29"      → 29.0
+"unknown" → NaN
+```
+
+Convert spending:
+
+```python
+customers["total_spent"] = pd.to_numeric(
+    customers["total_spent"],
+    errors="coerce",
+)
+```
+
+---
+
+# 14. Converting Dates
+
+Suppose:
+
+```python
+orders = pd.DataFrame(
+    {
+        "order_date": [
+            "2026-07-01",
+            "02/07/2026",
+            "July 3, 2026",
+            "invalid",
+        ]
+    }
+)
+```
+
+Convert:
+
+```python
+orders["order_date"] = pd.to_datetime(
+    orders["order_date"],
+    errors="coerce",
+)
+```
+
+Invalid dates become:
+
+```text
+NaT
+```
+
+`NaT` means “Not a Time.”
+
+---
+
+# 15. Cleaning Text Data
+
+Remove surrounding spaces:
+
+```python
+customers["name"] = (
+    customers["name"]
+    .str.strip()
+)
+```
+
+Convert to title case:
+
+```python
+customers["name"] = (
+    customers["name"]
+    .str.title()
+)
+```
+
+Standardize city values:
+
+```python
+customers["city"] = (
+    customers["city"]
+    .str.strip()
+    .str.title()
+)
+```
+
+Examples:
+
+```text
+" dubai "   → "Dubai"
+"DUBAI"     → "Dubai"
+"abu dhabi" → "Abu Dhabi"
+```
+
+---
+
+# 16. Replacing Empty Strings
+
+An empty string is not always detected as missing.
+
+Detect empty values:
+
+```python
+customers["name"] == ""
+```
+
+Replace empty strings with missing values:
+
+```python
+customers["name"] = customers["name"].replace(
+    "",
+    pd.NA,
+)
+```
+
+Handle whitespace-only strings:
+
+```python
+customers["name"] = customers["name"].replace(
+    r"^\s*$",
+    pd.NA,
+    regex=True,
+)
+```
+
+---
+
+# 17. Standardizing Categories
+
+Suppose a payment column contains:
+
+```text
+Cash
+cash
+CASH
+Credit Card
+credit-card
+card
+```
+
+Create a mapping:
+
+```python
+payment_mapping = {
+    "cash": "Cash",
+    "credit card": "Card",
+    "credit-card": "Card",
+    "card": "Card",
+}
+```
+
+Clean first:
+
+```python
+orders["payment_method"] = (
+    orders["payment_method"]
+    .str.strip()
+    .str.lower()
+)
+```
+
+Apply mapping:
+
+```python
+orders["payment_method"] = (
+    orders["payment_method"]
+    .replace(payment_mapping)
+)
+```
+
+---
+
+# 18. Validating Numerical Ranges
+
+A valid customer age might be:
+
+[
+0 \leq \text{age} \leq 120
+]
+
+Create an invalid-age mask:
+
+```python
+invalid_age_mask = (
+    (customers["age"] < 0)
+    | (customers["age"] > 120)
+)
+```
+
+View invalid rows:
+
+```python
+invalid_ages = customers[
+    invalid_age_mask
+]
+```
+
+Replace invalid ages with missing values:
+
+```python
+customers.loc[
+    invalid_age_mask,
+    "age",
+] = pd.NA
+```
+
+Then fill using the median:
+
+```python
+customers["age"] = customers["age"].fillna(
+    customers["age"].median()
+)
+```
+
+---
+
+# 19. Clipping Values
+
+Pandas can limit values to a range:
+
+```python
+customers["age"] = customers["age"].clip(
+    lower=0,
+    upper=120,
+)
+```
+
+However, clipping an age of `250` to `120` may create a false value.
+
+Replacing invalid data with missing values and investigating the source is often safer.
+
+---
+
+# 20. Detecting Outliers
+
+An outlier is a value that is unusually far from other observations.
+
+Example:
+
+```python
+import pandas as pd
+
+
+salaries = pd.Series(
+    [
+        5000,
+        5200,
+        5400,
+        5600,
+        5800,
+        6000,
+        50000,
+    ]
+)
+```
+
+The value `50000` is much larger than the others.
+
+Outliers can result from:
+
+* Correct rare observations
+* Typing errors
+* Unit errors
+* Fraud
+* Sensor failures
+* Data-processing bugs
+
+Outliers should be investigated, not automatically deleted.
+
+---
+
+# 21. Interquartile Range Method
+
+Calculate quartiles:
+
+```python
+q1 = salaries.quantile(0.25)
+q3 = salaries.quantile(0.75)
+```
+
+Calculate IQR:
+
+[
+IQR = Q3 - Q1
+]
+
+```python
+iqr = q3 - q1
+```
+
+Calculate boundaries:
+
+```python
+lower_bound = q1 - 1.5 * iqr
+upper_bound = q3 + 1.5 * iqr
+```
+
+Detect outliers:
+
+```python
+outlier_mask = (
+    (salaries < lower_bound)
+    | (salaries > upper_bound)
+)
+```
+
+Get outliers:
+
+```python
+outliers = salaries[outlier_mask]
+```
+
+---
+
+# 22. Z-Score Intuition
+
+A z-score measures how far a value is from the mean in standard-deviation units.
+
+[
+z = \frac{x - \mu}{\sigma}
+]
+
+Where:
+
+* (x) is the value.
+* (\mu) is the mean.
+* (\sigma) is the standard deviation.
+
+A common heuristic is:
+
+```text
+|z| > 3 → possible outlier
+```
+
+However, z-scores work best when the data is approximately normally distributed.
+
+---
+
+# 23. Data Leakage During Cleaning
+
+A serious mistake is calculating cleaning statistics using the full dataset before train-test splitting.
+
+Example:
+
+```text
+Complete dataset
+      |
+      v
+Calculate overall median
+      |
+      v
+Fill missing values
+      |
+      v
+Split into train and test
+```
+
+The test data influenced the training transformation.
+
+This is data leakage.
+
+Safer workflow:
+
+```text
+Split data
+   |
+   +------------------+
+   |                  |
+   v                  v
+Training set       Test set
+   |                  |
+Calculate median      |
+   |                  |
+Fill training      Fill test using
+values             training median
+```
+
+Later, scikit-learn pipelines will help manage this correctly.
+
+---
+
+# 24. A Reusable Cleaning Pipeline
+
+```python
+from typing import Final
+
+import pandas as pd
+
+
+MINIMUM_AGE: Final[int] = 0
+MAXIMUM_AGE: Final[int] = 120
+
+
+def clean_customer_data(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Clean and return customer data."""
+    cleaned = data.copy()
+
+    cleaned = cleaned.drop_duplicates()
+
+    cleaned["name"] = (
+        cleaned["name"]
+        .replace(r"^\s*$", pd.NA, regex=True)
+        .str.strip()
+        .str.title()
+    )
+
+    cleaned["city"] = (
+        cleaned["city"]
+        .replace(r"^\s*$", pd.NA, regex=True)
+        .str.strip()
+        .str.title()
+    )
+
+    cleaned["age"] = pd.to_numeric(
+        cleaned["age"],
+        errors="coerce",
+    )
+
+    cleaned["total_spent"] = pd.to_numeric(
+        cleaned["total_spent"],
+        errors="coerce",
+    )
+
+    invalid_age_mask = (
+        (cleaned["age"] < MINIMUM_AGE)
+        | (cleaned["age"] > MAXIMUM_AGE)
+    )
+
+    cleaned.loc[
+        invalid_age_mask,
+        "age",
+    ] = pd.NA
+
+    cleaned["age"] = cleaned["age"].fillna(
+        cleaned["age"].median()
+    )
+
+    cleaned["total_spent"] = (
+        cleaned["total_spent"].fillna(
+            cleaned["total_spent"].median()
+        )
+    )
+
+    cleaned["city"] = cleaned["city"].fillna(
+        "Unknown"
+    )
+
+    cleaned = cleaned.dropna(
+        subset=[
+            "customer_id",
+            "name",
+        ]
+    )
+
+    cleaned = cleaned.drop_duplicates(
+        subset=["customer_id"],
+        keep="last",
+    )
+
+    cleaned = cleaned.reset_index(
+        drop=True
+    )
+
+    return cleaned
+```
+
+---
+
+# 25. Data Validation Function
+
+Cleaning and validation are different.
+
+Cleaning changes data.
+
+Validation checks whether the cleaned result meets requirements.
+
+```python
+REQUIRED_COLUMNS = {
+    "customer_id",
+    "name",
+    "city",
+    "age",
+    "total_spent",
+}
+
+
+def validate_cleaned_customer_data(
+    data: pd.DataFrame,
+) -> None:
+    """Validate cleaned customer data."""
+    if data.empty:
+        raise ValueError(
+            "Customer dataset cannot be empty."
+        )
+
+    missing_columns = (
+        REQUIRED_COLUMNS - set(data.columns)
+    )
+
+    if missing_columns:
+        raise ValueError(
+            "Missing required columns: "
+            f"{sorted(missing_columns)}"
+        )
+
+    if data["customer_id"].isna().any():
+        raise ValueError(
+            "Customer IDs cannot be missing."
+        )
+
+    if data["customer_id"].duplicated().any():
+        raise ValueError(
+            "Customer IDs must be unique."
+        )
+
+    if data["name"].isna().any():
+        raise ValueError(
+            "Customer names cannot be missing."
+        )
+
+    if (
+        (data["age"] < MINIMUM_AGE)
+        | (data["age"] > MAXIMUM_AGE)
+    ).any():
+        raise ValueError(
+            "Customer age is outside the valid range."
+        )
+
+    if (data["total_spent"] < 0).any():
+        raise ValueError(
+            "Total spending cannot be negative."
+        )
+```
+
+---
+
+# 26. Main Python Implementation
+
+```python
+from pathlib import Path
+from typing import Final
+
+import pandas as pd
+
+
+MINIMUM_AGE: Final[int] = 0
+MAXIMUM_AGE: Final[int] = 120
+
+REQUIRED_COLUMNS = {
+    "customer_id",
+    "name",
+    "city",
+    "age",
+    "total_spent",
+}
+
+
+def create_dirty_customer_data() -> pd.DataFrame:
+    """Create a sample dirty customer dataset."""
+    return pd.DataFrame(
+        {
+            "customer_id": [
+                101,
+                102,
+                102,
+                103,
+                104,
+                105,
+                106,
+            ],
+            "name": [
+                " Ali ",
+                "sara",
+                "sara",
+                "AHMED",
+                "Fatima",
+                "",
+                "Noor",
+            ],
+            "city": [
+                "Dubai",
+                "dubai",
+                "dubai",
+                "Sharjah ",
+                "abu dhabi",
+                None,
+                "DUBAI",
+            ],
+            "age": [
+                25,
+                None,
+                None,
+                -5,
+                31,
+                250,
+                "29",
+            ],
+            "total_spent": [
+                2500,
+                3200,
+                3200,
+                1800,
+                "unknown",
+                4000,
+                2100,
+            ],
+        }
+    )
+
+
+def generate_quality_report(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Generate a column-level data-quality report."""
+    report = pd.DataFrame(
+        {
+            "column": data.columns,
+            "data_type": [
+                str(data[column].dtype)
+                for column in data.columns
+            ],
+            "missing_count": [
+                int(data[column].isna().sum())
+                for column in data.columns
+            ],
+            "missing_percentage": [
+                float(
+                    data[column].isna().mean()
+                    * 100
+                )
+                for column in data.columns
+            ],
+            "unique_values": [
+                int(data[column].nunique(
+                    dropna=True
+                ))
+                for column in data.columns
+            ],
+        }
+    )
+
+    return report
+
+
+def clean_customer_data(
+    data: pd.DataFrame,
+) -> pd.DataFrame:
+    """Clean customer data without modifying the input."""
+    cleaned = data.copy()
+
+    cleaned = cleaned.drop_duplicates()
+
+    text_columns = [
+        "name",
+        "city",
+    ]
+
+    for column in text_columns:
+        cleaned[column] = (
+            cleaned[column]
+            .replace(
+                r"^\s*$",
+                pd.NA,
+                regex=True,
+            )
+            .str.strip()
+            .str.title()
+        )
+
+    numeric_columns = [
+        "age",
+        "total_spent",
+    ]
+
+    for column in numeric_columns:
+        cleaned[column] = pd.to_numeric(
+            cleaned[column],
+            errors="coerce",
+        )
+
+    invalid_age_mask = (
+        (cleaned["age"] < MINIMUM_AGE)
+        | (cleaned["age"] > MAXIMUM_AGE)
+    )
+
+    cleaned.loc[
+        invalid_age_mask,
+        "age",
+    ] = pd.NA
+
+    cleaned["age"] = cleaned["age"].fillna(
+        cleaned["age"].median()
+    )
+
+    cleaned["total_spent"] = (
+        cleaned["total_spent"].fillna(
+            cleaned["total_spent"].median()
+        )
+    )
+
+    cleaned["city"] = cleaned["city"].fillna(
+        "Unknown"
+    )
+
+    cleaned = cleaned.dropna(
+        subset=[
+            "customer_id",
+            "name",
+        ]
+    )
+
+    cleaned = cleaned.drop_duplicates(
+        subset=["customer_id"],
+        keep="last",
+    )
+
+    cleaned = cleaned.reset_index(
+        drop=True
+    )
+
+    return cleaned
+
+
+def validate_cleaned_customer_data(
+    data: pd.DataFrame,
+) -> None:
+    """Validate the cleaned customer dataset."""
+    if data.empty:
+        raise ValueError(
+            "Customer dataset cannot be empty."
+        )
+
+    missing_columns = (
+        REQUIRED_COLUMNS - set(data.columns)
+    )
+
+    if missing_columns:
+        raise ValueError(
+            "Missing required columns: "
+            f"{sorted(missing_columns)}"
+        )
+
+    if data["customer_id"].isna().any():
+        raise ValueError(
+            "Customer IDs cannot be missing."
+        )
+
+    if data["customer_id"].duplicated().any():
+        raise ValueError(
+            "Customer IDs must be unique."
+        )
+
+    if data["name"].isna().any():
+        raise ValueError(
+            "Customer names cannot be missing."
+        )
+
+    if (
+        (data["age"] < MINIMUM_AGE)
+        | (data["age"] > MAXIMUM_AGE)
+    ).any():
+        raise ValueError(
+            "Customer ages are invalid."
+        )
+
+    if (data["total_spent"] < 0).any():
+        raise ValueError(
+            "Total spending cannot be negative."
+        )
+
+
+def save_cleaned_data(
+    data: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Save cleaned data to a CSV file."""
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    data.to_csv(
+        output_path,
+        index=False,
+    )
+
+
+def main() -> None:
+    """Run the customer-data cleaning pipeline."""
+    dirty_data = create_dirty_customer_data()
+
+    print("Original data:")
+    print(dirty_data)
+
+    print("\nOriginal quality report:")
+    print(
+        generate_quality_report(
+            dirty_data
+        )
+    )
+
+    cleaned_data = clean_customer_data(
+        dirty_data
+    )
+
+    validate_cleaned_customer_data(
+        cleaned_data
+    )
+
+    print("\nCleaned data:")
+    print(cleaned_data)
+
+    print("\nCleaned quality report:")
+    print(
+        generate_quality_report(
+            cleaned_data
+        )
+    )
+
+    output_path = Path(
+        "reports/cleaned_customers.csv"
+    )
+
+    save_cleaned_data(
+        cleaned_data,
+        output_path,
+    )
+
+    print(
+        "\nCleaned dataset saved to: "
+        f"{output_path}"
+    )
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+# 27. Architecture
+
+```text
+Raw customer data
+       |
+       v
+Initial quality report
+       |
+       v
+Remove exact duplicates
+       |
+       v
+Normalize text
+       |
+       v
+Convert numerical columns
+       |
+       v
+Mark invalid values as missing
+       |
+       v
+Impute missing values
+       |
+       v
+Remove invalid essential records
+       |
+       v
+Resolve duplicate identifiers
+       |
+       v
+Validate cleaned dataset
+       |
+       v
+Export cleaned CSV
+```
+
+---
+
+# 28. Explanation of Important Lines
+
+```python
+cleaned = data.copy()
+```
+
+Creates a separate DataFrame so the original raw data remains unchanged.
+
+```python
+cleaned.drop_duplicates()
+```
+
+Removes exact duplicate rows.
+
+```python
+.replace(r"^\s*$", pd.NA, regex=True)
+```
+
+Finds empty or whitespace-only text and replaces it with missing values.
+
+```python
+.str.strip()
+```
+
+Removes spaces from the beginning and end.
+
+```python
+.str.title()
+```
+
+Standardizes capitalization.
+
+```python
+pd.to_numeric(
+    cleaned[column],
+    errors="coerce",
+)
+```
+
+Converts valid numerical text into numbers and invalid values into `NaN`.
+
+```python
+cleaned.loc[
+    invalid_age_mask,
+    "age",
+] = pd.NA
+```
+
+Replaces invalid ages with missing values.
+
+```python
+cleaned["age"].median()
+```
+
+Calculates a robust central value for filling missing ages.
+
+```python
+dropna(
+    subset=["customer_id", "name"]
+)
+```
+
+Removes rows missing essential identifying information.
+
+```python
+drop_duplicates(
+    subset=["customer_id"],
+    keep="last",
+)
+```
+
+Keeps one row per customer ID.
+
+```python
+reset_index(drop=True)
+```
+
+Creates a clean sequential index.
+
+---
+
+# 29. Time Complexity
+
+Let:
+
+* (n) = number of rows
+* (m) = number of columns
+
+Inspecting missing values:
+
+[
+O(nm)
+]
+
+Removing duplicates:
+
+[
+O(n)
+]
+
+Cleaning text columns:
+
+[
+O(n)
+]
+
+Converting numeric columns:
+
+[
+O(n)
+]
+
+Checking ranges:
+
+[
+O(n)
+]
+
+Filling missing values:
+
+[
+O(n)
+]
+
+For a fixed number of columns, the overall complexity is approximately:
+
+[
+\boxed{O(n)}
+]
+
+Additional memory is approximately:
+
+[
+\boxed{O(n)}
+]
+
+because a copy of the DataFrame is created.
+
+---
+
+# 30. Unit Tests
+
+```python
+import pandas as pd
+
+
+def run_tests() -> None:
+    dirty_data = create_dirty_customer_data()
+
+    cleaned_data = clean_customer_data(
+        dirty_data
+    )
+
+    validate_cleaned_customer_data(
+        cleaned_data
+    )
+
+    assert not cleaned_data[
+        "customer_id"
+    ].duplicated().any()
+
+    assert cleaned_data[
+        "name"
+    ].notna().all()
+
+    assert (
+        cleaned_data["age"] >= 0
+    ).all()
+
+    assert (
+        cleaned_data["age"] <= 120
+    ).all()
+
+    assert pd.api.types.is_numeric_dtype(
+        cleaned_data["age"]
+    )
+
+    assert pd.api.types.is_numeric_dtype(
+        cleaned_data["total_spent"]
+    )
+
+    assert not cleaned_data[
+        "total_spent"
+    ].isna().any()
+
+    assert "Dubai" in set(
+        cleaned_data["city"]
+    )
+
+    assert "dubai" not in set(
+        cleaned_data["city"]
+    )
+
+    print("All tests passed.")
+
+
+if __name__ == "__main__":
+    run_tests()
+```
+
+---
+
+# 31. Common Mistakes
+
+## Removing Too Many Rows
+
+```python
+cleaned = data.dropna()
+```
+
+This removes any row containing any missing value.
+
+A large part of the dataset may be lost.
+
+---
+
+## Filling Every Missing Value with Zero
+
+```python
+data = data.fillna(0)
+```
+
+This may incorrectly mean:
+
+```text
+Missing salary → salary equals zero
+Missing age → age equals zero
+Missing rating → rating equals zero
+```
+
+Zero is a real value, not a universal missing-value replacement.
+
+---
+
+## Removing Every Outlier
+
+An outlier may be:
+
+* A valid high-value customer
+* A real fraud case
+* An important rare event
+
+Deleting it automatically may remove the most useful observations.
+
+---
+
+## Cleaning Without Keeping Raw Data
+
+Overwriting the only copy makes mistakes difficult to reverse.
+
+Keep:
+
+```text
+raw_data
+cleaned_data
+```
+
+separately.
+
+---
+
+## Using the Mean with Extreme Values
+
+The mean may be distorted by outliers.
+
+The median may be more suitable.
+
+---
+
+## Ignoring Data Types
+
+A column may look numerical while actually being text.
+
+Always inspect:
+
+```python
+print(data.dtypes)
+```
+
+---
+
+## Treating Different People as Duplicates
+
+Removing duplicates using only names is unsafe:
+
+```python
+data.drop_duplicates(
+    subset=["name"]
+)
+```
+
+Different people can have the same name.
+
+---
+
+## Data Leakage
+
+Do not calculate cleaning statistics using test data before model training.
+
+---
+
+# 32. Debugging Techniques
+
+Inspect dataset dimensions:
+
+```python
+print(data.shape)
+```
+
+Inspect columns:
+
+```python
+print(data.columns.tolist())
+```
+
+Inspect types:
+
+```python
+print(data.dtypes)
+```
+
+Inspect missing values:
+
+```python
+print(data.isna().sum())
+```
+
+Inspect duplicate rows:
+
+```python
+print(
+    data[data.duplicated(
+        keep=False
+    )]
+)
+```
+
+Inspect categories:
+
+```python
+print(data["city"].value_counts(
+    dropna=False
+))
+```
+
+Inspect suspicious values:
+
+```python
+print(
+    data[
+        (data["age"] < 0)
+        | (data["age"] > 120)
+    ]
+)
+```
+
+Compare before and after:
+
+```python
+print(
+    f"Rows before: {len(raw_data)}"
+)
+
+print(
+    f"Rows after: {len(cleaned_data)}"
+)
+```
+
+---
+
+# 33. Exercises
+
+## Exercise 1: Missing Values
+
+Given:
+
+```python
+employees = pd.DataFrame(
+    {
+        "name": [
+            "Ali",
+            "Sara",
+            None,
+            "Ahmed",
+        ],
+        "salary": [
+            10000,
+            None,
+            12000,
+            11000,
+        ],
+    }
+)
+```
+
+Perform:
+
+* Missing-value counts
+* Missing percentages
+* Remove rows missing names
+* Fill missing salary with the median
+
+---
+
+## Exercise 2: Text Cleaning
+
+Clean:
+
+```python
+cities = pd.Series(
+    [
+        " dubai",
+        "DUBAI",
+        "Dubai ",
+        "abu dhabi",
+        "SHARJAH",
+    ]
+)
+```
+
+Expected standardized values:
+
+```text
+Dubai
+Dubai
+Dubai
+Abu Dhabi
+Sharjah
+```
+
+---
+
+## Exercise 3: Numeric Conversion
+
+Convert:
+
+```python
+prices = pd.Series(
+    [
+        "1000",
+        "1500.50",
+        "unknown",
+        "2000",
+    ]
+)
+```
+
+Invalid values should become missing.
+
+---
+
+## Exercise 4: Invalid Values
+
+Given:
+
+```python
+attendance = pd.Series(
+    [80, 95, -10, 105, 70]
+)
+```
+
+Detect values outside:
+
+[
+0 \leq attendance \leq 100
+]
+
+---
+
+## Exercise 5: Duplicates
+
+Given:
+
+```python
+orders = pd.DataFrame(
+    {
+        "order_id": [1, 2, 2, 3],
+        "amount": [100, 200, 250, 300],
+    }
+)
+```
+
+Find duplicate order IDs and decide which record should be kept.
+
+---
+
+# 34. Mini Project: Employee Data Cleaning Pipeline
+
+Use:
+
+```python
+employees = pd.DataFrame(
+    {
+        "employee_id": [
+            1,
+            2,
+            2,
+            3,
+            4,
+            5,
+            6,
+        ],
+        "name": [
+            " Ali ",
+            "sara",
+            "sara",
+            "",
+            "AHMED",
+            "Fatima",
+            "Omar",
+        ],
+        "department": [
+            "engineering",
+            "Sales",
+            "Sales",
+            "HR ",
+            "ENGINEERING",
+            None,
+            "sales",
+        ],
+        "age": [
+            28,
+            31,
+            31,
+            -4,
+            "35",
+            None,
+            150,
+        ],
+        "salary": [
+            12000,
+            10000,
+            10000,
+            9000,
+            "14000",
+            "unknown",
+            11000,
+        ],
+    }
+)
+```
+
+## Requirements
+
+1. Keep the raw dataset unchanged.
+2. Generate an initial quality report.
+3. Remove exact duplicates.
+4. Standardize names and departments.
+5. Replace empty strings with missing values.
+6. Convert age and salary to numeric.
+7. Replace invalid ages with missing values.
+8. Fill missing ages with the median.
+9. Fill missing salaries using department medians.
+10. Remove rows missing essential IDs or names.
+11. Ensure employee IDs are unique.
+12. Validate the final dataset.
+13. Save the cleaned data as CSV.
+14. Add at least eight unit tests.
+15. Document every cleaning decision.
+
+---
+
+# 35. Interview Questions
+
+1. What is data cleaning?
+2. Why is data cleaning important in machine learning?
+3. What is a missing value?
+4. How does Pandas represent missing numerical data?
+5. What is the difference between `dropna()` and `fillna()`?
+6. When should rows with missing data be removed?
+7. When is median imputation better than mean imputation?
+8. How do you detect duplicate rows?
+9. How do you detect duplicate identifiers?
+10. What does `pd.to_numeric()` do?
+11. What does `errors="coerce"` do?
+12. How do you standardize text categories?
+13. Why are empty strings different from `NaN`?
+14. What is an outlier?
+15. What is the IQR?
+16. Should all outliers be deleted?
+17. What is a z-score?
+18. What is data leakage?
+19. Why should raw data be preserved?
+20. Why should cleaning and validation be separate?
+21. Why is replacing all missing values with zero dangerous?
+22. Why can duplicate detection based only on names be unsafe?
+23. Why should invalid values sometimes become missing instead of being clipped?
+24. What is the approximate time complexity of scanning and cleaning (n) rows?
+25. Why should cleaning decisions be documented?
+
+---
+
+# 36. Summary
+
+* Data cleaning prepares raw data for reliable analysis and modeling.
+* Missing values may be removed, filled, or preserved depending on context.
+* Exact duplicates and duplicate entities are different problems.
+* Data types must be inspected and corrected.
+* `pd.to_numeric(..., errors="coerce")` converts invalid numeric text into missing values.
+* Text should be normalized using trimming and capitalization rules.
+* Empty strings should often be converted into missing values.
+* Invalid values should be detected using domain rules.
+* Mean imputation is sensitive to outliers.
+* Median imputation is often more robust.
+* Outliers should be investigated rather than automatically deleted.
+* Raw data should remain unchanged.
+* Cleaning should be followed by validation.
+* Cleaning transformations must avoid test-data leakage.
+
+# Lesson 7 Quiz
+
+### 1. What is the main purpose of data cleaning?
+
+A. Increase the number of rows
+B. Improve data quality before analysis or modeling
+C. Train neural networks
+D. Replace every value with a number
+
+### 2. How do you count missing values in each Pandas column?
+
+### 3. What is the difference between:
+
+```python
+data.dropna()
+```
+
+and:
+
+```python
+data.fillna(0)
+```
+
+### 4. Why is filling every missing value with zero unsafe?
+
+### 5. Which measure is generally more resistant to extreme values?
+
+A. Mean
+B. Median
+C. Maximum
+D. Sum
+
+### 6. What does this do?
+
+```python
+pd.to_numeric(
+    data["age"],
+    errors="coerce",
+)
+```
+
+### 7. What will happen to `"unknown"` when `errors="coerce"` is used?
+
+### 8. How can exact duplicate rows be detected?
+
+### 9. Why is this potentially unsafe?
+
+```python
+data.drop_duplicates(
+    subset=["name"]
+)
+```
+
+### 10. What does this expression detect?
+
+```python
+(data["age"] < 0)
+| (data["age"] > 120)
+```
+
+### 11. What is the formula for the interquartile range?
+
+### 12. Should every IQR outlier be deleted? Explain.
+
+### 13. What is the purpose of:
+
+```python
+data.copy()
+```
+
+before cleaning?
+
+### 14. What does this do?
+
+```python
+data["city"].str.strip().str.title()
+```
+
+### 15. Why may an empty string not be detected by `isna()`?
+
+### 16. What is data leakage during missing-value imputation?
+
+### 17. Why should cleaning statistics be calculated from training data only?
+
+### 18. What is the difference between cleaning and validation?
+
+### 19. What is the approximate time complexity of cleaning every row in a dataset containing (n) rows?
+
+A. (O(1))
+B. (O(\log n))
+C. (O(n))
+D. (O(n^2))
+
+### 20. Why must every important cleaning decision be documented?
