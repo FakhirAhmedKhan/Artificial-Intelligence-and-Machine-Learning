@@ -1,0 +1,550 @@
+These three lessons complete the **delivery of Phase 1 — Python Foundations**. Phase 1 mastery will be confirmed after reviewing your code, exercises, projects, and quiz answers.
+
+# Lesson 10: Modules, Packages, Virtual Environments, and Dependencies
+
+## 1. Learning Objectives
+
+By the end of this lesson, you should be able to:
+
+1. Split Python code into modules.
+2. Build reusable Python packages.
+3. Understand imports and `__init__.py`.
+4. Create and activate a virtual environment.
+5. Install project dependencies.
+6. Create `requirements.txt` and `pyproject.toml`.
+7. Use a professional `src/` project structure.
+8. Avoid circular imports and dependency conflicts.
+
+---
+
+## 2. Theory
+
+### Module
+
+A module is a Python file containing reusable code.
+
+```text
+statistics.py
+validation.py
+cleaning.py
+```
+
+Example:
+
+```python
+# statistics.py
+
+def calculate_mean(values: list[float]) -> float:
+    return sum(values) / len(values)
+```
+
+Import it:
+
+```python
+from statistics import calculate_mean
+```
+
+### Package
+
+A package is a directory containing related modules.
+
+```text
+ml_utils/
+├── __init__.py
+├── statistics.py
+└── validation.py
+```
+
+### Virtual environment
+
+A virtual environment creates an isolated Python installation for one project.
+
+Without isolation:
+
+```text
+Project A requires Pandas 2.1
+Project B requires Pandas 2.3
+                    ↓
+             Version conflict
+```
+
+With virtual environments:
+
+```text
+Project A environment → Pandas 2.1
+Project B environment → Pandas 2.3
+```
+
+---
+
+## 3. Visual Explanation
+
+```text
+Application
+    |
+    +-- validation module
+    |
+    +-- statistics module
+    |
+    +-- cleaning module
+    |
+    +-- visualization module
+```
+
+Professional structure:
+
+```text
+lesson-10-project/
+├── pyproject.toml
+├── requirements.txt
+├── src/
+│   ├── main.py
+│   └── ml_utils/
+│       ├── __init__.py
+│       ├── statistics.py
+│       └── validation.py
+└── tests/
+```
+
+---
+
+## 4. Mathematical Intuition
+
+Suppose five modules all contain duplicated averaging logic.
+
+Each implementation contains (k) lines:
+
+[
+\text{Duplicated code} = 5k
+]
+
+Moving the logic into one shared function reduces it to approximately:
+
+[
+k + 5
+]
+
+where the additional lines are imports or function calls.
+
+Modules reduce duplication and make corrections easier. Fixing one shared function updates every caller.
+
+---
+
+## 5. Python Implementation
+
+### Step 1: Create a virtual environment
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+Windows Command Prompt:
+
+```bat
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+macOS or Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Verify:
+
+```bash
+python --version
+python -c "import sys; print(sys.executable)"
+```
+
+Deactivate:
+
+```bash
+deactivate
+```
+
+---
+
+### Step 2: Project structure
+
+```text
+lesson-10-project/
+├── pyproject.toml
+├── src/
+│   ├── main.py
+│   └── ml_utils/
+│       ├── __init__.py
+│       ├── statistics.py
+│       └── validation.py
+└── tests/
+```
+
+---
+
+### `src/ml_utils/validation.py`
+
+```python
+from collections.abc import Sequence
+
+
+def validate_numeric_values(
+    values: Sequence[float],
+) -> None:
+    """Validate a non-empty sequence of numerical values."""
+    if not values:
+        raise ValueError("Values cannot be empty.")
+
+    for value in values:
+        if not isinstance(value, int | float):
+            raise TypeError(
+                f"Expected a number, received {type(value).__name__}."
+            )
+```
+
+### Explanation
+
+```python
+from collections.abc import Sequence
+```
+
+Imports a general type representing ordered collections such as lists and tuples.
+
+```python
+def validate_numeric_values(...)
+```
+
+Defines reusable validation logic.
+
+```python
+if not values:
+```
+
+Rejects an empty dataset.
+
+```python
+isinstance(value, int | float)
+```
+
+Checks whether each value is numerical.
+
+---
+
+### `src/ml_utils/statistics.py`
+
+```python
+from collections.abc import Sequence
+
+from ml_utils.validation import validate_numeric_values
+
+
+def calculate_mean(
+    values: Sequence[float],
+) -> float:
+    """Calculate the arithmetic mean."""
+    validate_numeric_values(values)
+
+    return float(sum(values) / len(values))
+
+
+def calculate_range(
+    values: Sequence[float],
+) -> float:
+    """Calculate the difference between maximum and minimum."""
+    validate_numeric_values(values)
+
+    return float(max(values) - min(values))
+```
+
+Mean formula:
+
+[
+\bar{x} = \frac{\sum x_i}{n}
+]
+
+Range formula:
+
+[
+R = x_{\max} - x_{\min}
+]
+
+---
+
+### `src/ml_utils/__init__.py`
+
+```python
+from ml_utils.statistics import calculate_mean, calculate_range
+
+__all__ = [
+    "calculate_mean",
+    "calculate_range",
+]
+```
+
+This exposes a cleaner package interface:
+
+```python
+from ml_utils import calculate_mean
+```
+
+instead of:
+
+```python
+from ml_utils.statistics import calculate_mean
+```
+
+---
+
+### `src/main.py`
+
+```python
+from ml_utils import calculate_mean, calculate_range
+
+
+def main() -> None:
+    """Run the statistics example."""
+    scores = [72.0, 85.0, 91.0, 64.0, 88.0]
+
+    mean_score = calculate_mean(scores)
+    score_range = calculate_range(scores)
+
+    print(f"Mean score: {mean_score:.2f}")
+    print(f"Score range: {score_range:.2f}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+---
+
+### `pyproject.toml`
+
+```toml
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ml-utils"
+version = "0.1.0"
+description = "Reusable utilities for AI and ML learning"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+```
+
+Install the package locally:
+
+```bash
+pip install -e .
+```
+
+`-e` means editable mode. Source-code changes are immediately available without reinstalling.
+
+Run:
+
+```bash
+python src/main.py
+```
+
+---
+
+### Managing dependencies
+
+Install libraries:
+
+```bash
+pip install numpy pandas matplotlib requests
+```
+
+Save installed versions:
+
+```bash
+pip freeze > requirements.txt
+```
+
+Install from the file:
+
+```bash
+pip install -r requirements.txt
+```
+
+Example:
+
+```text
+matplotlib==3.10.3
+numpy==2.3.1
+pandas==2.3.1
+requests==2.32.4
+```
+
+Exact versions improve reproducibility but eventually require controlled upgrades.
+
+---
+
+### Time complexity
+
+`calculate_mean()` reads every value:
+
+[
+O(n)
+]
+
+`calculate_range()` uses `min()` and `max()`:
+
+[
+O(n) + O(n) = O(n)
+]
+
+The package structure does not change algorithmic complexity. It improves organization and maintainability.
+
+---
+
+## 6. Exercises
+
+1. Create a `conversions.py` module containing Celsius-to-Fahrenheit conversion.
+2. Create a `data_quality.py` module that counts missing values.
+3. Export the functions through `__init__.py`.
+4. Create and activate a fresh virtual environment.
+5. Install Pandas and NumPy.
+6. Generate `requirements.txt`.
+7. Recreate the environment using only `requirements.txt`.
+
+---
+
+## 7. Mini Project: Student Analytics Package
+
+Create:
+
+```text
+student-analytics/
+├── pyproject.toml
+├── src/
+│   └── student_analytics/
+│       ├── __init__.py
+│       ├── validation.py
+│       ├── statistics.py
+│       ├── grading.py
+│       └── reporting.py
+└── tests/
+```
+
+Requirements:
+
+* Validate scores between 0 and 100.
+* Calculate mean and median.
+* Assign grades.
+* Calculate pass rate.
+* Produce a text report.
+* Export public functions through `__init__.py`.
+* Install the package using editable mode.
+
+---
+
+## 8. Common Mistakes
+
+### Running code outside the environment
+
+You may install dependencies into one Python installation and run another.
+
+Check:
+
+```bash
+python -c "import sys; print(sys.executable)"
+```
+
+### Naming files after standard libraries
+
+Avoid filenames such as:
+
+```text
+json.py
+requests.py
+statistics.py
+pandas.py
+```
+
+They can hide the real libraries.
+
+### Circular imports
+
+```text
+module_a imports module_b
+module_b imports module_a
+```
+
+This often indicates poor separation of responsibilities.
+
+### Using `from module import *`
+
+This hides where names originated and can cause collisions.
+
+### Committing `.venv`
+
+The environment directory is large and platform-specific.
+
+Add to `.gitignore`:
+
+```text
+.venv/
+__pycache__/
+*.pyc
+```
+
+---
+
+## 9. Interview Questions
+
+1. What is a Python module?
+2. What is a Python package?
+3. What does `__init__.py` do?
+4. Why are virtual environments needed?
+5. What does `pip install -e .` do?
+6. What is `requirements.txt`?
+7. What is `pyproject.toml`?
+8. What is a dependency conflict?
+9. What is a circular import?
+10. Why use a `src/` layout?
+11. What does `__all__` control?
+12. Why should `.venv` not be committed?
+13. What is the difference between absolute and relative imports?
+14. What is semantic versioning?
+15. Why should dependencies be pinned?
+
+---
+
+## 10. Summary
+
+* A module is a reusable Python file.
+* A package contains related modules.
+* Virtual environments isolate dependencies.
+* `requirements.txt` records installed packages.
+* `pyproject.toml` defines modern project metadata.
+* Editable installation supports active development.
+* The `src/` layout reduces accidental import problems.
+* Packages should expose a small, clear public interface.
+* Dependency versions should be managed deliberately.
+
+## Lesson 10 Quiz
+
+1. What is the difference between a module and a package?
+2. Why is a virtual environment needed?
+3. What command creates a virtual environment?
+4. What does `pip install -e .` mean?
+5. What is the purpose of `pyproject.toml`?
+6. What does `pip freeze > requirements.txt` do?
+7. What does `__init__.py` provide?
+8. Why is `from module import *` discouraged?
+9. What is a circular import?
+10. Why should `.venv` be included in `.gitignore`?
+11. What is the time complexity of calculating a mean for (n) values?
+12. Why can naming a file `requests.py` create problems?
+
+---
+
