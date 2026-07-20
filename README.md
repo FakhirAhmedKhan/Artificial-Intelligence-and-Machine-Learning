@@ -1,7 +1,3 @@
-
-
-
-
 # Lesson 1: Introduction to Artificial Intelligence and Machine Learning
 
 **Progress:** Lesson 1 in progress  
@@ -63,7 +59,7 @@ The important distinction is:
 
 ## 3. Theory
 
-## Artificial Intelligence
+### Artificial Intelligence
 
 Artificial Intelligence, or AI, is the broad field of building computer systems that perform tasks normally associated with human intelligence.
 
@@ -81,7 +77,7 @@ Not every AI system uses machine learning. A chess program based entirely on man
 
 ---
 
-## Machine Learning
+### Machine Learning
 
 Machine Learning is a subfield of AI in which systems learn patterns from data instead of having every decision rule explicitly programmed.
 
@@ -102,7 +98,7 @@ Examples:
 
 ---
 
-## Deep Learning
+### Deep Learning
 
 Deep Learning is a subfield of machine learning based on artificial neural networks with multiple processing layers.
 
@@ -124,7 +120,7 @@ Examples include:
 
 ---
 
-## Relationship Between AI, ML, and Deep Learning
+### Relationship Between AI, ML, and Deep Learning
 
 ```text
 +------------------------------------------------+
@@ -255,7 +251,7 @@ The output produced by the model.
 
 ## 6. Major Types of Machine Learning
 
-## Supervised Learning
+### Supervised Learning
 
 The training data contains both inputs and correct answers.
 
@@ -278,7 +274,7 @@ Common supervised-learning tasks:
 - Regression
 - Classification
 
-### Regression
+#### Regression
 
 Predicts a continuous numerical value.
 
@@ -289,7 +285,7 @@ Examples:
 - Monthly sales
 - Delivery time
 
-### Classification
+#### Classification
 
 Predicts a category.
 
@@ -302,7 +298,7 @@ Examples:
 
 ---
 
-## Unsupervised Learning
+### Unsupervised Learning
 
 The data contains inputs but no provided correct answers.
 
@@ -326,7 +322,7 @@ Common tasks include:
 
 ---
 
-## Reinforcement Learning
+### Reinforcement Learning
 
 An agent interacts with an environment and learns through rewards and penalties.
 
