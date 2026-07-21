@@ -24,7 +24,7 @@ In this lesson, we will refresh the Python concepts needed to represent and proc
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -41,7 +41,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Why Python Is Used in AI and ML
+## 2. Why Python Is Used in AI and ML
 
 Python is popular in AI and machine learning because it has:
 
@@ -76,7 +76,7 @@ Before using ML libraries, you must be comfortable manipulating data using stand
 
 ---
 
-# 3. Variables and Data Types
+## 3. Variables and Data Types
 
 A variable stores a value.
 
@@ -145,7 +145,7 @@ prediction = None
 
 ---
 
-# 4. Type Hints
+## 4. Type Hints
 
 Python allows you to describe the expected type of a variable or function parameter.
 
@@ -189,7 +189,7 @@ A static type checker such as `mypy` would detect the mismatch.
 
 ---
 
-# 5. Python Collections
+## 5. Python Collections
 
 Machine-learning datasets contain many values. Python collections help organize them.
 
@@ -318,7 +318,7 @@ Sets are useful for:
 
 ---
 
-# 6. Mutable vs Immutable Objects
+## 6. Mutable vs Immutable Objects
 
 ## Mutable
 
@@ -358,7 +358,7 @@ The string `"Ali"` was not modified. The variable now points to a new string.
 
 ---
 
-# 7. Conditional Statements
+## 7. Conditional Statements
 
 Conditions allow programs to make decisions.
 
@@ -390,7 +390,7 @@ Python checks conditions from top to bottom and stops at the first matching cond
 
 ---
 
-# 8. Loops
+## 8. Loops
 
 Loops process multiple data points.
 
@@ -437,7 +437,7 @@ Be careful: forgetting to update the condition can create an infinite loop.
 
 ---
 
-# 9. Functions
+## 9. Functions
 
 A function groups reusable logic.
 
@@ -470,7 +470,7 @@ Prediction
 
 ---
 
-# 10. Mathematical Intuition
+## 10. Mathematical Intuition
 
 A Python function can represent a mathematical function.
 
@@ -575,7 +575,7 @@ If eight out of ten students passed:
 
 ---
 
-# 11. Visual Explanation
+## 11. Visual Explanation
 
 We will build a student dataset analyzer.
 
@@ -603,7 +603,7 @@ This resembles a small data-processing pipeline.
 
 ---
 
-# 12. Python Implementation
+## 12. Python Implementation
 
 ## Student Dataset Analyzer
 
@@ -748,7 +748,7 @@ F: 1
 
 ---
 
-# 13. Code Explanation
+## 13. Code Explanation
 
 ## Import
 
@@ -1039,7 +1039,7 @@ It prevents `main()` from running automatically when the file is imported into a
 
 ---
 
-# 14. Time Complexity
+## 14. Time Complexity
 
 Let (n) be the number of students.
 
@@ -1137,7 +1137,7 @@ space.
 
 ---
 
-# 15. Unit Tests
+## 15. Unit Tests
 
 Create a separate file named:
 
@@ -1195,7 +1195,7 @@ assert abs(result - expected) < 0.0001
 
 ---
 
-# 16. Debugging Techniques
+## 16. Debugging Techniques
 
 ## Print the Value and Type
 
@@ -1277,7 +1277,7 @@ raise ValueError(
 
 ---
 
-# 17. Common Errors
+## 17. Common Errors
 
 ## Division by Zero
 
@@ -1392,7 +1392,7 @@ passing_scores = [
 
 ---
 
-# 18. Exercises
+## 18. Exercises
 
 ## Exercise 1: Maximum and Minimum
 
@@ -1474,7 +1474,7 @@ calculate_pass_rate(students, passing_score=70.0)
 
 ---
 
-# 19. Mini Project: Dataset Quality Report
+## 19. Mini Project: Dataset Quality Report
 
 Build a program that analyzes a small numeric dataset before it is used for machine learning.
 
@@ -1554,7 +1554,7 @@ assert generate_quality_report(
 
 ---
 
-# 20. Common Mistakes
+## 20. Common Mistakes
 
 1. Using unclear variable names such as `x1`, `a`, or `temp` without context.
 2. Writing all program logic inside one function.
@@ -1589,7 +1589,7 @@ except ValueError as error:
 
 ---
 
-# 21. Interview Questions
+## 21. Interview Questions
 
 1. What is the difference between a list and a tuple?
 2. What does mutable mean?
@@ -1614,7 +1614,7 @@ except ValueError as error:
 
 ---
 
-# 22. Summary
+## 22. Summary
 
 * Python variables reference values.
 * Core scalar types include integers, floats, strings, booleans, and `None`.
@@ -1633,7 +1633,7 @@ except ValueError as error:
 
 ---
 
-# Lesson 2 Quiz
+## Lesson 2 Quiz
 
 ### 1. Which Python collection is ordered and immutable?
 

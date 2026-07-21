@@ -8,7 +8,7 @@ Seaborn is a statistical visualization library built on Matplotlib and designed 
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -25,7 +25,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Why Seaborn?
+## 2. Why Seaborn?
 
 In Lesson 5, we created charts using Matplotlib:
 
@@ -59,7 +59,7 @@ Seaborn does not replace Matplotlib. It uses Matplotlib underneath, so Matplotli
 
 ---
 
-# 3. Installing and Importing Seaborn
+## 3. Installing and Importing Seaborn
 
 The official installation command is: ([seaborn.pydata.org][3])
 
@@ -83,7 +83,7 @@ import seaborn as sns
 
 ---
 
-# 4. Example Dataset
+## 4. Example Dataset
 
 We will use a student-performance dataset:
 
@@ -175,7 +175,7 @@ Each column represents one variable.
 
 ---
 
-# 5. Setting a Theme
+## 5. Setting a Theme
 
 ```python
 import seaborn as sns
@@ -222,7 +222,7 @@ plt.show()
 
 ---
 
-# 6. Scatter Plot
+## 6. Scatter Plot
 
 A scatter plot displays the relationship between two numerical variables. Seaborn’s official relational-plot documentation recommends `scatterplot()` for basic relationships where both variables are numeric. ([seaborn.pydata.org][4])
 
@@ -276,7 +276,7 @@ However, a visual relationship does not prove that study time alone caused the h
 
 ---
 
-# 7. Using `hue`
+## 7. Using `hue`
 
 `hue` uses another variable to divide observations into groups.
 
@@ -330,7 +330,7 @@ plt.show()
 
 ---
 
-# 8. Using `style` and `size`
+## 8. Using `style` and `size`
 
 You can represent additional variables:
 
@@ -359,7 +359,7 @@ This is powerful, but adding too many dimensions can make the chart difficult to
 
 ---
 
-# 9. Line Plot
+## 9. Line Plot
 
 A line plot displays change across an ordered variable.
 
@@ -425,7 +425,7 @@ This may indicate overfitting.
 
 ---
 
-# 10. Bar Plot
+## 10. Bar Plot
 
 A bar plot compares numerical values across categories.
 
@@ -462,7 +462,7 @@ This differs from Matplotlib’s `bar()`, where you often provide already calcul
 
 ---
 
-# 11. Mathematical Intuition for a Bar Plot
+## 11. Mathematical Intuition for a Bar Plot
 
 Suppose the Python scores are:
 
@@ -483,7 +483,7 @@ The mean is:
 \bar{x}
 =======
 
-# \frac{233}{4}
+## \frac{233}{4}
 
 58.25
 ]
@@ -498,7 +498,7 @@ Therefore, the bar may represent a statistical summary rather than an individual
 
 ---
 
-# 12. Count Plot
+## 12. Count Plot
 
 A count plot displays how many rows belong to each category.
 
@@ -533,7 +533,7 @@ A count plot uses frequencies, not averages.
 
 ---
 
-# 13. Histogram
+## 13. Histogram
 
 A histogram shows the distribution of a numerical variable.
 
@@ -573,7 +573,7 @@ The density curve estimates the general shape of the distribution.
 
 ---
 
-# 14. Distribution Shapes
+## 14. Distribution Shapes
 
 ## Approximately Symmetrical
 
@@ -621,7 +621,7 @@ Most values are higher, with a long tail toward lower values.
 
 ---
 
-# 15. Box Plot
+## 15. Box Plot
 
 A box plot summarizes a numerical distribution.
 
@@ -648,7 +648,7 @@ The Seaborn API includes box plots for comparing distributions across categories
 
 ---
 
-# 16. Box Plot Components
+## 16. Box Plot Components
 
 ```text
        possible outlier
@@ -676,7 +676,7 @@ A box plot commonly displays:
 
 ---
 
-# 17. Mathematical Intuition: Quartiles
+## 17. Mathematical Intuition: Quartiles
 
 Given sorted scores:
 
@@ -722,7 +722,7 @@ They should not automatically be deleted. They may be genuine observations.
 
 ---
 
-# 18. Violin Plot
+## 18. Violin Plot
 
 A violin plot combines distribution shape with categorical comparison.
 
@@ -753,7 +753,7 @@ A violin plot can reveal distribution shape more clearly than a box plot, but it
 
 ---
 
-# 19. Strip Plot
+## 19. Strip Plot
 
 A strip plot shows individual observations across categories.
 
@@ -778,7 +778,7 @@ sns.stripplot(
 
 ---
 
-# 20. Swarm Plot
+## 20. Swarm Plot
 
 A swarm plot adjusts points so they do not overlap.
 
@@ -796,7 +796,7 @@ Swarm plots work best with relatively small datasets.
 
 ---
 
-# 21. Combining a Box Plot and Strip Plot
+## 21. Combining a Box Plot and Strip Plot
 
 ```python
 figure, axis = plt.subplots(
@@ -830,7 +830,7 @@ The strip plot shows the actual observations.
 
 ---
 
-# 22. Correlation
+## 22. Correlation
 
 Correlation measures the strength and direction of a linear relationship between two numerical variables.
 
@@ -860,7 +860,7 @@ Correlation does not prove causation.
 
 ---
 
-# 23. Correlation Matrix
+## 23. Correlation Matrix
 
 Select numerical columns:
 
@@ -893,7 +893,7 @@ The diagonal is always 1 because each variable is perfectly correlated with itse
 
 ---
 
-# 24. Heatmap
+## 24. Heatmap
 
 A heatmap represents matrix values using color intensity.
 
@@ -927,7 +927,7 @@ fmt=".2f"  → display two decimal places
 
 ---
 
-# 25. Pair Plot
+## 25. Pair Plot
 
 A pair plot displays relationships between multiple numerical variables.
 
@@ -956,7 +956,7 @@ However, pair plots become expensive and cluttered when a dataset contains many 
 
 ---
 
-# 26. Figure-Level vs Axes-Level Functions
+## 26. Figure-Level vs Axes-Level Functions
 
 ## Axes-Level Functions
 
@@ -1013,7 +1013,7 @@ Do not pass a normal Matplotlib `ax` argument to functions that create their own
 
 ---
 
-# 27. Faceting
+## 27. Faceting
 
 Faceting creates separate charts for different groups.
 
@@ -1039,7 +1039,7 @@ Faceting is useful when putting every group on one chart becomes cluttered.
 
 ---
 
-# 28. Main Python Implementation
+## 28. Main Python Implementation
 
 ## Exploratory Student Analysis Report
 
@@ -1444,7 +1444,7 @@ if __name__ == "__main__":
 
 ---
 
-# 29. Architecture
+## 29. Architecture
 
 ```text
 Student DataFrame
@@ -1472,7 +1472,7 @@ High-resolution report images
 
 ---
 
-# 30. Important Code Explanation
+## 30. Important Code Explanation
 
 ```python
 sns.histplot(
@@ -1532,7 +1532,7 @@ Releases the figure after saving it.
 
 ---
 
-# 31. Time Complexity
+## 31. Time Complexity
 
 Let:
 
@@ -1600,7 +1600,7 @@ cells.
 
 ---
 
-# 32. Unit Tests
+## 32. Unit Tests
 
 ```python
 from pathlib import Path
@@ -1686,7 +1686,7 @@ if __name__ == "__main__":
 
 ---
 
-# 33. Common Mistakes
+## 33. Common Mistakes
 
 ## Using a Categorical Column as a Numeric Axis
 
@@ -1811,7 +1811,7 @@ sns.relplot(
 
 ---
 
-# 34. Debugging Techniques
+## 34. Debugging Techniques
 
 Inspect DataFrame columns:
 
@@ -1867,7 +1867,7 @@ plt.close("all")
 
 ---
 
-# 35. Exercises
+## 35. Exercises
 
 ## Exercise 1: Scatter Plot
 
@@ -1952,7 +1952,7 @@ Explain which pair has the strongest relationship.
 
 ---
 
-# 36. Mini Project: E-Commerce Exploratory Analysis
+## 36. Mini Project: E-Commerce Exploratory Analysis
 
 Use:
 
@@ -2062,7 +2062,7 @@ sales = pd.DataFrame(
 
 ---
 
-# 37. Interview Questions
+## 37. Interview Questions
 
 1. What is Seaborn?
 2. How is Seaborn related to Matplotlib?
@@ -2092,7 +2092,7 @@ sales = pd.DataFrame(
 
 ---
 
-# 38. Summary
+## 38. Summary
 
 * Seaborn provides high-level statistical visualizations.
 * It works closely with Pandas and builds on Matplotlib.
@@ -2112,7 +2112,7 @@ sales = pd.DataFrame(
 * Axes-level functions can draw on supplied Matplotlib axes.
 * Statistical charts must be interpreted in the context of data quality and sample size.
 
-# Lesson 6 Quiz
+## Lesson 6 Quiz
 
 ### 1. Seaborn is built on top of which library?
 

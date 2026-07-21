@@ -14,7 +14,7 @@ Poor data → Poor patterns → Poor predictions
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -31,7 +31,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Real-World Example
+## 2. Real-World Example
 
 Suppose an online store has this customer dataset:
 
@@ -58,7 +58,7 @@ If this data is used without cleaning, calculations and models may become unreli
 
 ---
 
-# 3. Why Data Cleaning Matters
+## 3. Why Data Cleaning Matters
 
 Machine-learning algorithms do not automatically understand whether data is sensible.
 
@@ -110,7 +110,7 @@ Model training
 
 ---
 
-# 4. Types of Data Quality Problems
+## 4. Types of Data Quality Problems
 
 ## Missing Values
 
@@ -194,7 +194,7 @@ July 21, 2026
 
 ---
 
-# 5. Creating a Dirty Dataset
+## 5. Creating a Dirty Dataset
 
 ```python
 import pandas as pd
@@ -259,7 +259,7 @@ print(customers)
 
 ---
 
-# 6. Inspecting Data Before Cleaning
+## 6. Inspecting Data Before Cleaning
 
 Never start cleaning blindly.
 
@@ -301,7 +301,7 @@ However, numerical columns stored as text may not appear correctly inside `descr
 
 ---
 
-# 7. Missing Values
+## 7. Missing Values
 
 Pandas usually represents missing numerical data as:
 
@@ -340,7 +340,7 @@ The mean of Boolean values gives the missing fraction.
 
 ---
 
-# 8. Removing Missing Values
+## 8. Removing Missing Values
 
 Remove rows containing any missing value:
 
@@ -368,7 +368,7 @@ This is usually too aggressive because an entire feature may be lost.
 
 ---
 
-# 9. Filling Missing Values
+## 9. Filling Missing Values
 
 ## Fill Numerical Data with the Mean
 
@@ -410,7 +410,7 @@ customers["city"] = customers["city"].fillna(
 
 ---
 
-# 10. Mean vs Median
+## 10. Mean vs Median
 
 Suppose ages are:
 
@@ -439,7 +439,7 @@ Therefore, the median is often more robust for skewed data or data containing ou
 
 ---
 
-# 11. Missing-Value Decisions
+## 11. Missing-Value Decisions
 
 There is no universal strategy.
 
@@ -465,7 +465,7 @@ There is no universal strategy.
 
 ---
 
-# 12. Duplicate Records
+## 12. Duplicate Records
 
 Detect exact duplicate rows:
 
@@ -533,7 +533,7 @@ Choosing `first` or `last` must be based on business meaning.
 
 ---
 
-# 13. Correcting Data Types
+## 13. Correcting Data Types
 
 Inspect types:
 
@@ -576,7 +576,7 @@ customers["total_spent"] = pd.to_numeric(
 
 ---
 
-# 14. Converting Dates
+## 14. Converting Dates
 
 Suppose:
 
@@ -612,7 +612,7 @@ NaT
 
 ---
 
-# 15. Cleaning Text Data
+## 15. Cleaning Text Data
 
 Remove surrounding spaces:
 
@@ -652,7 +652,7 @@ Examples:
 
 ---
 
-# 16. Replacing Empty Strings
+## 16. Replacing Empty Strings
 
 An empty string is not always detected as missing.
 
@@ -683,7 +683,7 @@ customers["name"] = customers["name"].replace(
 
 ---
 
-# 17. Standardizing Categories
+## 17. Standardizing Categories
 
 Suppose a payment column contains:
 
@@ -728,7 +728,7 @@ orders["payment_method"] = (
 
 ---
 
-# 18. Validating Numerical Ranges
+## 18. Validating Numerical Ranges
 
 A valid customer age might be:
 
@@ -772,7 +772,7 @@ customers["age"] = customers["age"].fillna(
 
 ---
 
-# 19. Clipping Values
+## 19. Clipping Values
 
 Pandas can limit values to a range:
 
@@ -789,7 +789,7 @@ Replacing invalid data with missing values and investigating the source is often
 
 ---
 
-# 20. Detecting Outliers
+## 20. Detecting Outliers
 
 An outlier is a value that is unusually far from other observations.
 
@@ -827,7 +827,7 @@ Outliers should be investigated, not automatically deleted.
 
 ---
 
-# 21. Interquartile Range Method
+## 21. Interquartile Range Method
 
 Calculate quartiles:
 
@@ -870,7 +870,7 @@ outliers = salaries[outlier_mask]
 
 ---
 
-# 22. Z-Score Intuition
+## 22. Z-Score Intuition
 
 A z-score measures how far a value is from the mean in standard-deviation units.
 
@@ -894,7 +894,7 @@ However, z-scores work best when the data is approximately normally distributed.
 
 ---
 
-# 23. Data Leakage During Cleaning
+## 23. Data Leakage During Cleaning
 
 A serious mistake is calculating cleaning statistics using the full dataset before train-test splitting.
 
@@ -937,7 +937,7 @@ Later, scikit-learn pipelines will help manage this correctly.
 
 ---
 
-# 24. A Reusable Cleaning Pipeline
+## 24. A Reusable Cleaning Pipeline
 
 ```python
 from typing import Final
@@ -1026,7 +1026,7 @@ def clean_customer_data(
 
 ---
 
-# 25. Data Validation Function
+## 25. Data Validation Function
 
 Cleaning and validation are different.
 
@@ -1094,7 +1094,7 @@ def validate_cleaned_customer_data(
 
 ---
 
-# 26. Main Python Implementation
+## 26. Main Python Implementation
 
 ```python
 from pathlib import Path
@@ -1398,7 +1398,7 @@ if __name__ == "__main__":
 
 ---
 
-# 27. Architecture
+## 27. Architecture
 
 ```text
 Raw customer data
@@ -1436,7 +1436,7 @@ Export cleaned CSV
 
 ---
 
-# 28. Explanation of Important Lines
+## 28. Explanation of Important Lines
 
 ```python
 cleaned = data.copy()
@@ -1517,7 +1517,7 @@ Creates a clean sequential index.
 
 ---
 
-# 29. Time Complexity
+## 29. Time Complexity
 
 Let:
 
@@ -1576,7 +1576,7 @@ because a copy of the DataFrame is created.
 
 ---
 
-# 30. Unit Tests
+## 30. Unit Tests
 
 ```python
 import pandas as pd
@@ -1638,7 +1638,7 @@ if __name__ == "__main__":
 
 ---
 
-# 31. Common Mistakes
+## 31. Common Mistakes
 
 ## Removing Too Many Rows
 
@@ -1737,7 +1737,7 @@ Do not calculate cleaning statistics using test data before model training.
 
 ---
 
-# 32. Debugging Techniques
+## 32. Debugging Techniques
 
 Inspect dataset dimensions:
 
@@ -1806,7 +1806,7 @@ print(
 
 ---
 
-# 33. Exercises
+## 33. Exercises
 
 ## Exercise 1: Missing Values
 
@@ -1922,7 +1922,7 @@ Find duplicate order IDs and decide which record should be kept.
 
 ---
 
-# 34. Mini Project: Employee Data Cleaning Pipeline
+## 34. Mini Project: Employee Data Cleaning Pipeline
 
 Use:
 
@@ -1998,7 +1998,7 @@ employees = pd.DataFrame(
 
 ---
 
-# 35. Interview Questions
+## 35. Interview Questions
 
 1. What is data cleaning?
 2. Why is data cleaning important in machine learning?
@@ -2028,7 +2028,7 @@ employees = pd.DataFrame(
 
 ---
 
-# 36. Summary
+## 36. Summary
 
 * Data cleaning prepares raw data for reliable analysis and modeling.
 * Missing values may be removed, filled, or preserved depending on context.
@@ -2045,7 +2045,7 @@ employees = pd.DataFrame(
 * Cleaning should be followed by validation.
 * Cleaning transformations must avoid test-data leakage.
 
-# Lesson 7 Quiz
+## Lesson 7 Quiz
 
 ### 1. What is the main purpose of data cleaning?
 

@@ -8,7 +8,7 @@ APIs allow Python applications to collect data from external systems, send predi
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -25,7 +25,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Real-World Example
+## 2. Real-World Example
 
 Suppose you are building a house-price prediction application.
 
@@ -68,7 +68,7 @@ The frontend and machine-learning service can communicate even if they are writt
 
 ---
 
-# 3. What Is an API?
+## 3. What Is an API?
 
 API means:
 
@@ -106,7 +106,7 @@ The server processes the request and returns a response.
 
 ---
 
-# 4. What Is HTTP?
+## 4. What Is HTTP?
 
 HTTP is a communication protocol used by web applications and APIs.
 
@@ -146,7 +146,7 @@ Response:
 
 ---
 
-# 5. API Endpoint
+## 5. API Endpoint
 
 An endpoint is a URL representing an API resource or operation.
 
@@ -173,7 +173,7 @@ https://api.example.com/v1/students/42
 
 ---
 
-# 6. Common HTTP Methods
+## 6. Common HTTP Methods
 
 ## GET
 
@@ -229,7 +229,7 @@ Summary:
 
 ---
 
-# 7. HTTP Status Codes
+## 7. HTTP Status Codes
 
 Status codes indicate the result of a request.
 
@@ -274,7 +274,7 @@ A `200` response does not guarantee that the returned data is logically correct.
 
 ---
 
-# 8. Installing the Requests Library
+## 8. Installing the Requests Library
 
 Install:
 
@@ -292,7 +292,7 @@ The `requests` library simplifies HTTP communication in Python.
 
 ---
 
-# 9. Basic GET Request
+## 9. Basic GET Request
 
 ```python
 import requests
@@ -343,7 +343,7 @@ The example domain is a placeholder and must be replaced with an actual API endp
 
 ---
 
-# 10. Reading JSON Responses
+## 10. Reading JSON Responses
 
 Most modern APIs return JSON.
 
@@ -391,7 +391,7 @@ JSON arrays become lists.
 
 ---
 
-# 11. Query Parameters
+## 11. Query Parameters
 
 Query parameters modify or filter a request.
 
@@ -422,7 +422,7 @@ This is safer than manually concatenating strings.
 
 ---
 
-# 12. Request Headers
+## 12. Request Headers
 
 Headers provide request metadata.
 
@@ -454,7 +454,7 @@ User-Agent
 
 ---
 
-# 13. Sending JSON with POST
+## 13. Sending JSON with POST
 
 Suppose a prediction API expects:
 
@@ -503,7 +503,7 @@ print(prediction)
 
 ---
 
-# 14. Authentication
+## 14. Authentication
 
 Many APIs require authentication.
 
@@ -546,7 +546,7 @@ Then configure the environment variable outside the code.
 
 ---
 
-# 15. Validating Environment Variables
+## 15. Validating Environment Variables
 
 ```python
 import os
@@ -566,7 +566,7 @@ Never print secret keys in logs.
 
 ---
 
-# 16. Timeouts
+## 16. Timeouts
 
 This is unsafe:
 
@@ -605,7 +605,7 @@ Timeouts are essential in production systems.
 
 ---
 
-# 17. Checking for HTTP Errors
+## 17. Checking for HTTP Errors
 
 ```python
 response = requests.get(
@@ -629,7 +629,7 @@ except requests.HTTPError as error:
 
 ---
 
-# 18. Important Request Exceptions
+## 18. Important Request Exceptions
 
 ```text
 requests.Timeout
@@ -670,7 +670,7 @@ except requests.HTTPError as error:
 
 ---
 
-# 19. Validating Response Data
+## 19. Validating Response Data
 
 A successful response can still have an unexpected structure.
 
@@ -725,7 +725,7 @@ if not 0 <= probability <= 1:
 
 ---
 
-# 20. Pagination
+## 20. Pagination
 
 APIs often return large datasets in pages.
 
@@ -777,7 +777,7 @@ Without pagination handling, you may collect only the first portion of a dataset
 
 ---
 
-# 21. Rate Limits
+## 21. Rate Limits
 
 APIs may limit how many requests a client can send.
 
@@ -805,7 +805,7 @@ Do not continuously retry a rejected request without delay.
 
 ---
 
-# 22. Retries
+## 22. Retries
 
 Some failures are temporary:
 
@@ -829,7 +829,7 @@ These usually require correcting the request.
 
 ---
 
-# 23. API Data to Pandas
+## 23. API Data to Pandas
 
 Suppose an API returns a list of records:
 
@@ -859,7 +859,7 @@ An API response should still go through cleaning and validation before machine-l
 
 ---
 
-# 24. API Data Pipeline
+## 24. API Data Pipeline
 
 ```text
 API endpoint
@@ -888,7 +888,7 @@ CSV or database
 
 ---
 
-# 25. Reusable API Client
+## 25. Reusable API Client
 
 ```python
 from typing import Any
@@ -1009,7 +1009,7 @@ class ApiClient:
 
 ---
 
-# 26. Code Explanation
+## 26. Code Explanation
 
 ## Class Definition
 
@@ -1144,7 +1144,7 @@ Builds the complete endpoint URL.
 
 ---
 
-# 27. Using the Client
+## 27. Using the Client
 
 ```python
 import os
@@ -1194,7 +1194,7 @@ if __name__ == "__main__":
 
 ---
 
-# 28. Mathematical Intuition: Request Cost
+## 28. Mathematical Intuition: Request Cost
 
 Suppose an API returns (p) records per page and contains (n) records.
 
@@ -1238,7 +1238,7 @@ This excludes processing and network variation.
 
 ---
 
-# 29. Time Complexity
+## 29. Time Complexity
 
 For one response containing (n) records:
 
@@ -1278,7 +1278,7 @@ when the entire API response is loaded at once.
 
 ---
 
-# 30. Unit Testing Without Real API Calls
+## 30. Unit Testing Without Real API Calls
 
 Unit tests should not depend on a live API.
 
@@ -1341,7 +1341,7 @@ if __name__ == "__main__":
 
 ---
 
-# 31. Testing Timeout Handling
+## 31. Testing Timeout Handling
 
 ```python
 from unittest.mock import patch
@@ -1374,7 +1374,7 @@ def test_timeout() -> None:
 
 ---
 
-# 32. Common Mistakes
+## 32. Common Mistakes
 
 ## No Timeout
 
@@ -1468,7 +1468,7 @@ External API data may contain:
 
 ---
 
-# 33. Debugging Techniques
+## 33. Debugging Techniques
 
 Inspect the requested URL:
 
@@ -1519,7 +1519,7 @@ Do not print authentication headers.
 
 ---
 
-# 34. Exercises
+## 34. Exercises
 
 ## Exercise 1: HTTP Methods
 
@@ -1598,7 +1598,7 @@ Calculate the average price.
 
 ---
 
-# 35. Mini Project: Product Price API Collector
+## 35. Mini Project: Product Price API Collector
 
 Build an API client that collects product offers.
 
@@ -1673,7 +1673,7 @@ Offers CSV               Metadata JSON
 
 ---
 
-# 36. Interview Questions
+## 36. Interview Questions
 
 1. What is an API?
 2. What is an endpoint?
@@ -1703,7 +1703,7 @@ Offers CSV               Metadata JSON
 
 ---
 
-# 37. Summary
+## 37. Summary
 
 * APIs allow software systems to communicate.
 * HTTP requests contain methods, URLs, headers, parameters, and optional bodies.
@@ -1722,7 +1722,7 @@ Offers CSV               Metadata JSON
 * API data should be cleaned before ML use.
 * Unit tests should mock network calls.
 
-# Lesson 9 Quiz
+## Lesson 9 Quiz
 
 ### 1. What does API stand for?
 

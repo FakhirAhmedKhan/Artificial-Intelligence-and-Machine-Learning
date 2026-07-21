@@ -8,7 +8,7 @@ Pandas is designed for tabular data such as CSV files, spreadsheets, database re
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -25,7 +25,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Real-World Example
+## 2. Real-World Example
 
 Suppose a company stores customer information:
 
@@ -97,7 +97,7 @@ Pandas turns tabular-data operations into concise, readable code.
 
 ---
 
-# 3. What Is Pandas?
+## 3. What Is Pandas?
 
 Pandas is a Python library for working with structured and tabular data.
 
@@ -136,7 +136,7 @@ DataFrame = complete spreadsheet table
 
 ---
 
-# 4. Installing and Importing Pandas
+## 4. Installing and Importing Pandas
 
 Install Pandas:
 
@@ -154,7 +154,7 @@ import pandas as pd
 
 ---
 
-# 5. Creating a Series
+## 5. Creating a Series
 
 ```python
 import pandas as pd
@@ -205,7 +205,7 @@ ali_score = scores["Ali"]
 
 ---
 
-# 6. Creating a DataFrame
+## 6. Creating a DataFrame
 
 ## From a Dictionary
 
@@ -279,7 +279,7 @@ students = pd.DataFrame(
 
 ---
 
-# 7. Understanding Rows, Columns, and Indexes
+## 7. Understanding Rows, Columns, and Indexes
 
 Consider:
 
@@ -314,7 +314,7 @@ Columns → features
 
 ---
 
-# 8. Inspecting a DataFrame
+## 8. Inspecting a DataFrame
 
 A dataset should always be inspected before analysis.
 
@@ -428,7 +428,7 @@ For numerical columns, it provides:
 
 ---
 
-# 9. Selecting Columns
+## 9. Selecting Columns
 
 ## One Column
 
@@ -482,7 +482,7 @@ Attribute syntax fails when:
 
 ---
 
-# 10. Selecting Rows with `loc`
+## 10. Selecting Rows with `loc`
 
 `loc` selects data using labels.
 
@@ -515,7 +515,7 @@ DataFrame.loc[row selection, column selection]
 
 ---
 
-# 11. Selecting Rows with `iloc`
+## 11. Selecting Rows with `iloc`
 
 `iloc` selects data using integer positions.
 
@@ -546,7 +546,7 @@ iloc → integer positions
 
 ---
 
-# 12. Filtering Rows
+## 12. Filtering Rows
 
 ```python
 students = pd.DataFrame(
@@ -624,7 +624,7 @@ Both boundaries are included by default.
 
 ---
 
-# 13. Sorting Data
+## 13. Sorting Data
 
 Sort by one column:
 
@@ -659,7 +659,7 @@ This sorts:
 
 ---
 
-# 14. Adding and Updating Columns
+## 14. Adding and Updating Columns
 
 ## Add a Constant Column
 
@@ -700,7 +700,7 @@ This caps scores at 100.
 
 ---
 
-# 15. Renaming Columns
+## 15. Renaming Columns
 
 ```python
 students = students.rename(
@@ -724,7 +724,7 @@ Returning a new DataFrame is often easier to reason about than relying heavily o
 
 ---
 
-# 16. Removing Columns and Rows
+## 16. Removing Columns and Rows
 
 Remove a column:
 
@@ -752,7 +752,7 @@ students = students.drop(
 
 ---
 
-# 17. Missing Values
+## 17. Missing Values
 
 Missing data is common in real datasets.
 
@@ -834,7 +834,7 @@ The correct strategy depends on the meaning of the data. Filling everything auto
 
 ---
 
-# 18. Duplicate Data
+## 18. Duplicate Data
 
 Create duplicate rows:
 
@@ -877,7 +877,7 @@ This may remove legitimate people who share a name, so duplicate rules must matc
 
 ---
 
-# 19. Unique Values and Value Counts
+## 19. Unique Values and Value Counts
 
 Unique cities:
 
@@ -906,7 +906,7 @@ Sharjah    1
 
 ---
 
-# 20. Applying Functions
+## 20. Applying Functions
 
 Create a grading function:
 
@@ -941,7 +941,7 @@ Vectorized alternatives should be preferred when practical.
 
 ---
 
-# 21. Grouping and Aggregation
+## 21. Grouping and Aggregation
 
 Suppose we have:
 
@@ -997,7 +997,7 @@ Sharjah           2000           1000.0            10
 
 ---
 
-# 22. Mathematical Intuition
+## 22. Mathematical Intuition
 
 Suppose Dubai has two revenue values:
 
@@ -1037,7 +1037,7 @@ Split → Apply → Combine
 
 ---
 
-# 23. Loading Files
+## 23. Loading Files
 
 ## Load CSV
 
@@ -1084,7 +1084,7 @@ students.to_json(
 
 ---
 
-# 24. Main Python Implementation
+## 24. Main Python Implementation
 
 ## Customer Purchase Analyzer
 
@@ -1292,7 +1292,7 @@ if __name__ == "__main__":
 
 ---
 
-# 25. Architecture
+## 25. Architecture
 
 ```text
 Raw customer data
@@ -1321,7 +1321,7 @@ CSV report
 
 ---
 
-# 26. Code Explanation
+## 26. Code Explanation
 
 ```python
 from pathlib import Path
@@ -1479,7 +1479,7 @@ Saves the report without exporting the DataFrame index.
 
 ---
 
-# 27. Expected Calculations
+## 27. Expected Calculations
 
 For Ali:
 
@@ -1514,7 +1514,7 @@ High-value customer:
 
 ---
 
-# 28. Time Complexity
+## 28. Time Complexity
 
 Let:
 
@@ -1585,7 +1585,7 @@ because cleaned and enriched DataFrame copies are created.
 
 ---
 
-# 29. Unit Tests
+## 29. Unit Tests
 
 ```python
 import pandas as pd
@@ -1633,7 +1633,7 @@ if __name__ == "__main__":
 
 ---
 
-# 30. Common Errors
+## 30. Common Errors
 
 ## Selecting a Missing Column
 
@@ -1786,7 +1786,7 @@ data.to_csv(
 
 ---
 
-# 31. Debugging Techniques
+## 31. Debugging Techniques
 
 Inspect the first rows:
 
@@ -1853,7 +1853,7 @@ Many Pandas bugs come from incorrect:
 
 ---
 
-# 32. Exercises
+## 32. Exercises
 
 ## Exercise 1: Create a DataFrame
 
@@ -1936,7 +1936,7 @@ Calculate per category:
 
 ---
 
-# 33. Mini Project: Employee Performance Report
+## 33. Mini Project: Employee Performance Report
 
 Create a Pandas project using:
 
@@ -2038,7 +2038,7 @@ CSV report
 
 ---
 
-# 34. Interview Questions
+## 34. Interview Questions
 
 1. What is Pandas?
 2. What is a Series?
@@ -2068,7 +2068,7 @@ CSV report
 
 ---
 
-# 35. Summary
+## 35. Summary
 
 * Pandas is designed for structured and tabular data.
 * A Series represents one-dimensional labeled data.
@@ -2087,7 +2087,7 @@ CSV report
 * Vectorized operations are usually preferable to Python loops.
 * Pandas is commonly used before machine-learning model training.
 
-# Lesson 4 Quiz
+## Lesson 4 Quiz
 
 ### 1. What is the main difference between a Series and a DataFrame?
 

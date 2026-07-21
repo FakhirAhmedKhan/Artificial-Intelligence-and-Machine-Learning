@@ -8,7 +8,7 @@ Matplotlib is Python’s core data-visualization library. It helps us understand
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -25,7 +25,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Why Visualization Matters
+## 2. Why Visualization Matters
 
 Consider this dataset:
 
@@ -70,7 +70,7 @@ In machine learning, visualization is not decoration. It is part of data analysi
 
 ---
 
-# 3. What Is Matplotlib?
+## 3. What Is Matplotlib?
 
 Matplotlib is a Python library for creating static, animated, and interactive visualizations.
 
@@ -113,7 +113,7 @@ Display or save
 
 ---
 
-# 4. Installing Matplotlib
+## 4. Installing Matplotlib
 
 Install it using:
 
@@ -131,7 +131,7 @@ The alias `plt` is the standard convention.
 
 ---
 
-# 5. Your First Line Chart
+## 5. Your First Line Chart
 
 ```python
 import matplotlib.pyplot as plt
@@ -180,7 +180,7 @@ Displays the chart.
 
 ---
 
-# 6. Understanding the Axes
+## 6. Understanding the Axes
 
 In a chart:
 
@@ -217,7 +217,7 @@ We are examining how exam score changes as study hours change.
 
 ---
 
-# 7. Adding Labels and a Title
+## 7. Adding Labels and a Title
 
 ```python
 import matplotlib.pyplot as plt
@@ -247,7 +247,7 @@ What does the y-axis represent?
 
 ---
 
-# 8. Adding Markers
+## 8. Adding Markers
 
 Markers show individual observations.
 
@@ -292,7 +292,7 @@ plt.show()
 
 ---
 
-# 9. Adding a Grid
+## 9. Adding a Grid
 
 ```python
 plt.grid(True)
@@ -324,7 +324,7 @@ A grid should support readability rather than dominate the chart.
 
 ---
 
-# 10. Figure Size
+## 10. Figure Size
 
 Use `figure()` before creating the chart:
 
@@ -365,7 +365,7 @@ plt.show()
 
 ---
 
-# 11. Line Charts
+## 11. Line Charts
 
 Line charts are useful for displaying change over an ordered sequence.
 
@@ -401,7 +401,7 @@ A line chart should generally be used when the x-axis has a meaningful order.
 
 ---
 
-# 12. Bar Charts
+## 12. Bar Charts
 
 Bar charts compare categories.
 
@@ -457,7 +457,7 @@ Horizontal bar charts are useful when category names are long.
 
 ---
 
-# 13. Scatter Plots
+## 13. Scatter Plots
 
 Scatter plots show the relationship between two numerical variables.
 
@@ -495,7 +495,7 @@ Scatter plots are useful for detecting:
 
 ---
 
-# 14. Mathematical Intuition: Relationships
+## 14. Mathematical Intuition: Relationships
 
 A positive relationship looks like:
 
@@ -541,7 +541,7 @@ A scatter plot does not prove causation. It only displays an observed relationsh
 
 ---
 
-# 15. Histograms
+## 15. Histograms
 
 A histogram displays the distribution of numerical values.
 
@@ -599,7 +599,7 @@ Is the distribution symmetric?
 
 ---
 
-# 16. Histogram Mathematical Intuition
+## 16. Histogram Mathematical Intuition
 
 Suppose the scores are divided into these intervals:
 
@@ -637,7 +637,7 @@ The bar height represents frequency:
 
 ---
 
-# 17. Multiple Lines on One Chart
+## 17. Multiple Lines on One Chart
 
 ```python
 import matplotlib.pyplot as plt
@@ -682,7 +682,7 @@ Displays the labels.
 
 ---
 
-# 18. Why Training and Validation Curves Matter
+## 18. Why Training and Validation Curves Matter
 
 Suppose training accuracy continues improving, while validation accuracy stops improving:
 
@@ -705,7 +705,7 @@ Visualization helps identify this problem quickly.
 
 ---
 
-# 19. Legends
+## 19. Legends
 
 A legend explains multiple plotted elements.
 
@@ -729,7 +729,7 @@ Without a legend, users may not know which line represents which dataset.
 
 ---
 
-# 20. Axis Limits
+## 20. Axis Limits
 
 You can control the displayed range:
 
@@ -750,7 +750,7 @@ However, manually changing limits can make differences appear larger or smaller 
 
 ---
 
-# 21. Misleading Axis Example
+## 21. Misleading Axis Example
 
 Consider two values:
 
@@ -787,7 +787,7 @@ Changing axis limits is not automatically wrong, but the scale must be clear and
 
 ---
 
-# 22. Plotting NumPy Arrays
+## 22. Plotting NumPy Arrays
 
 ```python
 import matplotlib.pyplot as plt
@@ -812,7 +812,7 @@ Matplotlib works directly with NumPy arrays.
 
 ---
 
-# 23. Plotting Pandas DataFrames
+## 23. Plotting Pandas DataFrames
 
 ```python
 import matplotlib.pyplot as plt
@@ -841,7 +841,7 @@ Pandas columns can be passed directly to Matplotlib.
 
 ---
 
-# 24. The Object-Oriented Matplotlib Interface
+## 24. The Object-Oriented Matplotlib Interface
 
 So far, we used functions such as:
 
@@ -892,7 +892,7 @@ This interface is preferred when working with multiple charts.
 
 ---
 
-# 25. Multiple Charts
+## 25. Multiple Charts
 
 ```python
 import matplotlib.pyplot as plt
@@ -938,7 +938,7 @@ plt.show()
 
 ---
 
-# 26. Saving a Chart
+## 26. Saving a Chart
 
 ```python
 plt.savefig(
@@ -976,7 +976,7 @@ plt.show()
 
 ---
 
-# 27. Choosing the Correct Chart
+## 27. Choosing the Correct Chart
 
 | Question                                       | Appropriate chart |
 | ---------------------------------------------- | ----------------- |
@@ -991,7 +991,7 @@ Using the wrong chart can hide or distort information.
 
 ---
 
-# 28. Main Python Implementation
+## 28. Main Python Implementation
 
 ## Student Performance Visualization Report
 
@@ -1312,7 +1312,7 @@ if __name__ == "__main__":
 
 ---
 
-# 29. Architecture
+## 29. Architecture
 
 ```text
 Student DataFrame
@@ -1340,7 +1340,7 @@ Save high-resolution images
 
 ---
 
-# 30. Detailed Code Explanation
+## 30. Detailed Code Explanation
 
 ## Imports
 
@@ -1554,7 +1554,7 @@ Creates the output directory.
 
 ---
 
-# 31. Time Complexity
+## 31. Time Complexity
 
 Let:
 
@@ -1613,7 +1613,7 @@ approximately.
 
 ---
 
-# 32. Unit Tests
+## 32. Unit Tests
 
 Visual output cannot be fully tested using simple equality checks, but we can test validation, file creation, and function execution.
 
@@ -1679,7 +1679,7 @@ if __name__ == "__main__":
 
 ---
 
-# 33. Common Errors
+## 33. Common Errors
 
 ## Mismatched Data Lengths
 
@@ -1829,7 +1829,7 @@ before plotting.
 
 ---
 
-# 34. Debugging Techniques
+## 34. Debugging Techniques
 
 Inspect the data:
 
@@ -1892,7 +1892,7 @@ plt.close("all")
 
 ---
 
-# 35. Exercises
+## 35. Exercises
 
 ## Exercise 1: Line Chart
 
@@ -2031,7 +2031,7 @@ Determine when validation performance starts becoming worse.
 
 ---
 
-# 36. Mini Project: Sales Visualization Report
+## 36. Mini Project: Sales Visualization Report
 
 Use this dataset:
 
@@ -2131,7 +2131,7 @@ Export report images
 
 ---
 
-# 37. Common Visualization Mistakes
+## 37. Common Visualization Mistakes
 
 1. Using charts without titles.
 2. Leaving axes unlabeled.
@@ -2151,7 +2151,7 @@ Export report images
 
 ---
 
-# 38. Interview Questions
+## 38. Interview Questions
 
 1. What is Matplotlib?
 2. What is `pyplot`?
@@ -2181,7 +2181,7 @@ Export report images
 
 ---
 
-# 39. Summary
+## 39. Summary
 
 * Matplotlib is Python’s foundational visualization library.
 * Line charts show change across an ordered sequence.
@@ -2198,7 +2198,7 @@ Export report images
 * Misleading scales and incorrect chart types can distort conclusions.
 * Charts should be generated from validated and cleaned data.
 
-# Lesson 5 Quiz
+## Lesson 5 Quiz
 
 ### 1. Which chart is most suitable for showing sales over twelve months?
 

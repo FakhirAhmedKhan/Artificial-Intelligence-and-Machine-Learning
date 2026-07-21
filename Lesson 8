@@ -8,7 +8,7 @@ Machine-learning systems rarely keep data inside Python code. They usually read 
 
 ---
 
-# 1. Learning Objectives
+## 1. Learning Objectives
 
 By the end of this lesson, you should be able to:
 
@@ -25,7 +25,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Real-World Example
+## 2. Real-World Example
 
 Suppose you are building a house-price model.
 
@@ -65,7 +65,7 @@ This requires reliable file handling.
 
 ---
 
-# 3. File-Handling Workflow
+## 3. File-Handling Workflow
 
 ```text
 Locate file
@@ -90,7 +90,7 @@ Python context managers handle the closing step automatically.
 
 ---
 
-# 4. Understanding File Paths
+## 4. Understanding File Paths
 
 A file path identifies where a file exists.
 
@@ -127,7 +127,7 @@ file_path = Path("data") / "students.csv"
 
 ---
 
-# 5. Using `Path`
+## 5. Using `Path`
 
 ```python
 from pathlib import Path
@@ -165,7 +165,7 @@ parent → Containing directory
 
 ---
 
-# 6. Checking Whether a Path Exists
+## 6. Checking Whether a Path Exists
 
 ```python
 from pathlib import Path
@@ -200,7 +200,7 @@ if not file_path.is_file():
 
 ---
 
-# 7. Creating Directories
+## 7. Creating Directories
 
 ```python
 from pathlib import Path
@@ -243,7 +243,7 @@ output_directory.mkdir(
 
 ---
 
-# 8. Reading a Text File
+## 8. Reading a Text File
 
 Suppose `notes.txt` contains:
 
@@ -271,7 +271,7 @@ print(content)
 
 ---
 
-# 9. Context Managers
+## 9. Context Managers
 
 This structure:
 
@@ -315,7 +315,7 @@ Use context managers for normal file operations.
 
 ---
 
-# 10. File Modes
+## 10. File Modes
 
 | Mode  | Meaning                                 |
 | ----- | --------------------------------------- |
@@ -338,7 +338,7 @@ file_path.open("wb")
 
 ---
 
-# 11. Reading an Entire File
+## 11. Reading an Entire File
 
 ```python
 with file_path.open(
@@ -366,7 +366,7 @@ Large files may consume too much memory.
 
 ---
 
-# 12. Reading Line by Line
+## 12. Reading Line by Line
 
 ```python
 with file_path.open(
@@ -394,7 +394,7 @@ when only one line is processed at a time.
 
 ---
 
-# 13. `readline()` and `readlines()`
+## 13. `readline()` and `readlines()`
 
 Read one line:
 
@@ -429,7 +429,7 @@ Example output:
 
 ---
 
-# 14. Writing a Text File
+## 14. Writing a Text File
 
 ```python
 from pathlib import Path
@@ -458,7 +458,7 @@ If the file does not exist, Python creates it.
 
 ---
 
-# 15. Appending to a File
+## 15. Appending to a File
 
 ```python
 with report_path.open(
@@ -479,7 +479,7 @@ This is useful for:
 
 ---
 
-# 16. Writing Multiple Lines
+## 16. Writing Multiple Lines
 
 ```python
 lines = [
@@ -501,7 +501,7 @@ You must include `\n`.
 
 ---
 
-# 17. File Encoding
+## 17. File Encoding
 
 Text must be converted between characters and bytes.
 
@@ -539,7 +539,7 @@ or corrupted text.
 
 ---
 
-# 18. Reading CSV with Python’s `csv` Module
+## 18. Reading CSV with Python’s `csv` Module
 
 Suppose `students.csv` contains:
 
@@ -586,7 +586,7 @@ You must convert numerical fields.
 
 ---
 
-# 19. Converting CSV Values
+## 19. Converting CSV Values
 
 ```python
 students = []
@@ -620,7 +620,7 @@ ValueError
 
 ---
 
-# 20. Writing CSV with `csv.DictWriter`
+## 20. Writing CSV with `csv.DictWriter`
 
 ```python
 import csv
@@ -671,7 +671,7 @@ with output_path.open(
 
 ---
 
-# 21. Reading CSV with Pandas
+## 21. Reading CSV with Pandas
 
 For data analysis, Pandas is usually more convenient:
 
@@ -698,7 +698,7 @@ However, inference can be wrong when a column contains inconsistent values.
 
 ---
 
-# 22. Writing CSV with Pandas
+## 22. Writing CSV with Pandas
 
 ```python
 students.to_csv(
@@ -732,7 +732,7 @@ students.to_csv(
 
 ---
 
-# 23. Reading Large CSV Files in Chunks
+## 23. Reading Large CSV Files in Chunks
 
 Loading a very large CSV may exceed memory.
 
@@ -769,7 +769,7 @@ This reduces peak memory usage.
 
 ---
 
-# 24. JSON Files
+## 24. JSON Files
 
 JSON stores structured data.
 
@@ -810,7 +810,7 @@ Python equivalents:
 
 ---
 
-# 25. Reading JSON
+## 25. Reading JSON
 
 ```python
 import json
@@ -835,7 +835,7 @@ print(config["test_size"])
 
 ---
 
-# 26. Writing JSON
+## 26. Writing JSON
 
 ```python
 import json
@@ -876,7 +876,7 @@ with output_path.open(
 
 ---
 
-# 27. `json.load()` vs `json.loads()`
+## 27. `json.load()` vs `json.loads()`
 
 Read from a file:
 
@@ -914,7 +914,7 @@ dumps → string
 
 ---
 
-# 28. Handling File Errors
+## 28. Handling File Errors
 
 Common exceptions include:
 
@@ -964,7 +964,7 @@ This hides the real problem.
 
 ---
 
-# 29. Validating File Extensions
+## 29. Validating File Extensions
 
 ```python
 from pathlib import Path
@@ -986,7 +986,7 @@ It only validates the filename convention.
 
 ---
 
-# 30. Listing Files in a Directory
+## 30. Listing Files in a Directory
 
 ```python
 from pathlib import Path
@@ -1025,7 +1025,7 @@ rglob() → recursive pattern
 
 ---
 
-# 31. Main Project: Dataset File Pipeline
+## 31. Main Project: Dataset File Pipeline
 
 This program:
 
@@ -1313,7 +1313,7 @@ if __name__ == "__main__":
 
 ---
 
-# 32. Architecture
+## 32. Architecture
 
 ```text
 Raw CSV file
@@ -1344,7 +1344,7 @@ Cleaned CSV              JSON metadata
 
 ---
 
-# 33. Mathematical Intuition
+## 33. Mathematical Intuition
 
 Suppose the raw file contains:
 
@@ -1400,7 +1400,7 @@ A high removal percentage may indicate:
 
 ---
 
-# 34. Code Explanation
+## 34. Code Explanation
 
 ```python
 if not file_path.exists():
@@ -1480,7 +1480,7 @@ Writes readable JSON metadata.
 
 ---
 
-# 35. Time Complexity
+## 35. Time Complexity
 
 Let:
 
@@ -1536,7 +1536,7 @@ Chunked processing may be needed for very large files.
 
 ---
 
-# 36. Unit Tests
+## 36. Unit Tests
 
 ```python
 import json
@@ -1663,7 +1663,7 @@ if __name__ == "__main__":
 
 ---
 
-# 37. Common Mistakes
+## 37. Common Mistakes
 
 ## Hardcoding Absolute Paths
 
@@ -1808,7 +1808,7 @@ Only load serialized model files from trusted sources.
 
 ---
 
-# 38. Debugging Techniques
+## 38. Debugging Techniques
 
 Print the resolved path:
 
@@ -1864,7 +1864,7 @@ except json.JSONDecodeError as error:
 
 ---
 
-# 39. Exercises
+## 39. Exercises
 
 ## Exercise 1: Text File
 
@@ -1947,7 +1947,7 @@ Write a function that:
 
 ---
 
-# 40. Mini Project: Multi-File Sales Consolidator
+## 40. Mini Project: Multi-File Sales Consolidator
 
 Directory:
 
@@ -2028,7 +2028,7 @@ Combined CSV             JSON summary
 
 ---
 
-# 41. Interview Questions
+## 41. Interview Questions
 
 1. What is file handling?
 2. Why is file handling important in machine learning?
@@ -2058,7 +2058,7 @@ Combined CSV             JSON summary
 
 ---
 
-# 42. Summary
+## 42. Summary
 
 * File handling connects Python programs to real datasets and outputs.
 * `pathlib.Path` provides portable path management.
@@ -2074,7 +2074,7 @@ Combined CSV             JSON summary
 * Cleaned datasets and metadata should be stored separately.
 * Untrusted serialized Python files must not be loaded.
 
-# Lesson 8 Quiz
+## Lesson 8 Quiz
 
 ### 1. What is the main benefit of `pathlib.Path`?
 

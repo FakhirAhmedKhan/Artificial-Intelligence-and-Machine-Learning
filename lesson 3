@@ -25,7 +25,7 @@ By the end of this lesson, you should be able to:
 
 ---
 
-# 2. Real-World Example
+## 2. Real-World Example
 
 Suppose we have five students and three features:
 
@@ -85,7 +85,7 @@ Average previous score: 69.6
 
 ---
 
-# 3. What Is NumPy?
+## 3. What Is NumPy?
 
 NumPy stands for **Numerical Python**.
 
@@ -147,7 +147,7 @@ Matrix:
 
 ---
 
-# 4. Why NumPy Instead of Python Lists?
+## 4. Why NumPy Instead of Python Lists?
 
 Python lists are general-purpose containers. They can store mixed types:
 
@@ -173,7 +173,7 @@ NumPy provides:
 
 ---
 
-# 5. Installing and Importing NumPy
+## 5. Installing and Importing NumPy
 
 Install NumPy:
 
@@ -191,7 +191,7 @@ import numpy as np
 
 ---
 
-# 6. Creating NumPy Arrays
+## 6. Creating NumPy Arrays
 
 ## One-Dimensional Array
 
@@ -323,7 +323,7 @@ Unlike `arange()`, `linspace()` specifies how many values should be created.
 
 ---
 
-# 7. Array Properties
+## 7. Array Properties
 
 ```python
 data = np.array(
@@ -382,7 +382,7 @@ The exact output depends on the system, but it represents an integer type.
 
 ---
 
-# 8. Indexing and Slicing
+## 8. Indexing and Slicing
 
 ## One-Dimensional Indexing
 
@@ -491,7 +491,7 @@ The colon means select all values along that dimension.
 
 ---
 
-# 9. Vectorized Operations
+## 9. Vectorized Operations
 
 Vectorization means applying an operation to an entire array without manually writing a Python loop.
 
@@ -556,7 +556,7 @@ The NumPy version is shorter and delegates the computation to optimized numerica
 
 ---
 
-# 10. Element-Wise Operations
+## 10. Element-Wise Operations
 
 ```python
 first = np.array([1, 2, 3])
@@ -607,7 +607,7 @@ This multiplication is element-wise. It is not matrix multiplication.
 
 ---
 
-# 11. Mathematical Intuition
+## 11. Mathematical Intuition
 
 Given two vectors:
 
@@ -674,7 +674,7 @@ The dot product is important in:
 
 ---
 
-# 12. Broadcasting
+## 12. Broadcasting
 
 Broadcasting allows NumPy to operate on arrays with compatible but different shapes.
 
@@ -738,7 +738,7 @@ Because the final dimensions do not match:
 
 ---
 
-# 13. Statistical Operations
+## 13. Statistical Operations
 
 ```python
 scores = np.array([70, 80, 90, 60, 100])
@@ -800,7 +800,7 @@ For:
 
 ---
 
-# 14. Understanding the Axis Parameter
+## 14. Understanding the Axis Parameter
 
 Consider:
 
@@ -863,7 +863,7 @@ axis=1 → move horizontally across columns
 
 ---
 
-# 15. Boolean Filtering
+## 15. Boolean Filtering
 
 ```python
 scores = np.array([45, 72, 88, 51, 90, 67])
@@ -921,7 +921,7 @@ Do not use normal Python `and` with NumPy arrays.
 
 ---
 
-# 16. Reshaping Arrays
+## 16. Reshaping Arrays
 
 ```python
 numbers = np.array([1, 2, 3, 4, 5, 6])
@@ -972,7 +972,7 @@ Only one dimension may use `-1`.
 
 ---
 
-# 17. Combining Arrays
+## 17. Combining Arrays
 
 ## Vertical Stacking
 
@@ -1008,7 +1008,7 @@ Result:
 
 ---
 
-# 18. Copy vs View
+## 18. Copy vs View
 
 This is an important NumPy behavior.
 
@@ -1037,7 +1037,7 @@ Changes to `independent` will not modify `original`.
 
 ---
 
-# 19. Main Python Implementation
+## 19. Main Python Implementation
 
 ## Student Performance Analyzer
 
@@ -1159,7 +1159,7 @@ if __name__ == "__main__":
 
 ---
 
-# 20. Architecture
+## 20. Architecture
 
 ```text
 Raw NumPy matrix
@@ -1188,7 +1188,7 @@ Pass-rate report
 
 ---
 
-# 21. Mathematical Intuition
+## 21. Mathematical Intuition
 
 The final score is calculated as:
 
@@ -1249,7 +1249,7 @@ This is still a manually designed rule, not a trained machine-learning model. Nu
 
 ---
 
-# 22. Code Explanation
+## 22. Code Explanation
 
 ```python
 import numpy as np
@@ -1358,7 +1358,7 @@ Pairs every score with its prediction.
 
 ---
 
-# 23. Time Complexity
+## 23. Time Complexity
 
 Let:
 
@@ -1419,7 +1419,7 @@ Vectorization does not change the theoretical Big-O complexity, but it generally
 
 ---
 
-# 24. Unit Tests
+## 24. Unit Tests
 
 ```python
 import numpy as np
@@ -1477,7 +1477,7 @@ Use `np.allclose()` and `np.isclose()` for floating-point comparisons.
 
 ---
 
-# 25. Common Errors
+## 25. Common Errors
 
 ## Incompatible Shapes
 
@@ -1611,7 +1611,7 @@ if np.any(scores > 60):
 
 ---
 
-# 26. Debugging Techniques
+## 26. Debugging Techniques
 
 Inspect array properties:
 
@@ -1655,7 +1655,7 @@ Many NumPy bugs are shape bugs. Inspecting `shape` should be one of your first d
 
 ---
 
-# 27. Exercises
+## 27. Exercises
 
 ## Exercise 1
 
@@ -1747,7 +1747,7 @@ Expected final prices:
 
 ---
 
-# 28. Mini Project: Product Price Analyzer
+## 28. Mini Project: Product Price Analyzer
 
 Create a NumPy program using this dataset:
 
@@ -1817,7 +1817,7 @@ Price analysis       Stock analysis
 
 ---
 
-# 29. Interview Questions
+## 29. Interview Questions
 
 1. What is NumPy?
 2. What is an `ndarray`?
@@ -1842,7 +1842,7 @@ Price analysis       Stock analysis
 
 ---
 
-# 30. Summary
+## 30. Summary
 
 * NumPy provides efficient multidimensional numerical arrays.
 * A vector is generally a one-dimensional array.
@@ -1860,7 +1860,7 @@ Price analysis       Stock analysis
 * Array slices can be views of the original data.
 * NumPy is a core foundation for Pandas, scikit-learn, TensorFlow, and PyTorch.
 
-# Lesson 3 Quiz
+## Lesson 3 Quiz
 
 ### 1. What does NumPy’s main array type represent?
 
