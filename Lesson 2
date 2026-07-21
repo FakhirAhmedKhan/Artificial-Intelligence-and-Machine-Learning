@@ -96,9 +96,9 @@ passed        → bool
 exam_attempts → int
 ```
 
-## Important Scalar Types
+### Important Scalar Types
 
-### Integer
+#### Integer
 
 ```python
 student_count = 25
@@ -106,7 +106,7 @@ student_count = 25
 
 An `int` stores a whole number.
 
-### Float
+#### Float
 
 ```python
 accuracy = 0.92
@@ -114,7 +114,7 @@ accuracy = 0.92
 
 A `float` stores a decimal number.
 
-### String
+#### String
 
 ```python
 model_name = "Decision Tree"
@@ -122,7 +122,7 @@ model_name = "Decision Tree"
 
 A `str` stores text.
 
-### Boolean
+#### Boolean
 
 ```python
 is_trained = True
@@ -135,7 +135,7 @@ True
 False
 ```
 
-### None
+#### None
 
 ```python
 prediction = None
@@ -195,7 +195,7 @@ Machine-learning datasets contain many values. Python collections help organize 
 
 ---
 
-## Lists
+### Lists
 
 A list stores an ordered collection of values.
 
@@ -231,7 +231,7 @@ After these operations:
 
 ---
 
-## Tuples
+### Tuples
 
 A tuple is ordered but immutable.
 
@@ -255,7 +255,7 @@ Tuples are useful for values that should not change.
 
 ---
 
-## Dictionaries
+### Dictionaries
 
 A dictionary stores key-value pairs.
 
@@ -295,7 +295,7 @@ Dictionaries are commonly used for:
 
 ---
 
-## Sets
+### Sets
 
 A set stores unique values.
 
@@ -320,7 +320,7 @@ Sets are useful for:
 
 ## 6. Mutable vs Immutable Objects
 
-## Mutable
+### Mutable
 
 Mutable objects can change after creation.
 
@@ -337,7 +337,7 @@ scores.append(90)
 
 The original list changes.
 
-## Immutable
+### Immutable
 
 Immutable objects cannot change after creation.
 
@@ -394,7 +394,7 @@ Python checks conditions from top to bottom and stops at the first matching cond
 
 Loops process multiple data points.
 
-## For Loop
+### For Loop
 
 ```python
 scores = [72, 81, 65]
@@ -421,7 +421,7 @@ In ML, loops may be used to:
 
 ---
 
-## While Loop
+### While Loop
 
 ```python
 attempt = 1
@@ -517,7 +517,7 @@ Features X → Model f → Prediction ŷ
 
 ---
 
-## Average
+### Average
 
 For values:
 
@@ -549,7 +549,7 @@ average = sum(scores) / len(scores)
 
 ---
 
-## Pass Rate
+### Pass Rate
 
 [
 \text{Pass Rate}
@@ -605,7 +605,7 @@ This resembles a small data-processing pipeline.
 
 ## 12. Python Implementation
 
-## Student Dataset Analyzer
+### Student Dataset Analyzer
 
 ```python
 from typing import NamedTuple
@@ -731,7 +731,7 @@ if __name__ == "__main__":
     main()
 ```
 
-## Expected Output
+### Expected Output
 
 ```text
 Average score: 75.00
@@ -750,7 +750,7 @@ F: 1
 
 ## 13. Code Explanation
 
-## Import
+### Import
 
 ```python
 from typing import NamedTuple
@@ -760,7 +760,7 @@ Imports `NamedTuple`, which lets us create structured, immutable records.
 
 ---
 
-## Constant
+### Constant
 
 ```python
 PASSING_SCORE = 60.0
@@ -772,7 +772,7 @@ Uppercase names are used for constants according to Python conventions.
 
 ---
 
-## Student Record
+### Student Record
 
 ```python
 class Student(NamedTuple):
@@ -813,7 +813,7 @@ student.score
 
 ---
 
-## Validation Function
+### Validation Function
 
 ```python
 def validate_students(students: list[Student]) -> None:
@@ -853,7 +853,7 @@ Checks that the score is within the accepted range.
 
 ---
 
-## Average Function
+### Average Function
 
 ```python
 total_score = sum(student.score for student in students)
@@ -878,7 +878,7 @@ Divides the total score by the number of students.
 
 ---
 
-## Grade Function
+### Grade Function
 
 ```python
 def assign_grade(score: float) -> str:
@@ -899,7 +899,7 @@ Because of this, separate `if` statements work correctly here.
 
 ---
 
-## Pass Rate Function
+### Pass Rate Function
 
 ```python
 passing_score: float = PASSING_SCORE
@@ -933,7 +933,7 @@ Converts the passed fraction into a percentage.
 
 ---
 
-## Grade Distribution
+### Grade Distribution
 
 ```python
 distribution = {
@@ -961,7 +961,7 @@ Increases the matching grade counter.
 
 ---
 
-## Finding the Highest Score
+### Finding the Highest Score
 
 ```python
 return max(students, key=lambda student: student.score)
@@ -986,7 +986,7 @@ def get_score(student: Student) -> float:
 
 ---
 
-## Main Function
+### Main Function
 
 ```python
 def main() -> None:
@@ -1026,7 +1026,7 @@ Iterates through the dictionary’s keys and values.
 
 ---
 
-## Entry-Point Check
+### Entry-Point Check
 
 ```python
 if __name__ == "__main__":
@@ -1043,7 +1043,7 @@ It prevents `main()` from running automatically when the file is imported into a
 
 Let (n) be the number of students.
 
-## Validation
+### Validation
 
 ```python
 validate_students(students)
@@ -1055,7 +1055,7 @@ Checks every student once:
 O(n)
 ]
 
-## Average
+### Average
 
 ```python
 calculate_average(students)
@@ -1067,7 +1067,7 @@ Reads every score once:
 O(n)
 ]
 
-## Pass Rate
+### Pass Rate
 
 ```python
 calculate_pass_rate(students)
@@ -1079,7 +1079,7 @@ Checks every student once:
 O(n)
 ]
 
-## Grade Distribution
+### Grade Distribution
 
 ```python
 build_grade_distribution(students)
@@ -1091,7 +1091,7 @@ Processes every student once:
 O(n)
 ]
 
-## Top Student
+### Top Student
 
 ```python
 find_top_student(students)
@@ -1197,7 +1197,7 @@ assert abs(result - expected) < 0.0001
 
 ## 16. Debugging Techniques
 
-## Print the Value and Type
+### Print the Value and Type
 
 ```python
 print(score)
@@ -1214,7 +1214,7 @@ The first is a string; the second is an integer.
 
 ---
 
-## Print During a Loop
+### Print During a Loop
 
 ```python
 for student in students:
@@ -1225,7 +1225,7 @@ This confirms that every record is processed correctly.
 
 ---
 
-## Use Assertions
+### Use Assertions
 
 ```python
 assert len(students) > 0
@@ -1235,7 +1235,7 @@ An assertion checks an assumption during development.
 
 ---
 
-## Read the Last Line of a Traceback First
+### Read the Last Line of a Traceback First
 
 Example:
 
@@ -1259,7 +1259,7 @@ scores = [70, 80, 90]
 
 ---
 
-## Use Descriptive Error Messages
+### Use Descriptive Error Messages
 
 Weak error:
 
@@ -1279,7 +1279,7 @@ raise ValueError(
 
 ## 17. Common Errors
 
-## Division by Zero
+### Division by Zero
 
 ```python
 average = sum(scores) / len(scores)
@@ -1300,7 +1300,7 @@ if not scores:
 
 ---
 
-## IndexError
+### IndexError
 
 ```python
 scores = [70, 80]
@@ -1315,7 +1315,7 @@ IndexError: list index out of range
 
 ---
 
-## KeyError
+### KeyError
 
 ```python
 student = {"name": "Ali"}
@@ -1334,7 +1334,7 @@ This returns `None` when the key is missing.
 
 ---
 
-## TypeError
+### TypeError
 
 ```python
 score = "90"
@@ -1352,7 +1352,7 @@ result = score + 10
 
 ---
 
-## NameError
+### NameError
 
 ```python
 print(model_accuracy)
@@ -1366,7 +1366,7 @@ NameError
 
 ---
 
-## Modifying a List While Iterating
+### Modifying a List While Iterating
 
 Problematic code:
 
@@ -1394,7 +1394,7 @@ passing_scores = [
 
 ## 18. Exercises
 
-## Exercise 1: Maximum and Minimum
+### Exercise 1: Maximum and Minimum
 
 Write two functions:
 
@@ -1411,7 +1411,7 @@ Do not use `max()` or `min()`.
 
 ---
 
-## Exercise 2: Score Validation
+### Exercise 2: Score Validation
 
 Create:
 
@@ -1427,7 +1427,7 @@ It should raise a `ValueError` when the score is:
 
 ---
 
-## Exercise 3: Filtering
+### Exercise 3: Filtering
 
 Given:
 
@@ -1442,7 +1442,7 @@ Create a new list containing only passing scores using:
 
 ---
 
-## Exercise 4: Count Grades
+### Exercise 4: Count Grades
 
 Given:
 
@@ -1464,7 +1464,7 @@ Produce:
 
 ---
 
-## Exercise 5: Optional Passing Score
+### Exercise 5: Optional Passing Score
 
 Modify the pass-rate function so that this works:
 
@@ -1478,13 +1478,13 @@ calculate_pass_rate(students, passing_score=70.0)
 
 Build a program that analyzes a small numeric dataset before it is used for machine learning.
 
-## Input
+### Input
 
 ```python
 values = [12.5, 18.0, None, 25.5, -3.0, 40.0, None, 31.5]
 ```
 
-## Requirements
+### Requirements
 
 The program must calculate:
 
@@ -1497,7 +1497,7 @@ The program must calculate:
 7. Number of negative values
 8. Percentage of missing values
 
-## Architecture
+### Architecture
 
 ```text
 Raw values
@@ -1515,7 +1515,7 @@ Calculate statistics
 Generate quality report
 ```
 
-## Expected Structure
+### Expected Structure
 
 ```python
 def remove_missing_values(
@@ -1536,7 +1536,7 @@ def generate_quality_report(
     ...
 ```
 
-## Required Tests
+### Required Tests
 
 ```python
 assert remove_missing_values(

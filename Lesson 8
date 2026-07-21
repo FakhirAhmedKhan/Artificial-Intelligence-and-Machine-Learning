@@ -1665,7 +1665,7 @@ if __name__ == "__main__":
 
 ## 37. Common Mistakes
 
-## Hardcoding Absolute Paths
+### Hardcoding Absolute Paths
 
 Problem:
 
@@ -1681,7 +1681,7 @@ Use project-relative paths and `Path`.
 
 ---
 
-## Forgetting the Context Manager
+### Forgetting the Context Manager
 
 Problem:
 
@@ -1701,7 +1701,7 @@ with open("data.txt", "r") as file:
 
 ---
 
-## Using `"w"` Accidentally
+### Using `"w"` Accidentally
 
 ```python
 with file_path.open("w") as file:
@@ -1713,7 +1713,7 @@ Use `"a"` when appending is intended.
 
 ---
 
-## Ignoring Encoding
+### Ignoring Encoding
 
 ```python
 file_path.read_text()
@@ -1731,7 +1731,7 @@ file_path.read_text(
 
 ---
 
-## Reading Huge Files Completely
+### Reading Huge Files Completely
 
 ```python
 content = file.read()
@@ -1743,7 +1743,7 @@ Use line-by-line or chunked processing.
 
 ---
 
-## Trusting File Extensions
+### Trusting File Extensions
 
 A file named:
 
@@ -1757,7 +1757,7 @@ Validate the actual contents.
 
 ---
 
-## Exporting a Pandas Index
+### Exporting a Pandas Index
 
 ```python
 data.to_csv("data.csv")
@@ -1776,7 +1776,7 @@ data.to_csv(
 
 ---
 
-## Catching Every Error
+### Catching Every Error
 
 Bad:
 
@@ -1798,7 +1798,7 @@ Catch specific exceptions.
 
 ---
 
-## Loading Unsafe Serialized Files
+### Loading Unsafe Serialized Files
 
 Python’s `pickle` format can execute code during loading.
 
@@ -1866,7 +1866,7 @@ except json.JSONDecodeError as error:
 
 ## 39. Exercises
 
-## Exercise 1: Text File
+### Exercise 1: Text File
 
 Create a file named:
 
@@ -1885,7 +1885,7 @@ Then append another lesson without deleting the previous content.
 
 ---
 
-## Exercise 2: CSV Reading
+### Exercise 2: CSV Reading
 
 Create:
 
@@ -1905,7 +1905,7 @@ Convert price and stock into numerical values.
 
 ---
 
-## Exercise 3: JSON Configuration
+### Exercise 3: JSON Configuration
 
 Create a JSON configuration containing:
 
@@ -1920,7 +1920,7 @@ Write it to a file and read it back.
 
 ---
 
-## Exercise 4: Directory Search
+### Exercise 4: Directory Search
 
 Search recursively for every `.csv` file inside:
 
@@ -1936,7 +1936,7 @@ Print:
 
 ---
 
-## Exercise 5: Error Handling
+### Exercise 5: Error Handling
 
 Write a function that:
 
@@ -1969,7 +1969,7 @@ unit_price
 region
 ```
 
-## Requirements
+### Requirements
 
 1. Find all CSV files using `glob()`.
 2. Ignore non-CSV files.

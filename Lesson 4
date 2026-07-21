@@ -207,7 +207,7 @@ ali_score = scores["Ali"]
 
 ## 6. Creating a DataFrame
 
-## From a Dictionary
+### From a Dictionary
 
 ```python
 students = pd.DataFrame(
@@ -225,7 +225,7 @@ Each list becomes the column values.
 
 ---
 
-## From a List of Dictionaries
+### From a List of Dictionaries
 
 ```python
 students = pd.DataFrame(
@@ -253,7 +253,7 @@ This structure is similar to JSON or API data.
 
 ---
 
-## From NumPy
+### From NumPy
 
 ```python
 import numpy as np
@@ -318,7 +318,7 @@ Columns → features
 
 A dataset should always be inspected before analysis.
 
-## First Rows
+### First Rows
 
 ```python
 students.head()
@@ -334,7 +334,7 @@ Displays the first two rows.
 
 ---
 
-## Last Rows
+### Last Rows
 
 ```python
 students.tail()
@@ -342,7 +342,7 @@ students.tail()
 
 ---
 
-## Shape
+### Shape
 
 ```python
 students.shape
@@ -363,7 +363,7 @@ This means:
 
 ---
 
-## Column Names
+### Column Names
 
 ```python
 students.columns
@@ -371,7 +371,7 @@ students.columns
 
 ---
 
-## Index
+### Index
 
 ```python
 students.index
@@ -379,7 +379,7 @@ students.index
 
 ---
 
-## Data Types
+### Data Types
 
 ```python
 students.dtypes
@@ -395,7 +395,7 @@ dtype: object
 
 ---
 
-## General Information
+### General Information
 
 ```python
 students.info()
@@ -411,7 +411,7 @@ This shows:
 
 ---
 
-## Statistical Summary
+### Statistical Summary
 
 ```python
 students.describe()
@@ -430,7 +430,7 @@ For numerical columns, it provides:
 
 ## 9. Selecting Columns
 
-## One Column
+### One Column
 
 ```python
 scores = students["score"]
@@ -450,7 +450,7 @@ pandas.core.series.Series
 
 ---
 
-## Multiple Columns
+### Multiple Columns
 
 ```python
 selected = students[["name", "score"]]
@@ -462,7 +462,7 @@ Double brackets are required because you are passing a list of column names.
 
 ---
 
-## Attribute Syntax
+### Attribute Syntax
 
 ```python
 students.score
@@ -579,7 +579,7 @@ Pandas keeps rows where the condition is `True`.
 
 ---
 
-## Multiple Conditions
+### Multiple Conditions
 
 Students from Dubai with scores of at least 60:
 
@@ -602,7 +602,7 @@ Each condition must be wrapped in parentheses.
 
 ---
 
-## Using `isin`
+### Using `isin`
 
 ```python
 selected = students[
@@ -612,7 +612,7 @@ selected = students[
 
 ---
 
-## Using `between`
+### Using `between`
 
 ```python
 selected = students[
@@ -661,7 +661,7 @@ This sorts:
 
 ## 14. Adding and Updating Columns
 
-## Add a Constant Column
+### Add a Constant Column
 
 ```python
 students["country"] = "UAE"
@@ -671,7 +671,7 @@ Every row receives `"UAE"`.
 
 ---
 
-## Add a Calculated Column
+### Add a Calculated Column
 
 ```python
 students["passed"] = students["score"] >= 60
@@ -679,7 +679,7 @@ students["passed"] = students["score"] >= 60
 
 ---
 
-## Add a Percentage Adjustment
+### Add a Percentage Adjustment
 
 ```python
 students["adjusted_score"] = students["score"] + 5
@@ -687,7 +687,7 @@ students["adjusted_score"] = students["score"] + 5
 
 ---
 
-## Update Values with `loc`
+### Update Values with `loc`
 
 ```python
 students.loc[
@@ -776,7 +776,7 @@ students = pd.DataFrame(
 
 ---
 
-## Detect Missing Values
+### Detect Missing Values
 
 ```python
 students.isna()
@@ -796,7 +796,7 @@ has_missing = students.isna().any().any()
 
 ---
 
-## Remove Missing Rows
+### Remove Missing Rows
 
 ```python
 cleaned = students.dropna()
@@ -812,7 +812,7 @@ cleaned = students.dropna(
 
 ---
 
-## Fill Missing Values
+### Fill Missing Values
 
 Fill numerical values:
 
@@ -1039,7 +1039,7 @@ Split → Apply → Combine
 
 ## 23. Loading Files
 
-## Load CSV
+### Load CSV
 
 ```python
 students = pd.read_csv(
@@ -1049,7 +1049,7 @@ students = pd.read_csv(
 
 ---
 
-## Load JSON
+### Load JSON
 
 ```python
 students = pd.read_json(
@@ -1059,7 +1059,7 @@ students = pd.read_json(
 
 ---
 
-## Save CSV
+### Save CSV
 
 ```python
 students.to_csv(
@@ -1072,7 +1072,7 @@ students.to_csv(
 
 ---
 
-## Save JSON
+### Save JSON
 
 ```python
 students.to_json(
@@ -1086,7 +1086,7 @@ students.to_json(
 
 ## 24. Main Python Implementation
 
-## Customer Purchase Analyzer
+### Customer Purchase Analyzer
 
 ```python
 from pathlib import Path
@@ -1635,7 +1635,7 @@ if __name__ == "__main__":
 
 ## 30. Common Errors
 
-## Selecting a Missing Column
+### Selecting a Missing Column
 
 ```python
 students["marks"]
@@ -1655,7 +1655,7 @@ print(students.columns.tolist())
 
 ---
 
-## Using `and` Instead of `&`
+### Using `and` Instead of `&`
 
 Incorrect:
 
@@ -1677,7 +1677,7 @@ students[
 
 ---
 
-## Missing Parentheses
+### Missing Parentheses
 
 Incorrect:
 
@@ -1699,7 +1699,7 @@ students[
 
 ---
 
-## Modifying a Filtered Slice
+### Modifying a Filtered Slice
 
 Problematic:
 
@@ -1725,7 +1725,7 @@ passing["status"] = "Passed"
 
 ---
 
-## Wrong Data Type
+### Wrong Data Type
 
 A numeric column may be loaded as text:
 
@@ -1748,7 +1748,7 @@ Invalid values become `NaN`.
 
 ---
 
-## Dividing by Zero
+### Dividing by Zero
 
 ```python
 data["total_spent"] / data["purchases"]
@@ -1767,7 +1767,7 @@ safe_purchases = data["purchases"].replace(
 
 ---
 
-## Accidentally Exporting the Index
+### Accidentally Exporting the Index
 
 ```python
 data.to_csv("report.csv")
@@ -1855,7 +1855,7 @@ Many Pandas bugs come from incorrect:
 
 ## 32. Exercises
 
-## Exercise 1: Create a DataFrame
+### Exercise 1: Create a DataFrame
 
 Create this dataset:
 
@@ -1874,7 +1874,7 @@ Then display:
 
 ---
 
-## Exercise 2: Filtering
+### Exercise 2: Filtering
 
 Select products that:
 
@@ -1883,7 +1883,7 @@ Select products that:
 
 ---
 
-## Exercise 3: Add Columns
+### Exercise 3: Add Columns
 
 Add:
 
@@ -1899,7 +1899,7 @@ in_stock = stock > 0
 
 ---
 
-## Exercise 4: Missing Values
+### Exercise 4: Missing Values
 
 Given:
 
@@ -1920,7 +1920,7 @@ Fill:
 
 ---
 
-## Exercise 5: Grouping
+### Exercise 5: Grouping
 
 Create sales data with:
 
@@ -2086,6 +2086,8 @@ CSV report
 * `groupby()` creates grouped summaries.
 * Vectorized operations are usually preferable to Python loops.
 * Pandas is commonly used before machine-learning model training.
+
+---
 
 ## Lesson 4 Quiz
 

@@ -112,7 +112,7 @@ Model training
 
 ## 4. Types of Data Quality Problems
 
-## Missing Values
+### Missing Values
 
 Examples:
 
@@ -125,11 +125,11 @@ Empty string
 "-"
 ```
 
-## Duplicate Records
+### Duplicate Records
 
 The same row or entity appears multiple times.
 
-## Incorrect Data Types
+### Incorrect Data Types
 
 Examples:
 
@@ -139,7 +139,7 @@ Price stored as text
 Date stored as general string
 ```
 
-## Inconsistent Categories
+### Inconsistent Categories
 
 Examples:
 
@@ -150,7 +150,7 @@ DUBAI
 Dubai 
 ```
 
-## Invalid Values
+### Invalid Values
 
 Examples:
 
@@ -160,7 +160,7 @@ Attendance above 100%
 Age below 0
 ```
 
-## Outliers
+### Outliers
 
 Values far from most observations.
 
@@ -171,7 +171,7 @@ Customer ages:
 21, 25, 28, 30, 32, 250
 ```
 
-## Incorrect Units
+### Incorrect Units
 
 Example:
 
@@ -182,7 +182,7 @@ Height values:
 68 inches
 ```
 
-## Inconsistent Dates
+### Inconsistent Dates
 
 Examples:
 
@@ -273,25 +273,25 @@ print(customers.dtypes)
 print(customers.info())
 ```
 
-## Check Missing Values
+### Check Missing Values
 
 ```python
 print(customers.isna().sum())
 ```
 
-## Check Duplicates
+### Check Duplicates
 
 ```python
 print(customers.duplicated().sum())
 ```
 
-## Inspect Unique Values
+### Inspect Unique Values
 
 ```python
 print(customers["city"].unique())
 ```
 
-## Inspect Numerical Statistics
+### Inspect Numerical Statistics
 
 ```python
 print(customers.describe())
@@ -370,7 +370,7 @@ This is usually too aggressive because an entire feature may be lost.
 
 ## 9. Filling Missing Values
 
-## Fill Numerical Data with the Mean
+### Fill Numerical Data with the Mean
 
 ```python
 customers["age"] = customers["age"].fillna(
@@ -380,7 +380,7 @@ customers["age"] = customers["age"].fillna(
 
 This only works after the column has a correct numerical type.
 
-## Fill with the Median
+### Fill with the Median
 
 ```python
 customers["age"] = customers["age"].fillna(
@@ -390,7 +390,7 @@ customers["age"] = customers["age"].fillna(
 
 The median is often safer when outliers exist.
 
-## Fill Categorical Data
+### Fill Categorical Data
 
 ```python
 customers["city"] = customers["city"].fillna(
@@ -398,7 +398,7 @@ customers["city"] = customers["city"].fillna(
 )
 ```
 
-## Fill with the Most Common Value
+### Fill with the Most Common Value
 
 ```python
 most_common_city = customers["city"].mode()[0]
@@ -443,21 +443,21 @@ Therefore, the median is often more robust for skewed data or data containing ou
 
 There is no universal strategy.
 
-## Remove the Row When
+### Remove the Row When
 
 * Very few rows are affected.
 * The missing field is essential.
 * The row cannot be recovered.
 * Removing it will not create serious bias.
 
-## Fill the Value When
+### Fill the Value When
 
 * The missing rate is manageable.
 * The feature is useful.
 * A defensible replacement exists.
 * Removing rows would waste too much data.
 
-## Leave Missing When
+### Leave Missing When
 
 * The model supports missing values.
 * Missingness itself contains useful information.
@@ -497,7 +497,7 @@ customers = customers.drop_duplicates()
 
 ---
 
-## Duplicate Entities
+### Duplicate Entities
 
 Two rows may represent the same customer even when they are not identical.
 
@@ -1640,7 +1640,7 @@ if __name__ == "__main__":
 
 ## 31. Common Mistakes
 
-## Removing Too Many Rows
+### Removing Too Many Rows
 
 ```python
 cleaned = data.dropna()
@@ -1652,7 +1652,7 @@ A large part of the dataset may be lost.
 
 ---
 
-## Filling Every Missing Value with Zero
+### Filling Every Missing Value with Zero
 
 ```python
 data = data.fillna(0)
@@ -1670,7 +1670,7 @@ Zero is a real value, not a universal missing-value replacement.
 
 ---
 
-## Removing Every Outlier
+### Removing Every Outlier
 
 An outlier may be:
 
@@ -1682,7 +1682,7 @@ Deleting it automatically may remove the most useful observations.
 
 ---
 
-## Cleaning Without Keeping Raw Data
+### Cleaning Without Keeping Raw Data
 
 Overwriting the only copy makes mistakes difficult to reverse.
 
@@ -1697,7 +1697,7 @@ separately.
 
 ---
 
-## Using the Mean with Extreme Values
+### Using the Mean with Extreme Values
 
 The mean may be distorted by outliers.
 
@@ -1705,7 +1705,7 @@ The median may be more suitable.
 
 ---
 
-## Ignoring Data Types
+### Ignoring Data Types
 
 A column may look numerical while actually being text.
 
@@ -1717,7 +1717,7 @@ print(data.dtypes)
 
 ---
 
-## Treating Different People as Duplicates
+### Treating Different People as Duplicates
 
 Removing duplicates using only names is unsafe:
 
@@ -1731,7 +1731,7 @@ Different people can have the same name.
 
 ---
 
-## Data Leakage
+### Data Leakage
 
 Do not calculate cleaning statistics using test data before model training.
 
@@ -1808,7 +1808,7 @@ print(
 
 ## 33. Exercises
 
-## Exercise 1: Missing Values
+### Exercise 1: Missing Values
 
 Given:
 
@@ -1840,7 +1840,7 @@ Perform:
 
 ---
 
-## Exercise 2: Text Cleaning
+### Exercise 2: Text Cleaning
 
 Clean:
 
@@ -1868,7 +1868,7 @@ Sharjah
 
 ---
 
-## Exercise 3: Numeric Conversion
+### Exercise 3: Numeric Conversion
 
 Convert:
 
@@ -1887,7 +1887,7 @@ Invalid values should become missing.
 
 ---
 
-## Exercise 4: Invalid Values
+### Exercise 4: Invalid Values
 
 Given:
 
@@ -1905,7 +1905,7 @@ Detect values outside:
 
 ---
 
-## Exercise 5: Duplicates
+### Exercise 5: Duplicates
 
 Given:
 
@@ -1978,7 +1978,7 @@ employees = pd.DataFrame(
 )
 ```
 
-## Requirements
+### Requirements
 
 1. Keep the raw dataset unchanged.
 2. Generate an initial quality report.

@@ -146,7 +146,7 @@ plt.show()
 
 This creates a line chart.
 
-## Code Explanation
+### Code Explanation
 
 ```python
 import matplotlib.pyplot as plt
@@ -444,7 +444,7 @@ Use a bar chart for comparisons such as:
 
 ---
 
-## Horizontal Bar Chart
+### Horizontal Bar Chart
 
 ```python
 plt.barh(
@@ -993,7 +993,7 @@ Using the wrong chart can hide or distort information.
 
 ## 28. Main Python Implementation
 
-## Student Performance Visualization Report
+### Student Performance Visualization Report
 
 ```python
 from pathlib import Path
@@ -1342,7 +1342,7 @@ Save high-resolution images
 
 ## 30. Detailed Code Explanation
 
-## Imports
+### Imports
 
 ```python
 from pathlib import Path
@@ -1364,7 +1364,7 @@ Imports Pandas for tabular data.
 
 ---
 
-## Required Columns
+### Required Columns
 
 ```python
 REQUIRED_COLUMNS = {
@@ -1381,7 +1381,7 @@ A set is used so we can compare required and available columns efficiently.
 
 ---
 
-## Validation
+### Validation
 
 ```python
 if data.empty:
@@ -1424,7 +1424,7 @@ Checks whether attendance is outside the valid range.
 
 ---
 
-## Creating a Figure and Axis
+### Creating a Figure and Axis
 
 ```python
 figure, axis = plt.subplots(
@@ -1440,7 +1440,7 @@ Creates a figure measuring eight inches wide and five inches high.
 
 ---
 
-## Histogram
+### Histogram
 
 ```python
 axis.hist(
@@ -1462,7 +1462,7 @@ Adds grid lines only to the y-axis.
 
 ---
 
-## Scatter Plot
+### Scatter Plot
 
 ```python
 axis.scatter(
@@ -1477,7 +1477,7 @@ Each point represents one student.
 
 ---
 
-## Sorting Before a Bar Chart
+### Sorting Before a Bar Chart
 
 ```python
 sorted_data = data.sort_values(
@@ -1514,7 +1514,7 @@ Rotates student names to reduce overlap.
 
 ---
 
-## Saving the Chart
+### Saving the Chart
 
 ```python
 figure.savefig(
@@ -1537,7 +1537,7 @@ This is important when generating many charts.
 
 ---
 
-## Creating the Output Directory
+### Creating the Output Directory
 
 ```python
 output_directory.mkdir(
@@ -1681,7 +1681,7 @@ if __name__ == "__main__":
 
 ## 33. Common Errors
 
-## Mismatched Data Lengths
+### Mismatched Data Lengths
 
 Incorrect:
 
@@ -1703,7 +1703,7 @@ Each x-value must have a corresponding y-value.
 
 ---
 
-## Forgetting `plt.show()`
+### Forgetting `plt.show()`
 
 In a normal Python script:
 
@@ -1721,7 +1721,7 @@ plt.show()
 
 ---
 
-## Saving After Closing
+### Saving After Closing
 
 Incorrect order:
 
@@ -1741,7 +1741,7 @@ plt.close()
 
 ---
 
-## Overlapping Labels
+### Overlapping Labels
 
 Long category names may overlap.
 
@@ -1762,7 +1762,7 @@ figure.tight_layout()
 
 ---
 
-## Too Many Categories
+### Too Many Categories
 
 A bar chart containing hundreds of categories becomes unreadable.
 
@@ -1776,7 +1776,7 @@ The visualization should match the amount of information.
 
 ---
 
-## Wrong Chart Type
+### Wrong Chart Type
 
 Using a line chart for unordered categories may imply a relationship between them.
 
@@ -1795,7 +1795,7 @@ A bar chart is more appropriate.
 
 ---
 
-## Not Closing Figures
+### Not Closing Figures
 
 Generating many charts without closing them can consume memory.
 
@@ -1807,7 +1807,7 @@ plt.close(figure)
 
 ---
 
-## Misleading Axis Range
+### Misleading Axis Range
 
 Starting a bar-chart axis far above zero can exaggerate small differences.
 
@@ -1815,7 +1815,7 @@ Bar charts generally work best when the numerical axis starts at zero.
 
 ---
 
-## Missing Values
+### Missing Values
 
 Missing values can cause points or lines to disappear.
 
@@ -1894,7 +1894,7 @@ plt.close("all")
 
 ## 35. Exercises
 
-## Exercise 1: Line Chart
+### Exercise 1: Line Chart
 
 Create a line chart for:
 
@@ -1925,7 +1925,7 @@ Add:
 
 ---
 
-## Exercise 2: Bar Chart
+### Exercise 2: Bar Chart
 
 Create a bar chart:
 
@@ -1947,7 +1947,7 @@ sales = [
 
 ---
 
-## Exercise 3: Scatter Plot
+### Exercise 3: Scatter Plot
 
 Create a scatter plot using:
 
@@ -1973,7 +1973,7 @@ Explain the visible relationship.
 
 ---
 
-## Exercise 4: Histogram
+### Exercise 4: Histogram
 
 Create a histogram for:
 
@@ -2001,7 +2001,7 @@ Test different values of `bins`.
 
 ---
 
-## Exercise 5: Training Curves
+### Exercise 5: Training Curves
 
 Plot:
 
@@ -2077,7 +2077,7 @@ sales_data = pd.DataFrame(
 )
 ```
 
-## Requirements
+### Requirements
 
 Create:
 
@@ -2100,7 +2100,7 @@ Create:
 9. Data validation
 10. At least five unit tests
 
-## Architecture
+### Architecture
 
 ```text
 Sales DataFrame

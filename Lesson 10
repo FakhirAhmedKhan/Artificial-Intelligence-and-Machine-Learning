@@ -206,7 +206,7 @@ def validate_numeric_values(
             )
 ```
 
-### Explanation
+#### Explanation
 
 ```python
 from collections.abc import Sequence
@@ -531,6 +531,8 @@ __pycache__/
 * Packages should expose a small, clear public interface.
 * Dependency versions should be managed deliberately.
 
+---
+
 ## Lesson 10 Quiz
 
 1. What is the difference between a module and a package?
@@ -545,6 +547,4 @@ __pycache__/
 10. Why should `.venv` be included in `.gitignore`?
 11. What is the time complexity of calculating a mean for (n) values?
 12. Why can naming a file `requests.py` create problems?
-
----
 

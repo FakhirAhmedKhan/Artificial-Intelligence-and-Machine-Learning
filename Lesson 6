@@ -251,7 +251,7 @@ axis.set_title(
 plt.show()
 ```
 
-## Visual Meaning
+### Visual Meaning
 
 ```text
 Exam score
@@ -575,7 +575,7 @@ The density curve estimates the general shape of the distribution.
 
 ## 14. Distribution Shapes
 
-## Approximately Symmetrical
+### Approximately Symmetrical
 
 ```text
 Frequency
@@ -589,7 +589,7 @@ Frequency
 
 Values are distributed similarly around the center.
 
-## Right-Skewed
+### Right-Skewed
 
 ```text
 Frequency
@@ -604,7 +604,7 @@ Frequency
 
 Most values are lower, with a long tail toward higher values.
 
-## Left-Skewed
+### Left-Skewed
 
 ```text
 Frequency
@@ -958,7 +958,7 @@ However, pair plots become expensive and cluttered when a dataset contains many 
 
 ## 26. Figure-Level vs Axes-Level Functions
 
-## Axes-Level Functions
+### Axes-Level Functions
 
 Examples:
 
@@ -985,7 +985,7 @@ sns.scatterplot(
 )
 ```
 
-## Figure-Level Functions
+### Figure-Level Functions
 
 Examples:
 
@@ -1041,7 +1041,7 @@ Faceting is useful when putting every group on one chart becomes cluttered.
 
 ## 28. Main Python Implementation
 
-## Exploratory Student Analysis Report
+### Exploratory Student Analysis Report
 
 ```python
 from pathlib import Path
@@ -1688,7 +1688,7 @@ if __name__ == "__main__":
 
 ## 33. Common Mistakes
 
-## Using a Categorical Column as a Numeric Axis
+### Using a Categorical Column as a Numeric Axis
 
 Problem:
 
@@ -1706,7 +1706,7 @@ Use a count plot or categorical plot instead.
 
 ---
 
-## Misunderstanding a Bar Plot
+### Misunderstanding a Bar Plot
 
 ```python
 sns.barplot(
@@ -1722,7 +1722,7 @@ It summarizes scores within each course.
 
 ---
 
-## Using `countplot()` with a Numerical Summary
+### Using `countplot()` with a Numerical Summary
 
 A count plot counts rows.
 
@@ -1732,7 +1732,7 @@ For statistical summaries, use `barplot()` or calculate the aggregation first.
 
 ---
 
-## Too Many `hue` Categories
+### Too Many `hue` Categories
 
 ```python
 hue="student"
@@ -1744,7 +1744,7 @@ Use `hue` for meaningful groups.
 
 ---
 
-## Trusting Correlation Without Context
+### Trusting Correlation Without Context
 
 A strong correlation may result from:
 
@@ -1759,7 +1759,7 @@ Correlation does not establish causation.
 
 ---
 
-## Using a Violin Plot with Very Little Data
+### Using a Violin Plot with Very Little Data
 
 A density shape estimated from two or three observations may imply more information than the dataset actually contains.
 
@@ -1767,7 +1767,7 @@ Use a strip plot or box plot with individual observations.
 
 ---
 
-## Ignoring Missing Values
+### Ignoring Missing Values
 
 Missing values may remove observations silently from charts.
 
@@ -1779,7 +1779,7 @@ print(data.isna().sum())
 
 ---
 
-## Creating an Oversized Pair Plot
+### Creating an Oversized Pair Plot
 
 A pair plot with 30 features attempts to create roughly:
 
@@ -1793,7 +1793,7 @@ Select only important features first.
 
 ---
 
-## Mixing Figure-Level and Axes-Level Logic
+### Mixing Figure-Level and Axes-Level Logic
 
 This is problematic:
 
@@ -1869,7 +1869,7 @@ plt.close("all")
 
 ## 35. Exercises
 
-## Exercise 1: Scatter Plot
+### Exercise 1: Scatter Plot
 
 Create a scatter plot:
 
@@ -1911,7 +1911,7 @@ hue → channel
 
 ---
 
-## Exercise 2: Count Plot
+### Exercise 2: Count Plot
 
 Create a count plot showing the number of students in each course.
 
@@ -1919,7 +1919,7 @@ Add `hue="gender"`.
 
 ---
 
-## Exercise 3: Histogram
+### Exercise 3: Histogram
 
 Create an exam-score histogram with:
 
@@ -1932,7 +1932,7 @@ Explain where most scores are concentrated.
 
 ---
 
-## Exercise 4: Box Plot
+### Exercise 4: Box Plot
 
 Create a box plot comparing exam scores by course.
 
@@ -1940,7 +1940,7 @@ Add a strip plot showing the individual students.
 
 ---
 
-## Exercise 5: Correlation Heatmap
+### Exercise 5: Correlation Heatmap
 
 Calculate and display correlations between:
 
@@ -2035,7 +2035,7 @@ sales = pd.DataFrame(
 )
 ```
 
-## Requirements
+### Requirements
 
 1. Validate required columns.
 2. Add:

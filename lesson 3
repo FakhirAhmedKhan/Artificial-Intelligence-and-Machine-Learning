@@ -193,7 +193,7 @@ import numpy as np
 
 ## 6. Creating NumPy Arrays
 
-## One-Dimensional Array
+### One-Dimensional Array
 
 ```python
 import numpy as np
@@ -211,7 +211,7 @@ This is a vector.
 
 ---
 
-## Two-Dimensional Array
+### Two-Dimensional Array
 
 ```python
 student_data = np.array(
@@ -243,7 +243,7 @@ Shape:
 
 ---
 
-## Arrays Filled with Zeros
+### Arrays Filled with Zeros
 
 ```python
 zeros = np.zeros((2, 3))
@@ -260,7 +260,7 @@ Result:
 
 ---
 
-## Arrays Filled with Ones
+### Arrays Filled with Ones
 
 ```python
 ones = np.ones((2, 3))
@@ -268,7 +268,7 @@ ones = np.ones((2, 3))
 
 ---
 
-## Arrays Filled with a Specific Value
+### Arrays Filled with a Specific Value
 
 ```python
 filled = np.full((2, 3), 7)
@@ -285,7 +285,7 @@ Result:
 
 ---
 
-## Number Sequence
+### Number Sequence
 
 ```python
 numbers = np.arange(0, 10, 2)
@@ -307,7 +307,7 @@ step  = 2
 
 ---
 
-## Evenly Spaced Values
+### Evenly Spaced Values
 
 ```python
 values = np.linspace(0, 1, 5)
@@ -334,7 +334,7 @@ data = np.array(
 )
 ```
 
-## Number of Dimensions
+### Number of Dimensions
 
 ```python
 print(data.ndim)
@@ -346,7 +346,7 @@ Output:
 2
 ```
 
-## Shape
+### Shape
 
 ```python
 print(data.shape)
@@ -360,7 +360,7 @@ Output:
 
 This means two rows and three columns.
 
-## Number of Elements
+### Number of Elements
 
 ```python
 print(data.size)
@@ -372,7 +372,7 @@ Output:
 6
 ```
 
-## Data Type
+### Data Type
 
 ```python
 print(data.dtype)
@@ -384,7 +384,7 @@ The exact output depends on the system, but it represents an integer type.
 
 ## 8. Indexing and Slicing
 
-## One-Dimensional Indexing
+### One-Dimensional Indexing
 
 ```python
 scores = np.array([70, 80, 90, 85])
@@ -412,7 +412,7 @@ Output:
 
 ---
 
-## One-Dimensional Slicing
+### One-Dimensional Slicing
 
 ```python
 print(scores[1:3])
@@ -428,7 +428,7 @@ The start index is included. The stop index is excluded.
 
 ---
 
-## Two-Dimensional Indexing
+### Two-Dimensional Indexing
 
 ```python
 data = np.array(
@@ -463,7 +463,7 @@ Row 1     40  50  60
 
 ---
 
-## Selecting a Complete Row
+### Selecting a Complete Row
 
 ```python
 first_row = data[0, :]
@@ -475,7 +475,7 @@ Result:
 [10, 20, 30]
 ```
 
-## Selecting a Complete Column
+### Selecting a Complete Column
 
 ```python
 second_column = data[:, 1]
@@ -537,7 +537,7 @@ Result:
 
 ---
 
-## Python Loop Version
+### Python Loop Version
 
 ```python
 updated_scores = []
@@ -546,7 +546,7 @@ for score in scores:
     updated_scores.append(score + 5)
 ```
 
-## NumPy Version
+### NumPy Version
 
 ```python
 updated_scores = scores + 5
@@ -637,7 +637,7 @@ result = first * second
 
 ---
 
-## Dot Product
+### Dot Product
 
 The dot product is:
 
@@ -782,7 +782,7 @@ standard_deviation = np.std(scores)
 
 ---
 
-## Mathematical Intuition for Mean
+### Mathematical Intuition for Mean
 
 [
 \bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}
@@ -820,13 +820,13 @@ Shape:
 (3, 3)
 ```
 
-## Average of All Values
+### Average of All Values
 
 ```python
 overall_average = data.mean()
 ```
 
-## Column Averages
+### Column Averages
 
 ```python
 column_averages = data.mean(axis=0)
@@ -846,7 +846,7 @@ Column 1: (60 + 75 + 90) / 3
 Column 2: (55 + 70 + 85) / 3
 ```
 
-## Row Averages
+### Row Averages
 
 ```python
 row_averages = data.mean(axis=1)
@@ -901,7 +901,7 @@ passing_scores = scores[scores >= 60]
 
 ---
 
-## Multiple Conditions
+### Multiple Conditions
 
 Select values between 60 and 80:
 
@@ -954,7 +954,7 @@ Six values cannot fill eight positions.
 
 ---
 
-## Automatic Dimension Calculation
+### Automatic Dimension Calculation
 
 ```python
 matrix = numbers.reshape(3, -1)
@@ -974,7 +974,7 @@ Only one dimension may use `-1`.
 
 ## 17. Combining Arrays
 
-## Vertical Stacking
+### Vertical Stacking
 
 ```python
 first = np.array([[1, 2]])
@@ -992,7 +992,7 @@ Result:
 ]
 ```
 
-## Horizontal Stacking
+### Horizontal Stacking
 
 ```python
 combined = np.hstack((first, second))
@@ -1039,7 +1039,7 @@ Changes to `independent` will not modify `original`.
 
 ## 19. Main Python Implementation
 
-## Student Performance Analyzer
+### Student Performance Analyzer
 
 ```python
 import numpy as np
@@ -1479,7 +1479,7 @@ Use `np.allclose()` and `np.isclose()` for floating-point comparisons.
 
 ## 25. Common Errors
 
-## Incompatible Shapes
+### Incompatible Shapes
 
 ```python
 first = np.array([1, 2, 3])
@@ -1498,7 +1498,7 @@ The shapes `(3,)` and `(2,)` are incompatible.
 
 ---
 
-## Wrong Axis
+### Wrong Axis
 
 ```python
 data.mean(axis=1)
@@ -1514,7 +1514,7 @@ data.mean(axis=0)
 
 ---
 
-## Using `and` Instead of `&`
+### Using `and` Instead of `&`
 
 Incorrect:
 
@@ -1536,7 +1536,7 @@ Each condition must also be wrapped in parentheses.
 
 ---
 
-## Unexpected Integer Data Type
+### Unexpected Integer Data Type
 
 ```python
 values = np.array([1, 2, 3])
@@ -1556,7 +1556,7 @@ values = np.array(
 
 ---
 
-## Modifying a View Accidentally
+### Modifying a View Accidentally
 
 ```python
 subset = original[:2]
@@ -1573,7 +1573,7 @@ subset = original[:2].copy()
 
 ---
 
-## Dividing by Zero
+### Dividing by Zero
 
 ```python
 values = np.array([1.0, 0.0])
@@ -1586,7 +1586,7 @@ Check for zero values before division.
 
 ---
 
-## Comparing Arrays Directly
+### Comparing Arrays Directly
 
 Incorrect:
 
@@ -1657,7 +1657,7 @@ Many NumPy bugs are shape bugs. Inspecting `shape` should be one of your first d
 
 ## 27. Exercises
 
-## Exercise 1
+### Exercise 1
 
 Create this array:
 
@@ -1675,7 +1675,7 @@ Calculate:
 
 ---
 
-## Exercise 2
+### Exercise 2
 
 Create:
 
@@ -1699,7 +1699,7 @@ Extract:
 
 ---
 
-## Exercise 3
+### Exercise 3
 
 Given:
 
@@ -1713,7 +1713,7 @@ Select only temperatures greater than or equal to 40.
 
 ---
 
-## Exercise 4
+### Exercise 4
 
 Reshape:
 
@@ -1729,7 +1729,7 @@ Into:
 
 ---
 
-## Exercise 5
+### Exercise 5
 
 Given:
 

@@ -175,7 +175,7 @@ https://api.example.com/v1/students/42
 
 ## 6. Common HTTP Methods
 
-## GET
+### GET
 
 Retrieves data.
 
@@ -184,7 +184,7 @@ GET /students
 GET /students/42
 ```
 
-## POST
+### POST
 
 Creates data or submits work.
 
@@ -193,7 +193,7 @@ POST /predictions
 POST /students
 ```
 
-## PUT
+### PUT
 
 Usually replaces a complete resource.
 
@@ -201,7 +201,7 @@ Usually replaces a complete resource.
 PUT /students/42
 ```
 
-## PATCH
+### PATCH
 
 Updates part of a resource.
 
@@ -209,7 +209,7 @@ Updates part of a resource.
 PATCH /students/42
 ```
 
-## DELETE
+### DELETE
 
 Removes a resource.
 
@@ -233,7 +233,7 @@ Summary:
 
 Status codes indicate the result of a request.
 
-## Success
+### Success
 
 ```text
 200 OK
@@ -241,7 +241,7 @@ Status codes indicate the result of a request.
 204 No Content
 ```
 
-## Client Errors
+### Client Errors
 
 ```text
 400 Bad Request
@@ -253,7 +253,7 @@ Status codes indicate the result of a request.
 429 Too Many Requests
 ```
 
-## Server Errors
+### Server Errors
 
 ```text
 500 Internal Server Error
@@ -307,7 +307,7 @@ print(response.status_code)
 print(response.text)
 ```
 
-## Explanation
+### Explanation
 
 ```python
 import requests
@@ -1011,7 +1011,7 @@ class ApiClient:
 
 ## 26. Code Explanation
 
-## Class Definition
+### Class Definition
 
 ```python
 class ApiClient:
@@ -1021,7 +1021,7 @@ Creates a reusable client that groups API-related behavior.
 
 ---
 
-## Constructor
+### Constructor
 
 ```python
 def __init__(
@@ -1054,7 +1054,7 @@ A session can reuse connections and default headers.
 
 ---
 
-## Default Headers
+### Default Headers
 
 ```python
 self.session.headers.update(...)
@@ -1070,7 +1070,7 @@ Adds authorization only when a key is provided.
 
 ---
 
-## GET Method
+### GET Method
 
 ```python
 url = self._build_url(endpoint)
@@ -1098,7 +1098,7 @@ Parses and returns JSON.
 
 ---
 
-## Exception Chaining
+### Exception Chaining
 
 ```python
 raise RuntimeError(...) from error
@@ -1108,7 +1108,7 @@ Creates a clearer application-level error while preserving the original cause.
 
 ---
 
-## POST Method
+### POST Method
 
 ```python
 json=payload
@@ -1118,7 +1118,7 @@ Serializes the payload as JSON.
 
 ---
 
-## Closing the Session
+### Closing the Session
 
 ```python
 self.session.close()
@@ -1128,7 +1128,7 @@ Releases network resources.
 
 ---
 
-## URL Builder
+### URL Builder
 
 ```python
 endpoint.lstrip("/")
@@ -1376,7 +1376,7 @@ def test_timeout() -> None:
 
 ## 32. Common Mistakes
 
-## No Timeout
+### No Timeout
 
 ```python
 requests.get(url)
@@ -1386,7 +1386,7 @@ The application may wait indefinitely.
 
 ---
 
-## Hardcoding API Keys
+### Hardcoding API Keys
 
 ```python
 api_key = "secret-value"
@@ -1396,7 +1396,7 @@ Secrets may be committed to Git.
 
 ---
 
-## Ignoring Status Codes
+### Ignoring Status Codes
 
 ```python
 data = requests.get(url).json()
@@ -1408,7 +1408,7 @@ Use `raise_for_status()`.
 
 ---
 
-## Assuming Every Response Is JSON
+### Assuming Every Response Is JSON
 
 An API may return:
 
@@ -1421,25 +1421,25 @@ Handle JSON parsing errors.
 
 ---
 
-## Retrying Client Errors
+### Retrying Client Errors
 
 Repeatedly retrying a `401 Unauthorized` response will not fix an invalid API key.
 
 ---
 
-## No Response Validation
+### No Response Validation
 
 A `200` response may still omit required fields.
 
 ---
 
-## Fetching Only the First Page
+### Fetching Only the First Page
 
 Many APIs paginate responses.
 
 ---
 
-## Logging Secrets
+### Logging Secrets
 
 Never log:
 
@@ -1450,13 +1450,13 @@ Never log:
 
 ---
 
-## No Rate-Limit Handling
+### No Rate-Limit Handling
 
 Sending excessive requests can lead to temporary blocking.
 
 ---
 
-## Using API Data Without Cleaning
+### Using API Data Without Cleaning
 
 External API data may contain:
 
@@ -1521,7 +1521,7 @@ Do not print authentication headers.
 
 ## 34. Exercises
 
-## Exercise 1: HTTP Methods
+### Exercise 1: HTTP Methods
 
 Match each operation with the correct method:
 
@@ -1533,7 +1533,7 @@ Match each operation with the correct method:
 
 ---
 
-## Exercise 2: Query Parameters
+### Exercise 2: Query Parameters
 
 Write a GET request with:
 
@@ -1547,7 +1547,7 @@ Use a dictionary rather than manually building the URL.
 
 ---
 
-## Exercise 3: Response Validation
+### Exercise 3: Response Validation
 
 Validate this response:
 
@@ -1566,7 +1566,7 @@ Requirements:
 
 ---
 
-## Exercise 4: Error Handling
+### Exercise 4: Error Handling
 
 Create a function that handles:
 
@@ -1577,7 +1577,7 @@ Create a function that handles:
 
 ---
 
-## Exercise 5: API DataFrame
+### Exercise 5: API DataFrame
 
 Convert this API response into a Pandas DataFrame:
 
@@ -1620,7 +1620,7 @@ Expected API response:
 }
 ```
 
-## Requirements
+### Requirements
 
 1. Read the base URL from configuration.
 2. Read the API key from an environment variable.
