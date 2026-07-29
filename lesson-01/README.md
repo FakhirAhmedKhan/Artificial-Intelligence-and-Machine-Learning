@@ -365,67 +365,46 @@ Prediction: Pass
 
 The model does not understand education like a human. It finds a mathematical pattern that performs well on the examples it receives.
 
----
-
 ## 8. Mathematical Intuition
 
-Suppose each student has one feature:
+Suppose each student is represented by one feature:
 
-\[
-x_i = \text{number of study hours}
-\]
+> **xᵢ = Number of study hours**
 
-The correct answer is:
+The actual outcome for each student is represented as:
 
-\[
-y_i =
-\begin{cases}
-1 & \text{if the student passed} \\
-0 & \text{if the student failed}
-\end{cases}
-\]
+- **yᵢ = 1** if the student passed
+- **yᵢ = 0** if the student failed
 
-We create a simple model using a threshold \(t\):
+To make predictions, we define a simple threshold-based model:
 
-\[
-\hat{y}_i =
-\begin{cases}
-1 & \text{if } x_i \geq t \\
-0 & \text{if } x_i < t
-\end{cases}
-\]
+- **ŷᵢ = 1** if **xᵢ ≥ t**
+- **ŷᵢ = 0** if **xᵢ < t**
 
 Where:
 
-- \(y_i\) is the correct answer.
-- \(\hat{y}_i\) is the model’s prediction.
-- \(t\) is the threshold learned from data.
+- **xᵢ** represents the number of study hours for student **i**.
+- **yᵢ** represents the student's actual outcome.
+- **ŷᵢ** represents the model's predicted outcome.
+- **t** represents the decision threshold learned from the training data.
 
-The model tries different threshold values and selects the one that produces the highest accuracy.
+### How the Model Learns
 
-Accuracy is:
+During training, the model evaluates different possible values of **t**.
 
-\[
-\text{Accuracy}
-=
-\frac{\text{Number of correct predictions}}
-{\text{Total number of predictions}}
-\]
+For each threshold, it predicts whether each student passed or failed. The model then selects the threshold that produces the highest accuracy on the training dataset.
 
-For example, if eight out of ten predictions are correct:
+### Accuracy
 
-\[
-\text{Accuracy} = \frac{8}{10} = 0.8 = 80\%
-\]
+Accuracy measures the proportion of predictions that the model classified correctly:
 
-This is a very simple model, but it demonstrates the basic machine-learning process:
+> **Accuracy = Number of correct predictions ÷ Total number of predictions**
 
-1. Define a model.
-2. Measure its errors.
-3. adjust its parameters.
-4. Keep the parameter that performs best.
+For example, suppose the model correctly predicts the outcomes of **8 out of 10 students**:
 
----
+> **Accuracy = 8 ÷ 10 = 0.8 = 80%**
+
+Therefore, the model has an accuracy of **80%**.
 
 ## 9. Python Implementation
 
@@ -637,37 +616,29 @@ Returns the learned model parameter and its accuracy.
 
 ## 11. Time Complexity
 
-Let \(n\) be the number of training examples.
+Let **n** represent the number of training examples.
 
-There can be as many as \(n\) candidate thresholds.
+The program may evaluate up to **n candidate thresholds**.
 
-For every threshold, the program checks all \(n\) examples:
+For each threshold, it checks all **n training examples**:
 
-\[
-O(n \times n) = O(n^2)
-\]
+> **O(n × n) = O(n²)**
 
-Sorting also requires:
+Sorting the training data requires:
 
-\[
-O(n \log n)
-\]
+> **O(n log n)**
 
-Therefore, the overall time complexity is:
+Because **O(n²)** grows faster than **O(n log n)**, the overall time complexity is:
 
-\[
-O(n^2)
-\]
+> **Time Complexity: O(n²)**
 
-Space complexity is approximately:
+### Space Complexity
 
-\[
-O(n)
-\]
+The program stores the dataset and the candidate thresholds:
 
-because the program stores candidate thresholds and the dataset.
+> **Space Complexity: O(n)**
 
-This implementation is educational, not optimized for large datasets.
+This implementation is designed for educational purposes and is not optimized for very large datasets.
 
 ---
 
@@ -996,11 +967,14 @@ What are the predictions for:
 5.0 hours
 ```
 
-### 12. Explain this formula in plain language:
+### 12. Explain This Formula in Plain Language
 
-\[
-\text{Accuracy}
-=
-\frac{\text{Correct predictions}}
-{\text{Total predictions}}
-\]
+> **Accuracy = Correct predictions ÷ Total predictions**
+
+Accuracy tells us how often the model makes the correct prediction.
+
+For example, if the model makes **10 predictions** and **8 of them are correct**:
+
+> **Accuracy = 8 ÷ 10 = 0.8 = 80%**
+
+This means the model predicted the correct result **80% of the time**.
