@@ -1,4 +1,4 @@
-# Lesson 6: Seaborn Foundations for Statistical Visualization
+# Lesson 06: Seaborn Foundations for Statistical Visualization
 
 **Current phase:** Phase 1 — Python Foundations
 **Current lesson:** Seaborn

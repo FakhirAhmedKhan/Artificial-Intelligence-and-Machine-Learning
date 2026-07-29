@@ -1,4 +1,4 @@
-# Lesson 2: Python Refresher for AI and Machine Learning
+# Lesson 02: Python Refresher for AI and Machine Learning
 
 **Progress:** Lesson 1 completed
 **Current phase:** Phase 1 — Python Foundations

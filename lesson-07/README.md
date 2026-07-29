@@ -1,4 +1,4 @@
-# Lesson 7: Data Cleaning Foundations for AI and Machine Learning
+# Lesson 07: Data Cleaning Foundations for AI and Machine Learning
 
 **Current phase:** Phase 1 — Python Foundations
 **Current lesson:** Data Cleaning

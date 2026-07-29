@@ -1,4 +1,4 @@
-# Lesson 8: File Handling for AI and Machine Learning
+# Lesson 08: File Handling for AI and Machine Learning
 
 **Current phase:** Phase 1 — Python Foundations
 **Current lesson:** File Handling
