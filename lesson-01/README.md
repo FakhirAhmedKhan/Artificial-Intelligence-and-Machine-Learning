@@ -365,17 +365,15 @@ Prediction: Pass
 
 The model does not understand education like a human. It finds a mathematical pattern that performs well on the examples it receives.
 
----
-
 ## 8. Mathematical Intuition
 
-Suppose each student has one feature:
+Suppose each student is represented by a single feature:
 
 \[
-x_i = \text{number of study hours}
+x_i = \text{Number of study hours}
 \]
 
-The correct answer is:
+The true outcome for each student is:
 
 \[
 y_i =
@@ -385,7 +383,7 @@ y_i =
 \end{cases}
 \]
 
-We create a simple model using a threshold \(t\):
+To make predictions, we define a simple threshold-based model:
 
 \[
 \hat{y}_i =
@@ -397,13 +395,16 @@ We create a simple model using a threshold \(t\):
 
 Where:
 
-- \(y_i\) is the correct answer.
-- \(\hat{y}_i\) is the model’s prediction.
-- \(t\) is the threshold learned from data.
+- \(x_i\) — Number of study hours for student \(i\).
+- \(y_i\) — The true class (actual outcome).
+- \(\hat{y}_i\) — The model's predicted class.
+- \(t\) — The decision threshold learned from the training data.
 
-The model tries different threshold values and selects the one that produces the highest accuracy.
+The learning process evaluates different values of \(t\) and selects the one that produces the highest prediction accuracy on the training data.
 
-Accuracy is:
+### Accuracy
+
+Model performance is measured using **accuracy**, which is defined as:
 
 \[
 \text{Accuracy}
@@ -412,20 +413,41 @@ Accuracy is:
 {\text{Total number of predictions}}
 \]
 
-For example, if eight out of ten predictions are correct:
+For example, if the model correctly predicts **8** out of **10** students:
 
 \[
-\text{Accuracy} = \frac{8}{10} = 0.8 = 80\%
+\text{Accuracy}
+=
+\frac{8}{10}
+=
+0.8
+=
+80\%
 \]
 
-This is a very simple model, but it demonstrates the basic machine-learning process:
+### What This Demonstrates
 
-1. Define a model.
-2. Measure its errors.
-3. adjust its parameters.
-4. Keep the parameter that performs best.
+Although this is an extremely simple model, it illustrates the fundamental workflow of machine learning:
 
----
+1. **Define a model.**
+2. **Make predictions using the model.**
+3. **Measure the prediction error (or performance).**
+4. **Adjust the model's parameters.**
+5. **Select the parameter values that achieve the best performance.**
+
+Even though real-world machine learning models are much more sophisticated, they all follow this same fundamental learning process.
+
+### What This Demonstrates
+
+Although this is an extremely simple model, it illustrates the fundamental workflow of machine learning:
+
+1. **Define a model.**
+2. **Make predictions using the model.**
+3. **Measure the prediction error (or performance).**
+4. **Adjust the model's parameters.**
+5. **Select the parameter values that achieve the best performance.**
+
+Even though real-world machine learning models are much more sophisticated, they all follow this same fundamental learning process.
 
 ## 9. Python Implementation
 
