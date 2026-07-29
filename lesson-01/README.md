@@ -994,11 +994,14 @@ What are the predictions for:
 5.0 hours
 ```
 
-### 12. Explain this formula in plain language:
+### 12. Explain This Formula in Plain Language
 
-\[
-\text{Accuracy}
-=
-\frac{\text{Correct predictions}}
-{\text{Total predictions}}
-\]
+> **Accuracy = Correct predictions ÷ Total predictions**
+
+Accuracy tells us how often the model makes the correct prediction.
+
+For example, if the model makes **10 predictions** and **8 of them are correct**:
+
+> **Accuracy = 8 ÷ 10 = 0.8 = 80%**
+
+This means the model predicted the correct result **80% of the time**.
