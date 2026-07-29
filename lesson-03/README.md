@@ -1,4 +1,4 @@
-# Lesson 3: NumPy Foundations for AI and Machine Learning
+# Lesson 03: NumPy Foundations for AI and Machine Learning
 
 **Current phase:** Phase 1 — Python Foundations
 **Lesson:** 3 — NumPy

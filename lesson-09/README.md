@@ -1,4 +1,4 @@
-# Lesson 9: Working with APIs for AI and Machine Learning
+# Lesson 09: Working with APIs for AI and Machine Learning
 
 **Current phase:** Phase 1 — Python Foundations
 **Current lesson:** APIs
