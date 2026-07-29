@@ -1,4 +1,4 @@
-# Lesson 4: Pandas Foundations for AI and Machine Learning
+# Lesson 04: Pandas Foundations for AI and Machine Learning
 
 **Current phase:** Phase 1 — Python Foundations
 **Current lesson:** Pandas

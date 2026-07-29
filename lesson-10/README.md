@@ -1,4 +1,4 @@
-These three lessons complete the **delivery of Phase 1 — Python Foundations**. Phase 1 mastery will be confirmed after reviewing your code, exercises, projects, and quiz answers.
+# Lesson 10: These three lessons complete the **delivery of Phase 1 — Python Foundations**. Phase 1 mastery will be confirmed after reviewing your code, exercises, projects, and quiz answers.
 
 # Lesson 10: Modules, Packages, Virtual Environments, and Dependencies
 
