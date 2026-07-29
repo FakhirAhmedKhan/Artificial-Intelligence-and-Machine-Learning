@@ -11,7 +11,7 @@
 By the end of this lesson, you should be able to:
 
 1. Define Artificial Intelligence, Machine Learning, and Deep Learning.
-2. Explain how traditional programming differs from machine learning.
+2. Explain how traditional programming differs from machine learning.f
 3. Identify major categories of machine learning.
 4. Understand training, models, features, labels, and predictions.
 5. Build a basic program that learns a decision rule from data.
@@ -639,39 +639,33 @@ Returns the learned model parameter and its accuracy.
 
 ---
 
+---
+
 ## 11. Time Complexity
 
-Let \(n\) be the number of training examples.
+Let **n** represent the number of training examples.
 
-There can be as many as \(n\) candidate thresholds.
+The program may evaluate up to **n candidate thresholds**.
 
-For every threshold, the program checks all \(n\) examples:
+For each threshold, it checks all **n training examples**:
 
-\[
-O(n \times n) = O(n^2)
-\]
+> **O(n × n) = O(n²)**
 
-Sorting also requires:
+Sorting the training data requires:
 
-\[
-O(n \log n)
-\]
+> **O(n log n)**
 
-Therefore, the overall time complexity is:
+Because **O(n²)** grows faster than **O(n log n)**, the overall time complexity is:
 
-\[
-O(n^2)
-\]
+> **Time Complexity: O(n²)**
 
-Space complexity is approximately:
+### Space Complexity
 
-\[
-O(n)
-\]
+The program stores the dataset and the candidate thresholds:
 
-because the program stores candidate thresholds and the dataset.
+> **Space Complexity: O(n)**
 
-This implementation is educational, not optimized for large datasets.
+This implementation is designed for educational purposes and is not optimized for very large datasets.
 
 ---
 
