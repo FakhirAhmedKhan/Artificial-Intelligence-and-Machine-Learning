@@ -367,63 +367,72 @@ The model does not understand education like a human. It finds a mathematical pa
 
 ## 8. Mathematical Intuition
 
-Suppose each student is represented by a single feature:
+Suppose each student is represented by one feature:
 
-\[
+[
 x_i = \text{Number of study hours}
-\]
+]
 
-The true outcome for each student is:
+The actual outcome for each student is represented as:
 
-\[
+[
 y_i =
 \begin{cases}
-1 & \text{if the student passed} \\
-0 & \text{if the student failed}
+1, & \text{if the student passed} \
+0, & \text{if the student failed}
 \end{cases}
-\]
+]
 
 To make predictions, we define a simple threshold-based model:
 
-\[
+[
 \hat{y}_i =
 \begin{cases}
-1 & \text{if } x_i \geq t \\
-0 & \text{if } x_i < t
+1, & \text{if } x_i \geq t \
+0, & \text{if } x_i < t
 \end{cases}
-\]
+]
 
-Where:
+where:
 
-- \(x_i\) — Number of study hours for student \(i\).
-- \(y_i\) — The true class (actual outcome).
-- \(\hat{y}_i\) — The model's predicted class.
-- \(t\) — The decision threshold learned from the training data.
+* (x_i) represents the number of study hours for student (i).
+* (y_i) represents the student's actual outcome.
+* (\hat{y}_i) represents the model's predicted outcome.
+* (t) represents the decision threshold learned from the training data.
 
-The learning process evaluates different values of \(t\) and selects the one that produces the highest prediction accuracy on the training data.
+### How the Model Learns
+
+During training, the model evaluates different possible values of (t). For each threshold, it predicts whether every student passed or failed.
+
+The model then selects the threshold that produces the highest prediction accuracy on the training dataset.
 
 ### Accuracy
 
-Model performance is measured using **accuracy**, which is defined as:
+Accuracy measures the proportion of predictions that the model classified correctly:
 
-\[
+[
 \text{Accuracy}
-=
+===============
+
 \frac{\text{Number of correct predictions}}
 {\text{Total number of predictions}}
-\]
+]
 
-For example, if the model correctly predicts **8** out of **10** students:
+For example, suppose the model correctly predicts the outcomes of (8) out of (10) students:
 
-\[
+[
 \text{Accuracy}
-=
-\frac{8}{10}
-=
-0.8
-=
-80\%
-\]
+===============
+
+# \frac{8}{10}
+
+# 0.8
+
+80%
+]
+
+Therefore, the model has an accuracy of **80%**.
+
 
 ### What This Demonstrates
 
