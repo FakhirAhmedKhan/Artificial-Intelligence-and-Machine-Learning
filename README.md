@@ -274,7 +274,7 @@ Common supervised-learning tasks:
 - Regression
 - Classification
 
-### Regression
+#### Regression
 
 Predicts a continuous numerical value.
 
@@ -285,7 +285,7 @@ Examples:
 - Monthly sales
 - Delivery time
 
-### Classification
+#### Classification
 
 Predicts a category.
 
