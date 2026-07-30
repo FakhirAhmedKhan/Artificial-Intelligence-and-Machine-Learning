@@ -1,0 +1,88 @@
+17. Interview Questions
+What is Artificial Intelligence?
+
+How is machine learning different from traditional programming?
+AI is the broad field of creating systems that perform intelligent tasks.
+
+What is the relationship between AI, ML, and deep learning?
+Machine learning is a branch of AI that learns patterns from data. Deep learning is a branch of ML based on multilayer neural networks.
+
+What is a feature?
+Features are model inputs.
+
+What is a label?
+Labels are the correct outputs used during supervised learning.
+
+What is a model?
+Training creates or adjusts a model.
+
+What is the difference between training and inference?
+Inference uses the trained model on new data.
+
+What is supervised learning?
+Supervised learning uses labeled data.
+
+What is unsupervised learning?
+Unsupervised learning discovers patterns without labels.
+
+What is reinforcement learning?
+Reinforcement learning uses rewards and penalties.
+
+What is the difference between regression and classification?
+A model does not necessarily understand its task; it learns mathematical relationships.
+
+Why can high training accuracy be misleading?
+
+When should machine learning not be used?
+Machine learning is inappropriate when an exact, stable rule already solves the problem.
+
+What is overfitting?
+
+What is the time complexity of the threshold-training implementation?
+
+Lesson 1 Quiz
+Do not use external resources.
+
+1. Which statement is correct?
+C. Deep learning is a subfield of machine learning.
+
+2. What is the main difference between traditional programming and machine learning?
+C. Machine learning discovers useful patterns from examples.
+
+3. In a house-price prediction system, identify the feature and label:
+House size: 1,500 square feet
+House price: $280,000
+
+4. Is house-price prediction normally regression or classification? Explain why.
+
+5. Is spam detection normally regression or classification?
+
+6. What is the difference between training and inference?
+
+7. A company groups customers based on purchasing behavior, but it has no predefined customer categories. Which learning type is being used?
+B. Unsupervised learning
+
+
+8. A robot receives +10 points for reaching its destination and -5 points for hitting an obstacle. Which learning type does this represent?
+Reinforcement learning 
+
+9. Why does 100% training accuracy not guarantee good performance on new data?
+
+10. Should machine learning be used to determine whether someone is legally an adult when the rule is simply age >= 18? Explain.
+11. Given the model:
+Predict Pass when study hours >= 3
+What are the predictions for:
+
+2.5 hours
+3.0 hours
+5.0 hours
+12. Explain This Formula in Plain Language
+Accuracy = Correct predictions ÷ Total predictions
+
+Accuracy tells us how often the model makes the correct prediction.
+
+For example, if the model makes 10 predictions and 8 of them are correct:
+
+Accuracy = 8 ÷ 10 = 0.8 = 80%
+
+This means the model predicted the correct result 80% of the time.
